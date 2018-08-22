@@ -11,6 +11,8 @@ import android.util.Log;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
+import java.util.List;
+
 public class Meizu extends DeviceAbstract {
 
     private static final String MEIZU_DEFAULT_ACTION_APPSPEC = "com.meizu.safe.security.SHOW_APPSEC";
@@ -95,7 +97,7 @@ public class Meizu extends DeviceAbstract {
 
     @Override
     public String getExtraDebugInformations(Context context) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(super.getExtraDebugInformations(context));
         stringBuilder.append("MeizuSecVersionMethod:").append(getMeizuSecVersion(context));
 
         PackageManager manager = context.getPackageManager();
@@ -122,6 +124,16 @@ public class Meizu extends DeviceAbstract {
     @Override
     public int getHelpImagePowerSaving() {
         return 0;
+    }
+
+    @Override
+    public List<ComponentName> getComponentNameList() {
+        return null;
+    }
+
+    @Override
+    public List<String> getIntentActionList() {
+        return null;
     }
 
     private enum MEIZU_SECURITY_CENTER_VERSION {

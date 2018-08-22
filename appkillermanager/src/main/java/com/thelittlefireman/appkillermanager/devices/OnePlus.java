@@ -8,7 +8,16 @@ import android.os.Build;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class OnePlus extends DeviceAbstract {
+    private static final String ONEPLUS_PACKAGE = "com.oneplus.security";
+    private static final List<ComponentName> ONEPLUS_COMPONENTNAMES = Arrays.asList(
+            // AUTO START
+            new ComponentName(ONEPLUS_PACKAGE, "com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity"));
+
     @Override
     public boolean isThatRom() {
         return Build.BRAND.equalsIgnoreCase(getDeviceManufacturer().toString()) ||
@@ -44,8 +53,7 @@ public class OnePlus extends DeviceAbstract {
     @Override
     public Intent getActionAutoStart(Context context) {
         Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(new ComponentName("com.oneplus.security", "com.oneplus.security.chainlaunch.view" +
-                ".ChainLaunchAppListActivity"));
+        intent.setComponent(ONEPLUS_COMPONENTNAMES.get(0));
         return intent;
     }
 
@@ -55,12 +63,17 @@ public class OnePlus extends DeviceAbstract {
     }
 
     @Override
-    public String getExtraDebugInformations(Context context) {
-        return null;
+    public int getHelpImagePowerSaving() {
+        return 0;
     }
 
     @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
+    public List<ComponentName> getComponentNameList() {
+        return ONEPLUS_COMPONENTNAMES;
+    }
+
+    @Override
+    public List<String> getIntentActionList() {
+        return Collections.emptyList();
     }
 }

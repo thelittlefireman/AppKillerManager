@@ -9,6 +9,8 @@ import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 import com.thelittlefireman.appkillermanager.utils.SystemUtils;
 
+import java.util.List;
+
 public class Xiaomi extends DeviceAbstract {
 
 
@@ -76,13 +78,18 @@ public class Xiaomi extends DeviceAbstract {
     }
 
     @Override
-    public String getExtraDebugInformations(Context context) {
+    public int getHelpImagePowerSaving() {
+        return 0;
+    }
+
+    @Override
+    public List<ComponentName> getComponentNameList() {
         return null;
     }
 
     @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
+    public List<String> getIntentActionList() {
+        return null;
     }
 /*
     // TODO CHECK IF GETPACKAGENAME IS NAME OF LIB OR APP

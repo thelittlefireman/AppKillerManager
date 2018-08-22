@@ -1,32 +1,51 @@
 package com.thelittlefireman.appkillermanager.devices;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.support.annotation.CallSuper;
 import android.support.annotation.DrawableRes;
 
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 
 public abstract class DeviceAbstract implements DeviceBase {
+    @CallSuper
+    @Override
+    public String getExtraDebugInformations(Context context) {
+        // ----- PACAKGE INFORMATIONS ----- //
+        StringBuilder resultBuilder = new StringBuilder();
+        for (ComponentName componentName : getComponentNameList()) {
+            resultBuilder.append(componentName.getPackageName()+componentName.getClassName());
+            resultBuilder.append(":");
+            resultBuilder.append(ActionsUtils.isIntentAvailable(context, componentName));
+        }
+        for (String intentAction : getIntentActionList()) {
+            resultBuilder.append(intentAction);
+            resultBuilder.append(":");
+            resultBuilder.append(ActionsUtils.isIntentAvailable(context, intentAction));
+        }
+        return resultBuilder.toString();
+    }
 
     @Override
-    public boolean needToUseAlongwithActionDoseMode(){
+    public boolean needToUseAlongwithActionDoseMode() {
         return false;
     }
 
     @Override
     @DrawableRes
-    public int getHelpImageAutoStart(){
+    public int getHelpImageAutoStart() {
         return 0;
     }
 
     @Override
     @DrawableRes
-    public int getHelpImageNotification(){
+    public int getHelpImageNotification() {
         return 0;
     }
 

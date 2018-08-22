@@ -12,20 +12,25 @@ import com.thelittlefireman.appkillermanager.R;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.thelittlefireman.appkillermanager.utils.SystemUtils.getEmuiRomName;
 
 public class Huawei extends DeviceAbstract {
-
-    // TODO NOT SUR IT WORKS ON EMUI 5
+    private static final String HUAWEI_SYSTEMMANAGER_PACKAGE_NAME = "com.huawei.systemmanager";
     private static final String HUAWEI_ACTION_POWERSAVING = "huawei.intent.action.HSM_PROTECTED_APPS";
     private static final String HUAWEI_ACTION_AUTOSTART = "huawei.intent.action.HSM_BOOTAPP_MANAGER";
     private static final String HUAWEI_ACTION_NOTIFICATION = "huawei.intent.action.NOTIFICATIONMANAGER";
-    private static final String HUAWEI_SYSTEMMANAGER_PACKAGE_NAME = "com.huawei.systemmanager";
-    private static final String HUAWEI_SYSTEMMANAGER_AUTO_START_V1 = "com.huawei.systemmanager.optimize.bootstart.BootStartActivity";
-    private static final String HUAWEI_SYSTEMMANAGER_AUTO_START_V2 = "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity";
-    private static final String HUAWEI_SYSTEMMANAGER_AUTO_START_V3 = "com.huawei.permissionmanager.ui.MainActivity";
 
-    //com.huawei.systemmanager/com.huawei.notificationmanager.ui.NotificationManagmentActivity // huawei.intent.action.NOTIFICATIONMANAGER
+    private static final List<ComponentName> HUAWEI_COMPONENTNAMES = Arrays.asList(
+            new ComponentName(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, "com.huawei.systemmanager.optimize.bootstart.BootStartActivity"),
+            new ComponentName(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"),
+            new ComponentName(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, "com.huawei.permissionmanager.ui.MainActivity"));
+
+    private static final List<String> HUAWEI_ACTIONS = Arrays.asList(HUAWEI_ACTION_POWERSAVING, HUAWEI_ACTION_AUTOSTART, HUAWEI_ACTION_NOTIFICATION);
+    // TODO NOT SUR IT WORKS ON EMUI 5
+
     @Override
     public boolean isThatRom() {
         return isEmotionUI_23() ||
@@ -109,13 +114,12 @@ public class Huawei extends DeviceAbstract {
 
     @Override
     public String getExtraDebugInformations(Context context) {
-        StringBuilder stringBuilder = new StringBuilder();
+        String result = super.getExtraDebugInformations(context);
+        StringBuilder stringBuilder = new StringBuilder(result);
         stringBuilder.append("ROM_VERSION").append(getEmuiRomName());
-
         stringBuilder.append("HuaweiSystemManagerVersionMethod:").append(getHuaweiSystemManagerVersion(context));
-
         PackageManager manager = context.getPackageManager();
-        PackageInfo info = null;
+        PackageInfo info;
         String versionStr = "";
         try {
             info = manager.getPackageInfo(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, 0);
@@ -123,16 +127,7 @@ public class Huawei extends DeviceAbstract {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
         stringBuilder.append("HuaweiSystemManagerPackageVersion:").append(versionStr);
-
-        // ----- PACAKGE INFORMATIONS -----
-        stringBuilder.append(HUAWEI_ACTION_AUTOSTART).append(ActionsUtils.isIntentAvailable(context, HUAWEI_ACTION_AUTOSTART));
-        stringBuilder.append(HUAWEI_ACTION_POWERSAVING).append(ActionsUtils.isIntentAvailable(context, HUAWEI_ACTION_POWERSAVING));
-        stringBuilder.append(HUAWEI_ACTION_NOTIFICATION).append(ActionsUtils.isIntentAvailable(context, HUAWEI_ACTION_NOTIFICATION));
-        stringBuilder.append(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME + HUAWEI_SYSTEMMANAGER_AUTO_START_V1).append(ActionsUtils.isIntentAvailable(context, new ComponentName(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, HUAWEI_SYSTEMMANAGER_AUTO_START_V1)));
-        stringBuilder.append(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME + HUAWEI_SYSTEMMANAGER_AUTO_START_V2).append(ActionsUtils.isIntentAvailable(context, new ComponentName(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, HUAWEI_SYSTEMMANAGER_AUTO_START_V2)));
-        stringBuilder.append(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME + HUAWEI_SYSTEMMANAGER_AUTO_START_V3).append(ActionsUtils.isIntentAvailable(context, new ComponentName(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, HUAWEI_SYSTEMMANAGER_AUTO_START_V3)));
         return stringBuilder.toString();
     }
 
@@ -141,14 +136,24 @@ public class Huawei extends DeviceAbstract {
         return R.drawable.huawei_powersaving;
     }
 
+    @Override
+    public List<ComponentName> getComponentNameList() {
+        return HUAWEI_COMPONENTNAMES;
+    }
+
+    @Override
+    public List<String> getIntentActionList() {
+        return HUAWEI_ACTIONS;
+    }
+
     private ComponentName getComponentNameAutoStart(Context context) {
         int mVersion = getHuaweiSystemManagerVersion(context);
         if (mVersion == 4 || mVersion == 5) {
-            return new ComponentName(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, HUAWEI_SYSTEMMANAGER_AUTO_START_V2);
+            return HUAWEI_COMPONENTNAMES.get(1);
         } else if (mVersion == 6) {
-            return new ComponentName(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, HUAWEI_SYSTEMMANAGER_AUTO_START_V3);
+            return HUAWEI_COMPONENTNAMES.get(2);
         } else {
-            return new ComponentName(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, HUAWEI_SYSTEMMANAGER_AUTO_START_V1);
+            return HUAWEI_COMPONENTNAMES.get(0);
         }
     }
 

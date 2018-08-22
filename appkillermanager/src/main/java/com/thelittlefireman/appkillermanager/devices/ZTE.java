@@ -8,11 +8,19 @@ import android.os.Build;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class ZTE extends DeviceAbstract {
 
-    private static final String ZTE_HEARTYSERVICE_PACKAGE_NAME ="com.zte.heartyservice";
-    private static final String ZTE_HEARTYSERVICE_AUTOSTART_ACTIVITY ="com.zte.heartyservice.autorun.AppAutoRunManager";
-    private static final String ZTE_HEARTYSERVICE_POWERSAVING_ACTIVITY ="com.zte.heartyservice.setting.ClearAppSettingsActivity";
+    private static final String ZTE_PACKAGE_NAME ="com.zte.heartyservice";
+
+    private static final List<ComponentName> ZTE_COMPONENTNAMES = Arrays.asList(
+            // AUTO START
+            new ComponentName(ZTE_PACKAGE_NAME, "com.zte.heartyservice.autorun.AppAutoRunManager"),
+            // POWER SAVING
+            new ComponentName(ZTE_PACKAGE_NAME, "com.zte.heartyservice.setting.ClearAppSettingsActivity"));
 
     @Override
     public boolean isThatRom() {
@@ -44,14 +52,14 @@ public class ZTE extends DeviceAbstract {
     @Override
     public Intent getActionPowerSaving(Context context) {
         Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(new ComponentName(ZTE_HEARTYSERVICE_PACKAGE_NAME,ZTE_HEARTYSERVICE_POWERSAVING_ACTIVITY));
+        intent.setComponent(ZTE_COMPONENTNAMES.get(1));
         return intent;
     }
 
     @Override
     public Intent getActionAutoStart(Context context) {
         Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(new ComponentName(ZTE_HEARTYSERVICE_PACKAGE_NAME,ZTE_HEARTYSERVICE_AUTOSTART_ACTIVITY));
+        intent.setComponent(ZTE_COMPONENTNAMES.get(0));
         return intent;
     }
 
@@ -61,13 +69,17 @@ public class ZTE extends DeviceAbstract {
     }
 
     @Override
-    public String getExtraDebugInformations(Context context) {
-        // TODO
-        return null;
+    public int getHelpImagePowerSaving() {
+        return 0;
     }
 
     @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
+    public List<ComponentName> getComponentNameList() {
+        return ZTE_COMPONENTNAMES;
+    }
+
+    @Override
+    public List<String> getIntentActionList() {
+        return Collections.emptyList();
     }
 }

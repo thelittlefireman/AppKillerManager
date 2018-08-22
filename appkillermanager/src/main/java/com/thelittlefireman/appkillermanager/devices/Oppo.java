@@ -1,10 +1,13 @@
 package com.thelittlefireman.appkillermanager.devices;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
+
+import java.util.List;
 
 public class Oppo extends DeviceAbstract {
     // TODO multiple intent in a same actions need to be refractor!
@@ -70,13 +73,18 @@ public class Oppo extends DeviceAbstract {
     }
 
     @Override
-    public String getExtraDebugInformations(Context context) {
+    public int getHelpImagePowerSaving() {
+        return 0;
+    }
+
+    @Override
+    public List<ComponentName> getComponentNameList() {
         return null;
     }
 
     @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
+    public List<String> getIntentActionList() {
+        return null;
     }
 /*
     private ComponentName getComponentName(Context context){

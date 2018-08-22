@@ -8,7 +8,19 @@ import android.os.Build;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Letv extends DeviceAbstract {
+    private static final String LETV_PACKAGE = "com.letv.android.letvsafe";
+
+    private static final List<ComponentName> LETV_COMPONENTNAMES= Arrays.asList(
+            // POWER SAVING
+            new ComponentName(LETV_PACKAGE,"com.letv.android.letvsafe.BackgroundAppManageActivity"),
+            // AUTO START
+            new ComponentName(LETV_PACKAGE, "com.letv.android.letvsafe.AutobootManageActivity"));
+
     @Override
     public boolean isThatRom() {
         return Build.BRAND.equalsIgnoreCase(getDeviceManufacturer().toString()) ||
@@ -39,18 +51,14 @@ public class Letv extends DeviceAbstract {
     @Override
     public Intent getActionPowerSaving(Context context) {
         Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(
-                new ComponentName("com.letv.android.letvsafe",
-                        "com.letv.android.letvsafe.BackgroundAppManageActivity"));
+        intent.setComponent(LETV_COMPONENTNAMES.get(0));
         return intent;
     }
 
     @Override
     public Intent getActionAutoStart(Context context) {
         Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(
-                new ComponentName("com.letv.android.letvsafe",
-                        "com.letv.android.letvsafe.AutobootManageActivity"));
+        intent.setComponent(LETV_COMPONENTNAMES.get(1));
         return intent;
     }
 
@@ -60,12 +68,17 @@ public class Letv extends DeviceAbstract {
     }
 
     @Override
-    public String getExtraDebugInformations(Context context) {
-        return null;
+    public int getHelpImagePowerSaving() {
+        return 0;
     }
 
     @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
+    public List<ComponentName> getComponentNameList() {
+        return LETV_COMPONENTNAMES;
+    }
+
+    @Override
+    public List<String> getIntentActionList() {
+        return Collections.emptyList();
     }
 }
