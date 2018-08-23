@@ -100,3 +100,8 @@ http://nine-faq.9folders.com/categories/2758-troubleshooting
 
 redit info and talk ;
 https://www.reddit.com/r/androiddev/comments/7wkcvm/as_a_developer_how_the_hell_do_you_deal_with/
+
+other info
+https://github.com/qintangtao/android.cracking.demo/blob/master/project/lib/classes_dex2jar.src/com/android/runner/Run.java
+
+https://github.com/yanzhenjie/AndPermission

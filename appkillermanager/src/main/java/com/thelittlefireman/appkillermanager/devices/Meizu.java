@@ -23,7 +23,7 @@ public class Meizu extends DeviceAbstract {
     private static final String MEIZU_POWERSAVING_ACTIVITY_V3_4 = "com.meizu.safe.powerui.AppPowerManagerActivity";
     private static final String MEIZU_POWERSAVING_ACTIVITY_V3_7 = "com.meizu.safe.powerui.PowerAppPermissionActivity"; // == ACTION com.meizu.power.PowerAppKilledNotification
     private static final String MEIZU_NOTIFICATION_ACTIVITY = "com.meizu.safe.permission.NotificationActivity";
-
+    //com.meizu.safe.SecurityCenterActivity
     @Override
     public boolean isThatRom() {
         return Build.BRAND.equalsIgnoreCase(getDeviceManufacturer().toString()) ||
