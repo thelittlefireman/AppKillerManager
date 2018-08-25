@@ -90,6 +90,7 @@ public class KillerManager {
                 // Intent found action succeed
                 return intent;
             } else {
+                // TODO ADD LIBRARY VERSION
                 LogUtils.e(KillerManager.class.getName(), "INTENT NOT FOUND :" +
                         ActionsUtils.getExtrasDebugInformations(intent) + "Actions \n" +
                         actions.name() + "SYSTEM UTILS \n" +

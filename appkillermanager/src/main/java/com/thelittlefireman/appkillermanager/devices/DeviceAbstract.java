@@ -19,15 +19,19 @@ public abstract class DeviceAbstract implements DeviceBase {
     public String getExtraDebugInformations(Context context) {
         // ----- PACAKGE INFORMATIONS ----- //
         StringBuilder resultBuilder = new StringBuilder();
-        for (ComponentName componentName : getComponentNameList()) {
-            resultBuilder.append(componentName.getPackageName()+componentName.getClassName());
-            resultBuilder.append(":");
-            resultBuilder.append(ActionsUtils.isIntentAvailable(context, componentName));
+        if(getComponentNameList() !=null) {
+            for (ComponentName componentName : getComponentNameList()) {
+                resultBuilder.append(componentName.getPackageName() + componentName.getClassName());
+                resultBuilder.append(":");
+                resultBuilder.append(ActionsUtils.isIntentAvailable(context, componentName));
+            }
         }
-        for (String intentAction : getIntentActionList()) {
-            resultBuilder.append(intentAction);
-            resultBuilder.append(":");
-            resultBuilder.append(ActionsUtils.isIntentAvailable(context, intentAction));
+        if(getIntentActionList() !=null) {
+            for (String intentAction : getIntentActionList()) {
+                resultBuilder.append(intentAction);
+                resultBuilder.append(":");
+                resultBuilder.append(ActionsUtils.isIntentAvailable(context, intentAction));
+            }
         }
         return resultBuilder.toString();
     }
@@ -84,4 +88,6 @@ public abstract class DeviceAbstract implements DeviceBase {
         }
         return null;
     }
+    /*    private static final String OPPO_COLOROS_NOTIFICATION_PACKAGER_V4 = "com.android.settings";
+    private static final String OPPO_COLOROS_NOTIFICATION_ACTIVITY_V4 = "com.android.settings.applications.InstalledAppDetails";*/
 }

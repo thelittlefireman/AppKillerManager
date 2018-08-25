@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -18,10 +17,10 @@ public interface DeviceBase {
     boolean isActionAutoStartAvailable(Context context);
     boolean isActionNotificationAvailable(Context context);
     boolean needToUseAlongwithActionDoseMode();
-    Intent getActionPowerSaving(Context context);
-    Intent getActionAutoStart(Context context);
+    List<Intent> getActionPowerSaving(Context context);
+    List<Intent> getActionAutoStart(Context context);
     // FIXME IS IT REALY NEEDED ? ==> REPLACE BY OTHER FUNCTION ?
-    Intent getActionNotification(Context context);
+    List<Intent> getActionNotification(Context context);
     String getExtraDebugInformations(Context context);
 
     /**
@@ -35,8 +34,6 @@ public interface DeviceBase {
     @DrawableRes int getHelpImageAutoStart();
     @DrawableRes int getHelpImageNotification();
 
-    @NonNull
     List<ComponentName> getComponentNameList();
-    @NonNull
     List<String> getIntentActionList();
 }

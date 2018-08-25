@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionsUtils {
@@ -17,6 +18,28 @@ public class ActionsUtils {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
+
+    public static Intent createIntent(ComponentName componentName) {
+        Intent intent = createIntent();
+        intent.setComponent(componentName);
+        return intent;
+    }
+
+    public static Intent createIntent(String action) {
+        Intent intent = createIntent();
+        intent.setAction(action);
+        return intent;
+    }
+
+    public static List<Intent> createIntentList(List<ComponentName> componentNameList) {
+        List<Intent> intentList = new ArrayList<>();
+        for (ComponentName componentName : componentNameList) {
+            Intent intent = createIntent();
+            intent.setComponent(componentName);
+        }
+        return intentList;
+    }
+    // TODO REMOVE
     public static String getExtrasDebugInformations(Intent intent){
         StringBuilder stringBuilder = new StringBuilder();
         if(intent !=null){
@@ -43,6 +66,13 @@ public class ActionsUtils {
         return isIntentAvailable(ctx, ActionsUtils.createIntent().setComponent(componentName));
     }
 
+    public static boolean isAtLeastOneIntentAvailable(@NonNull Context ctx, @NonNull List<Intent> intentList) {
+        boolean rst = false;
+        for (Intent intent : intentList) {
+            rst= rst || isIntentAvailable(ctx,intent);
+        }
+        return rst;
+    }
     public static boolean isIntentAvailable(@NonNull Context ctx, @NonNull Intent intent) {
         if (ctx != null && intent != null) {
             final PackageManager mgr = ctx.getPackageManager();
