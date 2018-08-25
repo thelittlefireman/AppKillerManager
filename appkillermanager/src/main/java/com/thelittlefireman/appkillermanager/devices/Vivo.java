@@ -4,23 +4,28 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Vivo extends DeviceAbstract {
-// TODO multiple intent in a same actions !
-    // Starting: Intent { cmp=com.vivo.permissionmanager/.activity.BgStartUpManagerActivity }
-    //java.lang.SecurityException: Permission Denial: starting Intent { flg=0x10000000 cmp=com.vivo.permissionmanager/.activity.BgStartUpManagerActivity } from null (pid=28141, uid=2000) not exported from uid 1000
+    private static final String PACAKAGE_AUTOSTART_2_6 = "com.iqoo.secure";
+    private static final List<ComponentName> VIVO_COMPONENTNAMES_2_6 = Arrays.asList(
+            //Funtouch OS 2.6 and lower version
+            new ComponentName(PACAKAGE_AUTOSTART_2_6, "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity")// == ACTION com.iqoo.secure.settingwhitelist
+    );
 
-    private final String p1 = "com.iqoo.secure";
-    private final String p1c1 = "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity";
-    private final String p1c2 = "com.iqoo.secure.ui.phoneoptimize.BgStartUpManager";
+    //private final String p1c2 = "com.iqoo.secure.ui.phoneoptimize.BgStartUpManager"; //java.lang.SecurityException: Permission Denial:
 
-    private final String p2 = "com.vivo.permissionmanager";
-    private final String p2c1 = "com.vivo.permissionmanager.activity.BgStartUpManagerActivity";
-   // "com.vivo.abe", "com.vivo.applicationbehaviorengine.ui.ExcessivePowerManagerActivity"
-    //com.iqoo.secure.MainGuideActivity ??
+    private static final String PACAKAGE_AUTOSTART_3_0 = "com.vivo.permissionmanager";
+    private static final List<ComponentName> VIVO_COMPONENTNAMES_3_0 = Arrays.asList(
+            //Funtouch OS 3.0 and higher version
+            new ComponentName(PACAKAGE_AUTOSTART_3_0, "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"));
+
+    // TODO TEST "com.vivo.abe", "com.vivo.applicationbehaviorengine.ui.ExcessivePowerManagerActivity"
+
     @Override
     public boolean isThatRom() {
         return false;
@@ -38,7 +43,7 @@ public class Vivo extends DeviceAbstract {
 
     @Override
     public boolean isActionAutoStartAvailable(Context context) {
-        return false;
+        return true;
     }
 
     @Override
@@ -47,17 +52,27 @@ public class Vivo extends DeviceAbstract {
     }
 
     @Override
-    public Intent getActionPowerSaving(Context context) {
+    public List<Intent> getActionPowerSaving(Context context) {
         return null;
     }
 
     @Override
-    public Intent getActionAutoStart(Context context) {
+    public List<Intent> getActionAutoStart(Context context) {
+        List<Intent> intentList;
+        intentList = ActionsUtils.createIntentList(VIVO_COMPONENTNAMES_2_6);
+        if (ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
+            return intentList;
+        }
+
+        intentList = ActionsUtils.createIntentList(VIVO_COMPONENTNAMES_3_0);
+        if (ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
+            return intentList;
+        }
         return null;
     }
 
     @Override
-    public Intent getActionNotification(Context context) {
+    public List<Intent> getActionNotification(Context context) {
         return null;
     }
 
@@ -75,17 +90,4 @@ public class Vivo extends DeviceAbstract {
     public List<String> getIntentActionList() {
         return null;
     }
-/*
-    @Override
-    public List<ComponentName> getAutoStartSettings(Context context) {
-        List<ComponentName> componentNames = new ArrayList<>();
-        if(ActionsUtils.isPackageExist(context, p1)){
-            componentNames.add(new ComponentName(p1,p1c1));
-            componentNames.add(new ComponentName(p1,p1c2));
-        }
-        if(ActionsUtils.isPackageExist(context,p2)){
-            componentNames.add(new ComponentName(p2,p2c1));
-        }
-        return componentNames;
-    }*/
 }
