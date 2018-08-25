@@ -15,11 +15,11 @@ import java.util.List;
 public class Letv extends DeviceAbstract {
     private static final String LETV_PACKAGE = "com.letv.android.letvsafe";
 
-    private static final List<ComponentName> LETV_COMPONENTNAMES= Arrays.asList(
-            // POWER SAVING
-            new ComponentName(LETV_PACKAGE,"com.letv.android.letvsafe.BackgroundAppManageActivity"),
-            // AUTO START
-            new ComponentName(LETV_PACKAGE, "com.letv.android.letvsafe.AutobootManageActivity"));
+    private static final ComponentName LETV_COMPONENTNAMES_POWERSAVE = new ComponentName(LETV_PACKAGE,
+            "com.letv.android.letvsafe.BackgroundAppManageActivity");
+
+    private static final ComponentName LETV_COMPONENTNAMES_AUTOSTART = new ComponentName(LETV_PACKAGE,
+            "com.letv.android.letvsafe.AutobootManageActivity");
 
     @Override
     public boolean isThatRom() {
@@ -49,21 +49,19 @@ public class Letv extends DeviceAbstract {
     }
 
     @Override
-    public Intent getActionPowerSaving(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(LETV_COMPONENTNAMES.get(0));
-        return intent;
+    public List<Intent> getActionPowerSaving(Context context) {
+        return Collections.singletonList(
+                ActionsUtils.createIntent(LETV_COMPONENTNAMES_POWERSAVE));
     }
 
     @Override
-    public Intent getActionAutoStart(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(LETV_COMPONENTNAMES.get(1));
-        return intent;
+    public List<Intent> getActionAutoStart(Context context) {
+        return Collections.singletonList(
+                ActionsUtils.createIntent(LETV_COMPONENTNAMES_AUTOSTART));
     }
 
     @Override
-    public Intent getActionNotification(Context context) {
+    public List<Intent> getActionNotification(Context context) {
         return null;
     }
 
@@ -73,8 +71,10 @@ public class Letv extends DeviceAbstract {
     }
 
     @Override
-    public List<ComponentName> getComponentNameList() {
-        return LETV_COMPONENTNAMES;
+    public List<ComponentName> getComponentNameList()
+    {
+        return Arrays.asList(LETV_COMPONENTNAMES_AUTOSTART,
+                LETV_COMPONENTNAMES_POWERSAVE);
     }
 
     @Override

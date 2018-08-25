@@ -11,6 +11,7 @@ import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Oppo extends DeviceAbstract {
@@ -50,11 +51,10 @@ public class Oppo extends DeviceAbstract {
     );
 
     private static final String OPPO_COLOROS_NOTIFICATION_PACKAGER = "com.coloros.notificationmanager";
+    // POWER SAVING MODE
+    private static final ComponentName OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS = new ComponentName(OPPO_COLOROS_NOTIFICATION_PACKAGER,
+            "com.coloros.notificationmanager.NotificationCenterActivity");
 
-    private static final List<ComponentName> OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS = Arrays.asList(
-            // POWER SAVING MODE
-            new ComponentName(OPPO_COLOROS_NOTIFICATION_PACKAGER, "com.coloros.notificationmanager.NotificationCenterActivity")
-    );
 
     @Override
     public boolean isThatRom() {
@@ -115,12 +115,8 @@ public class Oppo extends DeviceAbstract {
 
     @Override
     public List<Intent> getActionNotification(Context context) {
-        List<Intent> intentList;
-        intentList = ActionsUtils.createIntentList(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS);
-        if (ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return intentList;
-        }
-        return null;
+        return Collections.singletonList(
+                ActionsUtils.createIntent(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS));
     }
 
     @Override
@@ -135,7 +131,7 @@ public class Oppo extends DeviceAbstract {
         rst.addAll(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_2_1);
         rst.addAll(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_OLDER);
         rst.addAll(OPPO_COMPONENTSNAMES_POWERSAVING_COLOROS);
-        rst.addAll(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS);
+        rst.add(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS);
         return rst;
     }
 

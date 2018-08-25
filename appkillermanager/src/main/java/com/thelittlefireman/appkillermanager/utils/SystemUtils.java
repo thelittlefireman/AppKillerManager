@@ -36,19 +36,12 @@ public class SystemUtils {
         try {
             applicationInfo = packageManager.getApplicationInfo(context.getApplicationInfo().packageName, 0);
         } catch (final PackageManager.NameNotFoundException e) {
+            LogUtils.e(SystemUtils.class.getName(),e.getMessage());
         }
         return (String) (applicationInfo != null ? packageManager.getApplicationLabel(applicationInfo) : "Unknown");
     }
 
-    public static String getMiuiRomName() {
-        try {
-            return SystemUtils.getSystemProperty("ro.miui.ui.version.name");
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    private static String getSystemProperty(String propName) {
+    public static String getSystemProperty(String propName) {
         String line;
         BufferedReader input = null;
         try {

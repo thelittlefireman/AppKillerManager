@@ -7,22 +7,23 @@ import android.content.Intent;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Vivo extends DeviceAbstract {
+    //Funtouch OS 2.6 and lower version
     private static final String PACAKAGE_AUTOSTART_2_6 = "com.iqoo.secure";
-    private static final List<ComponentName> VIVO_COMPONENTNAMES_2_6 = Arrays.asList(
-            //Funtouch OS 2.6 and lower version
-            new ComponentName(PACAKAGE_AUTOSTART_2_6, "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity")// == ACTION com.iqoo.secure.settingwhitelist
-    );
+    private static final ComponentName VIVO_COMPONENTNAMES_2_6 = new ComponentName(PACAKAGE_AUTOSTART_2_6,
+            "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity");// == ACTION com.iqoo.secure.settingwhitelist
 
     //private final String p1c2 = "com.iqoo.secure.ui.phoneoptimize.BgStartUpManager"; //java.lang.SecurityException: Permission Denial:
 
+    //Funtouch OS 3.0 and higher version
     private static final String PACAKAGE_AUTOSTART_3_0 = "com.vivo.permissionmanager";
-    private static final List<ComponentName> VIVO_COMPONENTNAMES_3_0 = Arrays.asList(
-            //Funtouch OS 3.0 and higher version
-            new ComponentName(PACAKAGE_AUTOSTART_3_0, "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"));
+    private static final ComponentName VIVO_COMPONENTNAMES_3_0 = new ComponentName(PACAKAGE_AUTOSTART_3_0,
+            "com.vivo.permissionmanager.activity.BgStartUpManagerActivity");
 
     // TODO TEST "com.vivo.abe", "com.vivo.applicationbehaviorengine.ui.ExcessivePowerManagerActivity"
 
@@ -58,15 +59,15 @@ public class Vivo extends DeviceAbstract {
 
     @Override
     public List<Intent> getActionAutoStart(Context context) {
-        List<Intent> intentList;
-        intentList = ActionsUtils.createIntentList(VIVO_COMPONENTNAMES_2_6);
-        if (ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return intentList;
+        Intent intent;
+        intent = ActionsUtils.createIntent(VIVO_COMPONENTNAMES_2_6);
+        if (ActionsUtils.isIntentAvailable(context, intent)) {
+            return Collections.singletonList(intent);
         }
 
-        intentList = ActionsUtils.createIntentList(VIVO_COMPONENTNAMES_3_0);
-        if (ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return intentList;
+        intent = ActionsUtils.createIntent(VIVO_COMPONENTNAMES_3_0);
+        if (ActionsUtils.isIntentAvailable(context, intent)) {
+            return Collections.singletonList(intent);
         }
         return null;
     }
@@ -83,7 +84,8 @@ public class Vivo extends DeviceAbstract {
 
     @Override
     public List<ComponentName> getComponentNameList() {
-        return null;
+        return Arrays.asList(VIVO_COMPONENTNAMES_2_6,
+                VIVO_COMPONENTNAMES_3_0);
     }
 
     @Override

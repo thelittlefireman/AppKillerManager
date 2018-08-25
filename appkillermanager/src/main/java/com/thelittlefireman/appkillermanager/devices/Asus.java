@@ -10,16 +10,22 @@ import com.thelittlefireman.appkillermanager.R;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
-// TODO TESTS
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Asus extends DeviceAbstract {
 
     private static final String ASUS_PACAKGE_MOBILEMANAGER = "com.asus.mobilemanager";
-    private static final String ASUS_ACTIVITY_MOBILEMANAGER_FUNCTION_ACTIVITY = "com.asus.mobilemanager.entry.FunctionActivity";
-    private static final String ASUS_ACTIVITY_MOBILEMANAGER_FUNCTION_AUTOSTART_ACTIVITY = "com.asus.mobilemanager.autostart.AutoStartActivity";
 
+    private static final ComponentName ASUS_COMPONENTNAMES_NOTIFICATION = new ComponentName(ASUS_PACAKGE_MOBILEMANAGER,
+            "com.asus.mobilemanager.entry.FunctionActivity");
+
+    private static final ComponentName ASUS_COMPONENTNAMES_AUTOSTART =new ComponentName(ASUS_PACAKGE_MOBILEMANAGER,
+            "com.asus.mobilemanager.autostart.AutoStartActivity");
     @Override
     public boolean isThatRom() {
-        return  Build.BRAND.equalsIgnoreCase(getDeviceManufacturer().toString()) ||
+        return Build.BRAND.equalsIgnoreCase(getDeviceManufacturer().toString()) ||
                 Build.MANUFACTURER.equalsIgnoreCase(getDeviceManufacturer().toString()) ||
                 Build.FINGERPRINT.toLowerCase().contains(getDeviceManufacturer().toString());
     }
@@ -45,43 +51,47 @@ public class Asus extends DeviceAbstract {
     }
 
     @Override
-    public Intent getActionPowerSaving(Context context) {
+    public List<Intent> getActionPowerSaving(Context context) {
         // Juste need to use the regular battery non optimization
         // permission =)
-        return super.getActionDozeMode(context);
+        return Collections.singletonList(super.getActionDozeMode(context));
     }
 
     @Override
-    public Intent getActionAutoStart(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.putExtra("showNotice",true);
-        intent.setComponent(new ComponentName(ASUS_PACAKGE_MOBILEMANAGER, ASUS_ACTIVITY_MOBILEMANAGER_FUNCTION_AUTOSTART_ACTIVITY));
-        return intent;
+    public List<Intent> getActionAutoStart(Context context) {
+        Intent intent = ActionsUtils.createIntent(ASUS_COMPONENTNAMES_AUTOSTART);
+        intent.putExtra("showNotice", true);
+        return Collections.singletonList(intent);
     }
 
     @Override
-    public Intent getActionNotification(Context context) {
+    public List<Intent> getActionNotification(Context context) {
         // Need to clic on notifications items
-        Intent intent = ActionsUtils.createIntent();
-        intent.putExtra("showNotice",true);
-        intent.setComponent(new ComponentName(ASUS_PACAKGE_MOBILEMANAGER, ASUS_ACTIVITY_MOBILEMANAGER_FUNCTION_ACTIVITY));
-        return intent;
-    }
-
-    @Override
-    public String getExtraDebugInformations(Context context) {
-        return null;
+        Intent intent = ActionsUtils.createIntent(ASUS_COMPONENTNAMES_NOTIFICATION);
+        intent.putExtra("showNotice", true);
+        return Collections.singletonList(intent);
     }
 
     @Override
     @DrawableRes
-    public int getHelpImageAutoStart(){
+    public int getHelpImageAutoStart() {
         return R.drawable.asus_autostart;
     }
 
     @Override
     @DrawableRes
-    public int getHelpImageNotification(){
+    public int getHelpImageNotification() {
         return R.drawable.asus_notification;
+    }
+
+    @Override
+    public List<ComponentName> getComponentNameList() {
+        return Arrays.asList(ASUS_COMPONENTNAMES_AUTOSTART,
+                ASUS_COMPONENTNAMES_NOTIFICATION);
+    }
+
+    @Override
+    public List<String> getIntentActionList() {
+        return null;
     }
 }

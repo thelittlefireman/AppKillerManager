@@ -14,9 +14,8 @@ import java.util.List;
 
 public class OnePlus extends DeviceAbstract {
     private static final String ONEPLUS_PACKAGE = "com.oneplus.security";
-    private static final List<ComponentName> ONEPLUS_COMPONENTNAMES = Arrays.asList(
-            // AUTO START
-            new ComponentName(ONEPLUS_PACKAGE, "com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity"));
+    private static final ComponentName ONEPLUS_COMPONENTNAMES =  new ComponentName(ONEPLUS_PACKAGE,
+            "com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity");
 
     @Override
     public boolean isThatRom() {
@@ -46,19 +45,18 @@ public class OnePlus extends DeviceAbstract {
     }
 
     @Override
-    public Intent getActionPowerSaving(Context context) {
+    public List<Intent>  getActionPowerSaving(Context context) {
         return null;
     }
 
     @Override
-    public Intent getActionAutoStart(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(ONEPLUS_COMPONENTNAMES.get(0));
-        return intent;
+    public List<Intent> getActionAutoStart(Context context) {
+        return Collections.singletonList(
+                ActionsUtils.createIntent(ONEPLUS_COMPONENTNAMES));
     }
 
     @Override
-    public Intent getActionNotification(Context context) {
+    public List<Intent>  getActionNotification(Context context) {
         return null;
     }
 
@@ -69,7 +67,7 @@ public class OnePlus extends DeviceAbstract {
 
     @Override
     public List<ComponentName> getComponentNameList() {
-        return ONEPLUS_COMPONENTNAMES;
+        return Collections.singletonList(ONEPLUS_COMPONENTNAMES);
     }
 
     @Override

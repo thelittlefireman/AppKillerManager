@@ -10,35 +10,40 @@ import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Samsung extends DeviceAbstract {
     // crash "com.samsung.android.lool","com.samsung.android.sm.ui.battery.AppSleepListActivity"
-    private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_ACTION = "com.samsung.android.sm.ACTION_BATTERY";
-    private static final String SAMSUNG_SYSTEMMANAGER_NOTIFICATION_ACTION = "com.samsung.android.sm.ACTION_SM_NOTIFICATION_SETTING";
-    private static final String SAMSUNG_SYSTEMMANAGER_AUTOSTART_PACKAGE_V1 = "com.samsung.memorymanager";
+    private static final String SAMSUNG_ACTION_POWERSAVING = "com.samsung.android.sm.ACTION_BATTERY";
+    private static final String SAMSUNG_ACTION_NOTIFICATION = "com.samsung.android.sm.ACTION_SM_NOTIFICATION_SETTING";
+    private static final String PACKAGE_MEMORYMANAGER = "com.samsung.memorymanager";
+
     // ANDROID 7.0
-    private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V3 = "com.samsung.android.lool";
+    private static final String SAMSUNG_POWERSAVING_PACKAGE_V3 = "com.samsung.android.lool";
 
     // ANDROID 6.0
-    private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V2 = "com.samsung.android.sm_cn";
+    private static final String SAMSUNG_POWERSAVING_PACKAGE_V2 = "com.samsung.android.sm_cn";
 
     // ANDROID 5.0/5.1
-    private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V1 = "com.samsung.android.sm";
+    private static final String SAMSUNG_POWERSAVING_PACKAGE_V1 = "com.samsung.android.sm";
 
-    private static final List<ComponentName> SAMSUNG_COMPONENTNAMES = Arrays.asList(
-            // ANDROID 5.0/5.1
-            new ComponentName(SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V1, "com.samsung.android.sm.ui.battery.BatteryActivity"),
-            // ANDROID 6.0
-            new ComponentName(SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V2, "com.samsung.android.sm.ui.battery.BatteryActivity"),
-            // ANDROID 7.0
-            new ComponentName(SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V3, "com.samsung.android.sm.ui.battery.BatteryActivity"),
-            // MEMORY MANAGER (NOT WORKING)
-            new ComponentName(SAMSUNG_SYSTEMMANAGER_AUTOSTART_PACKAGE_V1, "com.samsung.memorymanager.RamActivity"));
+    // ANDROID 5.0/5.1
+    private static final ComponentName SAMSUNG_COMPONENTNAMES_POWERSAVING_V1 = new ComponentName(SAMSUNG_POWERSAVING_PACKAGE_V1,
+            "com.samsung.android.sm.ui.battery.BatteryActivity");
+    // ANDROID 6.0
+    private static final ComponentName SAMSUNG_COMPONENTNAMES_POWERSAVING_V2 = new ComponentName(SAMSUNG_POWERSAVING_PACKAGE_V2
+            , "com.samsung.android.sm.ui.battery.BatteryActivity");
+    // ANDROID 7.0
+    private static final ComponentName SAMSUNG_COMPONENTNAMES_POWERSAVING_V3 = new ComponentName(SAMSUNG_POWERSAVING_PACKAGE_V3
+            , "com.samsung.android.sm.ui.battery.BatteryActivity");
 
-    private static final List<String> SAMSUNG_INTENTACTIONS = Arrays.asList(SAMSUNG_SYSTEMMANAGER_POWERSAVING_ACTION,
-            SAMSUNG_SYSTEMMANAGER_AUTOSTART_PACKAGE_V1,
-            SAMSUNG_SYSTEMMANAGER_NOTIFICATION_ACTION);
+    // MEMORY MANAGER (NOT WORKING)
+    private static final ComponentName SAMSUNG_COMPONENTNAMES_MEMORYMANAGER_V3 = new ComponentName(PACKAGE_MEMORYMANAGER
+            , "com.samsung.memorymanager.RamActivity");
+
+    private static final List<String> SAMSUNG_INTENTACTIONS = Arrays.asList(SAMSUNG_ACTION_POWERSAVING,
+            SAMSUNG_ACTION_NOTIFICATION);
 
     @Override
     public boolean isThatRom() {
@@ -73,44 +78,41 @@ public class Samsung extends DeviceAbstract {
     }
 
     @Override
-    public Intent getActionPowerSaving(Context context) {
+    public List<Intent> getActionPowerSaving(Context context) {
         Intent intent = ActionsUtils.createIntent();
-        intent.setAction(SAMSUNG_SYSTEMMANAGER_POWERSAVING_ACTION);
+        intent.setAction(SAMSUNG_ACTION_POWERSAVING);
         if (ActionsUtils.isIntentAvailable(context, intent)) {
-            return intent;
+            return Collections.singletonList(intent);
         }
         // reset
-        intent = ActionsUtils.createIntent();
-        intent.setComponent(SAMSUNG_COMPONENTNAMES.get(2));
+        intent = ActionsUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V3);
         if (ActionsUtils.isIntentAvailable(context, intent)) {
-            return intent;
+            return Collections.singletonList(intent);
         }
 
-        intent.setComponent(SAMSUNG_COMPONENTNAMES.get(1));
+        intent = ActionsUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V2);
         if (ActionsUtils.isIntentAvailable(context, intent)) {
-            return intent;
+            return Collections.singletonList(intent);
         }
-        intent.setComponent(SAMSUNG_COMPONENTNAMES.get(0));
+        intent = ActionsUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V1);
         if (ActionsUtils.isIntentAvailable(context, intent)) {
-            return intent;
+            return Collections.singletonList(intent);
         }
         return null;
     }
 
     // FIXME Currently not working : not available, ITS NOT AUTOSTART ITS MEMORY MANAGER
     @Override
-    public Intent getActionAutoStart(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(SAMSUNG_COMPONENTNAMES.get(3));
-        return intent;
+    public List<Intent> getActionAutoStart(Context context) {
+        return Collections.singletonList(
+                ActionsUtils.createIntent(SAMSUNG_COMPONENTNAMES_MEMORYMANAGER_V3));
     }
 
     // FIXME : NOTWORKOING NEED PERMISSIONS SETTINGS OR SOMETHINGS ELSE
     @Override
-    public Intent getActionNotification(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setAction(SAMSUNG_SYSTEMMANAGER_NOTIFICATION_ACTION);
-        return null;
+    public List<Intent> getActionNotification(Context context) {
+        return Collections.singletonList(
+                ActionsUtils.createIntent(SAMSUNG_ACTION_NOTIFICATION));
     }
 
     @Override
@@ -120,7 +122,10 @@ public class Samsung extends DeviceAbstract {
 
     @Override
     public List<ComponentName> getComponentNameList() {
-        return SAMSUNG_COMPONENTNAMES;
+        return Arrays.asList(SAMSUNG_COMPONENTNAMES_POWERSAVING_V1,
+                SAMSUNG_COMPONENTNAMES_POWERSAVING_V2,
+                SAMSUNG_COMPONENTNAMES_POWERSAVING_V3,
+                SAMSUNG_COMPONENTNAMES_MEMORYMANAGER_V3);
     }
 
     @Override

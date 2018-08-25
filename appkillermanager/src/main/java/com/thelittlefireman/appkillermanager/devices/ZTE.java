@@ -14,13 +14,13 @@ import java.util.List;
 
 public class ZTE extends DeviceAbstract {
 
-    private static final String ZTE_PACKAGE_NAME ="com.zte.heartyservice";
+    private static final String ZTE_PACKAGE_NAME = "com.zte.heartyservice";
 
-    private static final List<ComponentName> ZTE_COMPONENTNAMES = Arrays.asList(
-            // AUTO START
-            new ComponentName(ZTE_PACKAGE_NAME, "com.zte.heartyservice.autorun.AppAutoRunManager"),
-            // POWER SAVING
-            new ComponentName(ZTE_PACKAGE_NAME, "com.zte.heartyservice.setting.ClearAppSettingsActivity"));
+    private static final ComponentName ZTE_COMPONENTNAMES_AUTOSTART = new ComponentName(ZTE_PACKAGE_NAME,
+            "com.zte.heartyservice.autorun.AppAutoRunManager");
+
+    private static final ComponentName ZTE_COMPONENTNAMES_POWERSAVE = new ComponentName(ZTE_PACKAGE_NAME,
+            "com.zte.heartyservice.setting.ClearAppSettingsActivity");
 
     @Override
     public boolean isThatRom() {
@@ -50,21 +50,17 @@ public class ZTE extends DeviceAbstract {
     }
 
     @Override
-    public Intent getActionPowerSaving(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(ZTE_COMPONENTNAMES.get(1));
-        return intent;
+    public List<Intent> getActionPowerSaving(Context context) {
+       return Collections.singletonList(ActionsUtils.createIntent(ZTE_COMPONENTNAMES_POWERSAVE));
     }
 
     @Override
-    public Intent getActionAutoStart(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(ZTE_COMPONENTNAMES.get(0));
-        return intent;
+    public List<Intent> getActionAutoStart(Context context) {
+        return Collections.singletonList(ActionsUtils.createIntent(ZTE_COMPONENTNAMES_AUTOSTART));
     }
 
     @Override
-    public Intent getActionNotification(Context context) {
+    public List<Intent> getActionNotification(Context context) {
         return null;
     }
 
@@ -75,7 +71,8 @@ public class ZTE extends DeviceAbstract {
 
     @Override
     public List<ComponentName> getComponentNameList() {
-        return ZTE_COMPONENTNAMES;
+        return Arrays.asList(ZTE_COMPONENTNAMES_AUTOSTART,
+                ZTE_COMPONENTNAMES_POWERSAVE);
     }
 
     @Override
