@@ -24,6 +24,12 @@ public class OnePlus extends DeviceAbstract {
                 Build.FINGERPRINT.toLowerCase().contains(getDeviceManufacturer().toString());
     }
 
+    // This is mandatory for new oneplus version android 8
+    @Override
+    public boolean needToUseAlongwithActionDoseMode(){
+        return true;
+    }
+
     @Override
     public Manufacturer getDeviceManufacturer() {
         return Manufacturer.ONEPLUS;

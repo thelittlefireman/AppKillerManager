@@ -44,8 +44,8 @@ task wrapper(type: Wrapper) {
 
 ext{
     // ValidateTor Library Info
-    libVersionCode = 3
-    libVersionName = '2.1.0'
+    libVersionCode = 4
+    libVersionName = '2.1.1'
     libPomUrl = 'https://github.com/thelittlefireman/AppKillerManager'
     libGithubRepo = 'thelittlefireman/AppKillerManager'
     libModuleName = 'AppKillerManager'

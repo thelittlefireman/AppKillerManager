@@ -105,3 +105,6 @@ other info
 https://github.com/qintangtao/android.cracking.demo/blob/master/project/lib/classes_dex2jar.src/com/android/runner/Run.java
 
 https://github.com/yanzhenjie/AndPermission
+
+// check auto start
+https://stackoverflow.com/questions/39366231/how-to-check-miui-autostart-permission-programatically
