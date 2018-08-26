@@ -13,6 +13,7 @@ import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.thelittlefireman.appkillermanager.utils.SystemUtils.getEmuiRomName;
@@ -84,14 +85,12 @@ public class Huawei extends DeviceAbstract {
     }
 
     @Override
-    public Intent getActionPowerSaving(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setAction(HUAWEI_ACTION_POWERSAVING);
-        return intent;
+    public List<Intent> getActionPowerSaving(Context context) {
+        return Collections.singletonList(ActionsUtils.createIntent(HUAWEI_ACTION_POWERSAVING));
     }
 
     @Override
-    public Intent getActionAutoStart(Context context) {
+    public List<Intent> getActionAutoStart(Context context) {
         // AUTOSTART not used in huawei
         return null;
         /*Intent intent = ActionsUtils.createIntent();
@@ -106,10 +105,8 @@ public class Huawei extends DeviceAbstract {
     }
 
     @Override
-    public Intent getActionNotification(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setAction(HUAWEI_ACTION_NOTIFICATION);
-        return intent;
+    public List<Intent> getActionNotification(Context context) {
+        return Collections.singletonList(ActionsUtils.createIntent(HUAWEI_ACTION_NOTIFICATION));
     }
 
     @Override

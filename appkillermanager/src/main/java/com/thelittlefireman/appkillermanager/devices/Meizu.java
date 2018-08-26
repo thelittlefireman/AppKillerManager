@@ -11,6 +11,7 @@ import android.util.Log;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Meizu extends DeviceAbstract {
@@ -52,12 +53,12 @@ public class Meizu extends DeviceAbstract {
     }
 
     @Override
-    public Intent getActionPowerSaving(Context context) {
+    public List<Intent> getActionPowerSaving(Context context) {
         Intent intent = ActionsUtils.createIntent();
         MEIZU_SECURITY_CENTER_VERSION mSecVersion = getMeizuSecVersion(context);
         intent.setAction(MEIZU_POWERSAVING_ACTION);
         if (ActionsUtils.isIntentAvailable(context, intent)) {
-            return intent;
+            return Collections.singletonList(intent);
         }
         intent = ActionsUtils.createIntent();
         if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_2_2) {
@@ -67,31 +68,30 @@ public class Meizu extends DeviceAbstract {
         } else if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_3_7) {
             intent.setClassName(MEIZU_DEFAULT_PACKAGE, MEIZU_POWERSAVING_ACTIVITY_V3_7);
         } else {
-            return getDefaultSettingAction(context);
+            return Collections.singletonList(getDefaultSettingAction(context));
         }
-        return intent;
+        return Collections.singletonList(intent);
     }
 
     @Override
-    public Intent getActionAutoStart(Context context) {
-        return getDefaultSettingAction(context);
+    public List<Intent> getActionAutoStart(Context context) {
+        return Collections.singletonList(getDefaultSettingAction(context));
     }
 
     private Intent getDefaultSettingAction(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setAction(MEIZU_DEFAULT_ACTION_APPSPEC);
+        Intent intent = ActionsUtils.createIntent(MEIZU_DEFAULT_ACTION_APPSPEC);
         intent.putExtra(MEIZU_DEFAULT_EXTRA_PACKAGE, context.getPackageName());
         return intent;
     }
     @Override
-    public Intent getActionNotification(Context context) {
+    public List<Intent> getActionNotification(Context context) {
         MEIZU_SECURITY_CENTER_VERSION mSecVersion = getMeizuSecVersion(context);
         Intent intent = ActionsUtils.createIntent();
         if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_3_7 || mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_4_1) {
             intent.setComponent(new ComponentName(MEIZU_DEFAULT_PACKAGE, MEIZU_NOTIFICATION_ACTIVITY));
-            return intent;
+            return Collections.singletonList(intent);
         } else {
-            return getDefaultSettingAction(context);
+            return Collections.singletonList(getDefaultSettingAction(context));
         }
     }
 
