@@ -69,6 +69,7 @@ Or use it directly :
 public void onCreate(Bundle savedInstanceState) {
     ...
     // Open the corresponding Power Saving Settings
+    KillerManager.init(mContext);
     KillerManager.doActionPowerSaving(mActivity);
     ...
 }
@@ -85,6 +86,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 public void onCreate(Bundle savedInstanceState) {
     ...
     // Open the corresponding Auto Start permission Settings
+    KillerManager.init(mContext);
     KillerManager.doActionAutoStart(mActivity);
     ...
 }
@@ -101,6 +103,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 public void onCreate(Bundle savedInstanceState) {
     ...
     // Open the corresponding Notification permission Settings
+    KillerManager.init(mContext);
     KillerManager.doActionNotification(mActivity);
     ...
 }
@@ -111,6 +114,23 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     KillerManager.onActivityResultonActivityResult(mContext,Actions.ACTION_NOTIFICATIONS);
     ...
 }
+```
+
+You can add custom logs //Please add it to send me logs to improve the library
+```java
+        LogUtils.registerLogCustomListener(new LogUtils.LogCustomListener() {
+            @Override
+            public void i(String tag, String message) {
+                // Custom Log
+                Crashlytics.log(int priority, tag, message);
+            }
+
+            @Override
+            public void e(String tag, String message) {
+                // Custom Log
+                Crashlytics.logException(new Exception(tag+message));
+            }
+        });
 ```
 
 ### Working phone & related views :

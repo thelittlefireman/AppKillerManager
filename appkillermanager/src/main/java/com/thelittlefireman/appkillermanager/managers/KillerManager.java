@@ -11,6 +11,7 @@ import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 import com.thelittlefireman.appkillermanager.utils.SystemUtils;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class KillerManager {
@@ -33,7 +34,7 @@ public class KillerManager {
 
     private static DeviceBase sDevice;
 
-    private static int sCurrentNbActions;
+    private static HashMap<Actions, Integer> sCurrentNbActions;
 
     private static final int REQUEST_CODE_INTENT = 52000;
 
@@ -48,7 +49,10 @@ public class KillerManager {
         HyperLog.setLogLevel(Log.VERBOSE);
         HyperLog.setURL("API URL");*/
         sDevice = DevicesManager.getDevice();
-        sCurrentNbActions = 0;
+        sCurrentNbActions = new HashMap<>();
+        sCurrentNbActions.put(Actions.ACTION_AUTOSTART, 0);
+        sCurrentNbActions.put(Actions.ACTION_NOTIFICATIONS, 0);
+        sCurrentNbActions.put(Actions.ACTION_POWERSAVING, 0);
     }
 
 
@@ -121,18 +125,18 @@ public class KillerManager {
      * Execute the action
      *
      * @param activity the current activity
-     * @param actions the wanted action to execute
+     * @param actions  the wanted action to execute
      * @return true : action succeed; false action failed
      */
     public static boolean doAction(Activity activity, Actions actions) {
-       return doAction(activity, actions, sCurrentNbActions);
+        return doAction(activity, actions, sCurrentNbActions.get(actions));
     }
 
     /**
      * Execute the action
      *
      * @param activity the current activity
-     * @param actions the wanted action to execute
+     * @param actions  the wanted action to execute
      * @return true : action succeed; false action failed
      */
     private static boolean doAction(Activity activity, Actions actions, int index) {
@@ -142,7 +146,7 @@ public class KillerManager {
             if (intentList != null && !intentList.isEmpty() && intentList.size() > index) {
                 Intent intent = intentList.get(index);
                 if (ActionsUtils.isIntentAvailable(activity, intent)) {
-                    activity.startActivityForResult(intent,REQUEST_CODE_INTENT);
+                    activity.startActivityForResult(intent, REQUEST_CODE_INTENT);
                     // Intent found action succeed
                     return true;
                 }
@@ -157,25 +161,16 @@ public class KillerManager {
     }
 
     public static void onActivityResult(Activity activity, Actions actions) {
-        sCurrentNbActions++;
+        int value = sCurrentNbActions.get(actions);
+        value++;
+        sCurrentNbActions.put(actions, value);
+
         List<Intent> intentList = getIntentFromAction(activity, actions);
-        if (intentList != null && !intentList.isEmpty() && intentList.size() > sCurrentNbActions) {
-            doAction(activity, actions, sCurrentNbActions);
+        if (intentList != null && !intentList.isEmpty() && intentList.size() > sCurrentNbActions.get(actions)) {
+            doAction(activity, actions, sCurrentNbActions.get(actions));
         } else {
             // reset if no more intent
-            sCurrentNbActions = 0;
+            sCurrentNbActions.put(actions, 0);
         }
-    }
-
-    public static void doActionAutoStart(Activity activity) {
-        doAction(activity, Actions.ACTION_AUTOSTART);
-    }
-
-    public static void doActionNotification(Activity activity) {
-        doAction(activity, Actions.ACTION_NOTIFICATIONS);
-    }
-
-    public static void doActionPowerSaving(Activity activity) {
-        doAction(activity, Actions.ACTION_POWERSAVING);
     }
 }
