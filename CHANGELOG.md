@@ -1,3 +1,9 @@
+### V3.0.0
+
+* Refractor to handle multiple intent to do one Action
+* Add Oppo Compatibility
+* Add VIVO Compatibility
+
 ### V2.1.1
 
 * Fix #3 Galaxy Nexus: KillerManager.doActionPowerSaving() do not opens activity

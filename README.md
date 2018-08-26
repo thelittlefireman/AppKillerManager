@@ -47,7 +47,7 @@ Android Custom Roms made sometimes your apps unfunctional due to :
 
 ```groovy
 dependencies {
-    implementation 'com.thelittlefireman:AppKillerManager:2.1.1'
+    implementation 'com.thelittlefireman:AppKillerManager:3.0.0'
 }
 ```
 
@@ -73,7 +73,6 @@ public void onCreate(Bundle savedInstanceState) {
     KillerManager.doActionPowerSaving(mActivity);
     ...
 }
-
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     ...
