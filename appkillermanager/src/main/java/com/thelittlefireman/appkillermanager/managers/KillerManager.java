@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
+import com.thelittlefireman.appkillermanager.BuildConfig;
 import com.thelittlefireman.appkillermanager.devices.DeviceBase;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 import com.thelittlefireman.appkillermanager.utils.SystemUtils;
+
+import java.util.List;
 
 public class KillerManager {
 
@@ -70,30 +73,31 @@ public class KillerManager {
      * @return the intent
      */
     @Nullable
-    private static Intent getIntentFromAction(Context context, Actions actions) {
+    private static List<Intent> getIntentFromAction(Context context, Actions actions) {
         init(context);
         sDevice = DevicesManager.getDevice();
         if (sDevice != null) {
-            Intent intent = null;
+            List<Intent> intentList = null;
             switch (actions) {
                 case ACTION_AUTOSTART:
-                    intent = sDevice.getActionAutoStart(context);
+                    intentList = sDevice.getActionAutoStart(context);
                     break;
                 case ACTION_POWERSAVING:
-                    intent = sDevice.getActionPowerSaving(context);
+                    intentList = sDevice.getActionPowerSaving(context);
                     break;
                 case ACTION_NOTIFICATIONS:
-                    intent = sDevice.getActionNotification(context);
+                    intentList = sDevice.getActionNotification(context);
                     break;
             }
-            if (intent != null && ActionsUtils.isIntentAvailable(context, intent)) {
+            if (intentList != null && !intentList.isEmpty() && ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
                 // Intent found action succeed
-                return intent;
+                return intentList;
             } else {
-                // TODO ADD LIBRARY VERSION
                 LogUtils.e(KillerManager.class.getName(), "INTENT NOT FOUND :" +
-                        ActionsUtils.getExtrasDebugInformations(intent) + "Actions \n" +
-                        actions.name() + "SYSTEM UTILS \n" +
+                        ActionsUtils.getExtrasDebugInformations(intentList) +
+                        "LibraryVersionName :" + BuildConfig.VERSION_NAME +
+                        "LibraryVersionCode :" + BuildConfig.VERSION_CODE +
+                        "Actions \n" + actions.name() + "SYSTEM UTILS \n" +
                         SystemUtils.getDefaultDebugInformation() + "DEVICE \n" +
                         sDevice.getExtraDebugInformations(context));
                 // Intent not found action failed

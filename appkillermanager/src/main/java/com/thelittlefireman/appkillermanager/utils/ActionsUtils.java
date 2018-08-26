@@ -39,18 +39,12 @@ public class ActionsUtils {
         }
         return intentList;
     }
-    // TODO REMOVE
-    public static String getExtrasDebugInformations(Intent intent){
+
+    public static String getExtrasDebugInformations(List<Intent> intentList){
         StringBuilder stringBuilder = new StringBuilder();
-        if(intent !=null){
-            stringBuilder.append("intent actions").append(intent.getAction());
-            stringBuilder.append("intent conponent");
-            ComponentName componentName = intent.getComponent();
-            if(componentName!=null){
-                stringBuilder.append("ComponentName package:").append(componentName.getPackageName());
-                stringBuilder.append("ComponentName class:").append(componentName.getClassName());
-            }else {
-                stringBuilder.append("ComponentName is null");
+        if(intentList !=null){
+            if (intentList.isEmpty()){
+                stringBuilder.append("intentList is isEmpty");
             }
         }else {
             stringBuilder.append("intent is null");

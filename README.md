@@ -29,13 +29,14 @@ Android Custom Roms made sometimes your apps unfunctional due to :
 * HTC (<span style="color:red">NOT TESTED</span>)
 * Asus (<span style="color:green">TESTED</span>)
 * ZTE (<span style="color:red">NOT TESTED</span>)
+* VIVO (<span style="color:red">NOT TESTED</span>)
+* OPPO (<span style="color:red">NOT TESTED</span>)
 
 ### TODO
 
-* Oppo
-* Vivo
 * Add Tests auto with avd and intent testing
 * Add hability to customize dialog
+* Add "Tutorial Acivity type"
 * Add screenshot and "settings path" of the intent action for all phones on ReadMe
 * Add a table of possiblities and function unavailable/ not necessary on each device
 
