@@ -1,6 +1,6 @@
 package com.thelittlefireman.appkillermanager.ui;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -17,8 +17,10 @@ import com.thelittlefireman.appkillermanager.managers.KillerManager;
 import com.thelittlefireman.appkillermanager.utils.KillerManagerUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 
+import de.mrapp.android.dialog.WizardDialog;
+
 public class DialogKillerManagerBuilder {
-    private Context mContext;
+    private Activity mActivity;
 
     public DialogKillerManagerBuilder() {
         contentResMessage = -1;
@@ -26,12 +28,12 @@ public class DialogKillerManagerBuilder {
         iconRes = -1;
     }
 
-    public DialogKillerManagerBuilder(Context context) {
+    public DialogKillerManagerBuilder(Activity activity) {
         this();
-        mContext = context;
+        mActivity = activity;
     }
 
-    private KillerManager.Actions mAction;
+    private KillerManager.Action mAction;
 
     private boolean enableDontShowAgain = true;
 
@@ -44,12 +46,12 @@ public class DialogKillerManagerBuilder {
     @StringRes
     private int titleResMessage, contentResMessage;
 
-    public DialogKillerManagerBuilder setContext(Context context) {
-        mContext = context;
+    public DialogKillerManagerBuilder setActivity(Activity activity) {
+        mActivity = activity;
         return this;
     }
 
-    public DialogKillerManagerBuilder setAction(KillerManager.Actions action) {
+    public DialogKillerManagerBuilder setAction(KillerManager.Action action) {
         mAction = action;
         return this;
     }
@@ -86,16 +88,16 @@ public class DialogKillerManagerBuilder {
 
     public void show() {
 
-        MaterialDialog materialDialog;
-        if (mContext == null) {
-            throw new NullPointerException("Context can't be null");
+        WizardDialog materialDialog;
+        if (mActivity == null) {
+            throw new NullPointerException("Activity parameter can't be null");
         }
         if (mAction == null) {
-            throw new NullPointerException("Action can't be null");
+            throw new NullPointerException("KillerManagerAction parameter can't be null");
         }
-        KillerManager.init(mContext);
+        KillerManager.init(mActivity);
 
-        if (!KillerManager.isActionAvailable(mContext, mAction)) {
+        if (!KillerManager.isActionAvailable(mActivity, mAction)) {
             LogUtils.i(this.getClass().getName(), "This action is not available for this device no need to show the dialog");
             return;
         }
@@ -105,13 +107,31 @@ public class DialogKillerManagerBuilder {
             return;
         }
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(mContext);
+
+        if(KillerManager.getNumberOfIntentFromAction(mActivity,mAction)>1){
+            // multiple intent
+        }
+
+
+        dialogBuilder.setHeaderBackground(R.drawable.header_background);
+        dialogBuilder.addFragment(R.string.fragment1_title, Fragment1.class);
+        dialogBuilder.addFragment(R.string.fragment2_title, Fragment2.class);
+        dialogBuilder.addFragment(R.string.fragment3_title, Fragment3.class);
+        dialogBuilder.setTabPosition(TabPosition.PREFER_HEADER);
+        dialogBuilder.enableTabLayout(true);
+        dialogBuilder.enableSwipe(true);
+        dialogBuilder.showButtonBar(true);
+        dialog.show();
+
+        WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(mActivity,R.style.MaterialDialog_Light_Fullscreen);
+        dialogBuilder.showHeader(false);
+
         builder.positiveText(R.string.dialog_button)
                 .customView(R.layout.md_dialog_custom_view, false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
-                        KillerManager.doAction(mContext, mAction);
+                        KillerManager.doAction(mActivity, mAction);
                     }
                 })
                 .negativeText(android.R.string.cancel);
@@ -127,7 +147,7 @@ public class DialogKillerManagerBuilder {
         } else if (titleMessage != null && !titleMessage.isEmpty()) {
             builder.title(titleMessage);
         } else {
-            builder.title(mContext.getString(R.string.dialog_title_notification, KillerManager.getDevice().getDeviceManufacturer().toString()));
+            builder.title(mActivity.getString(R.string.dialog_title_notification, KillerManager.getDevice().getDeviceManufacturer().toString()));
         }
 
         if (this.enableDontShowAgain) {
@@ -135,12 +155,12 @@ public class DialogKillerManagerBuilder {
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            KillerManagerUtils.setDontShowAgain(mContext, mAction, isChecked);
+                            KillerManagerUtils.setDontShowAgain(mActivity, mAction, isChecked);
                         }
                     });
         }
 
-        if (!(enableDontShowAgain && KillerManagerUtils.isDontShowAgain(mContext, mAction))) {
+        if (!(enableDontShowAgain && KillerManagerUtils.isDontShowAgain(mActivity, mAction))) {
             materialDialog = builder.show();
 
             // init custom view
@@ -159,8 +179,8 @@ public class DialogKillerManagerBuilder {
             contentTextView.setText(contentMessage);
         } else {
             //TODO CUSTOM MESSAGE FOR SPECIFITQUE ACTIONS AND SPECIFIC DEVICE
-            contentTextView.setText(String.format(mContext.getString(R.string.dialog_huawei_notification),
-                    mContext.getString(
+            contentTextView.setText(String.format(mActivity.getString(R.string.dialog_huawei_notification),
+                    mActivity.getString(
                             R.string.app_name)));
         }
 
@@ -170,7 +190,7 @@ public class DialogKillerManagerBuilder {
             doNotShowAgainCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    KillerManagerUtils.setDontShowAgain(mContext, mAction, isChecked);
+                    KillerManagerUtils.setDontShowAgain(mActivity, mAction, isChecked);
                 }
             });
         }

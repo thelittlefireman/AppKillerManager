@@ -10,7 +10,7 @@ import android.provider.Settings;
 import android.support.annotation.CallSuper;
 import android.support.annotation.DrawableRes;
 
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 
 public abstract class DeviceAbstract implements DeviceBase {
@@ -23,14 +23,14 @@ public abstract class DeviceAbstract implements DeviceBase {
             for (ComponentName componentName : getComponentNameList()) {
                 resultBuilder.append(componentName.getPackageName() + componentName.getClassName());
                 resultBuilder.append(":");
-                resultBuilder.append(ActionsUtils.isIntentAvailable(context, componentName));
+                resultBuilder.append(ActionUtils.isIntentAvailable(context, componentName));
             }
         }
         if(getIntentActionList() !=null) {
             for (String intentAction : getIntentActionList()) {
                 resultBuilder.append(intentAction);
                 resultBuilder.append(":");
-                resultBuilder.append(ActionsUtils.isIntentAvailable(context, intentAction));
+                resultBuilder.append(ActionUtils.isIntentAvailable(context, intentAction));
             }
         }
         return resultBuilder.toString();
@@ -75,7 +75,7 @@ public abstract class DeviceAbstract implements DeviceBase {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             boolean ignoringBatteryOptimizations = pm.isIgnoringBatteryOptimizations(context.getPackageName());
             if (!ignoringBatteryOptimizations) {
-                Intent dozeIntent = ActionsUtils.createIntent();
+                Intent dozeIntent = ActionUtils.createIntent();
                 // Cannot fire Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                 // due to Google play device policy restriction !
                 dozeIntent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);

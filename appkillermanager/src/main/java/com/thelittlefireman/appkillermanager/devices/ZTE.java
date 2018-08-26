@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
@@ -51,12 +51,12 @@ public class ZTE extends DeviceAbstract {
 
     @Override
     public List<Intent> getActionPowerSaving(Context context) {
-       return Collections.singletonList(ActionsUtils.createIntent(ZTE_COMPONENTNAMES_POWERSAVE));
+       return Collections.singletonList(ActionUtils.createIntent(ZTE_COMPONENTNAMES_POWERSAVE));
     }
 
     @Override
     public List<Intent> getActionAutoStart(Context context) {
-        return Collections.singletonList(ActionsUtils.createIntent(ZTE_COMPONENTNAMES_AUTOSTART));
+        return Collections.singletonList(ActionUtils.createIntent(ZTE_COMPONENTNAMES_AUTOSTART));
     }
 
     @Override

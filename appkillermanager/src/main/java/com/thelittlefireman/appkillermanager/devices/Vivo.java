@@ -4,10 +4,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -60,13 +59,13 @@ public class Vivo extends DeviceAbstract {
     @Override
     public List<Intent> getActionAutoStart(Context context) {
         Intent intent;
-        intent = ActionsUtils.createIntent(VIVO_COMPONENTNAMES_2_6);
-        if (ActionsUtils.isIntentAvailable(context, intent)) {
+        intent = ActionUtils.createIntent(VIVO_COMPONENTNAMES_2_6);
+        if (ActionUtils.isIntentAvailable(context, intent)) {
             return Collections.singletonList(intent);
         }
 
-        intent = ActionsUtils.createIntent(VIVO_COMPONENTNAMES_3_0);
-        if (ActionsUtils.isIntentAvailable(context, intent)) {
+        intent = ActionUtils.createIntent(VIVO_COMPONENTNAMES_3_0);
+        if (ActionUtils.isIntentAvailable(context, intent)) {
             return Collections.singletonList(intent);
         }
         return null;

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.thelittlefireman.appkillermanager.R;
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
@@ -80,23 +80,23 @@ public class Samsung extends DeviceAbstract {
 
     @Override
     public List<Intent> getActionPowerSaving(Context context) {
-        Intent intent = ActionsUtils.createIntent();
+        Intent intent = ActionUtils.createIntent();
         intent.setAction(SAMSUNG_ACTION_POWERSAVING);
-        if (ActionsUtils.isIntentAvailable(context, intent)) {
+        if (ActionUtils.isIntentAvailable(context, intent)) {
             return Collections.singletonList(intent);
         }
         // reset
-        intent = ActionsUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V3);
-        if (ActionsUtils.isIntentAvailable(context, intent)) {
+        intent = ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V3);
+        if (ActionUtils.isIntentAvailable(context, intent)) {
             return Collections.singletonList(intent);
         }
 
-        intent = ActionsUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V2);
-        if (ActionsUtils.isIntentAvailable(context, intent)) {
+        intent = ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V2);
+        if (ActionUtils.isIntentAvailable(context, intent)) {
             return Collections.singletonList(intent);
         }
-        intent = ActionsUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V1);
-        if (ActionsUtils.isIntentAvailable(context, intent)) {
+        intent = ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V1);
+        if (ActionUtils.isIntentAvailable(context, intent)) {
             return Collections.singletonList(intent);
         }
         return null;
@@ -106,14 +106,14 @@ public class Samsung extends DeviceAbstract {
     @Override
     public List<Intent> getActionAutoStart(Context context) {
         return Collections.singletonList(
-                ActionsUtils.createIntent(SAMSUNG_COMPONENTNAMES_MEMORYMANAGER_V3));
+                ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_MEMORYMANAGER_V3));
     }
 
     // FIXME : NOTWORKOING NEED PERMISSIONS SETTINGS OR SOMETHINGS ELSE
     @Override
     public List<Intent> getActionNotification(Context context) {
         return Collections.singletonList(
-                ActionsUtils.createIntent(SAMSUNG_ACTION_NOTIFICATION));
+                ActionUtils.createIntent(SAMSUNG_ACTION_NOTIFICATION));
     }
 
     @Override

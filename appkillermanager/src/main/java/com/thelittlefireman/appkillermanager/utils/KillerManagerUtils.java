@@ -20,13 +20,13 @@ public class KillerManagerUtils {
      * @param action
      * @param enable
      */
-    public static void setDontShowAgain(Context mContext, KillerManager.Actions action, boolean enable){
+    public static void setDontShowAgain(Context mContext, KillerManager.Action action, boolean enable){
         final SharedPreferences.Editor editor = getSharedPreferences(mContext).edit();
         editor.putBoolean(DONT_SHOW_AGAIN+action.toString(),enable);
         editor.apply();
     }
 
-    public static boolean isDontShowAgain(Context mContext, KillerManager.Actions action){
+    public static boolean isDontShowAgain(Context mContext, KillerManager.Action action){
         return getSharedPreferences(mContext).getBoolean(DONT_SHOW_AGAIN+action.toString(),false);
     }
 }

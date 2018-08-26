@@ -9,7 +9,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.thelittlefireman.appkillermanager.R;
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
@@ -86,19 +86,19 @@ public class Huawei extends DeviceAbstract {
 
     @Override
     public List<Intent> getActionPowerSaving(Context context) {
-        return Collections.singletonList(ActionsUtils.createIntent(HUAWEI_ACTION_POWERSAVING));
+        return Collections.singletonList(ActionUtils.createIntent(HUAWEI_ACTION_POWERSAVING));
     }
 
     @Override
     public List<Intent> getActionAutoStart(Context context) {
         // AUTOSTART not used in huawei
         return null;
-        /*Intent intent = ActionsUtils.createIntent();
+        /*Intent intent = ActionUtils.createIntent();
         intent.setAction(HUAWEI_ACTION_AUTOSTART);
-        if (ActionsUtils.isIntentAvailable(context, intent)) {
+        if (ActionUtils.isIntentAvailable(context, intent)) {
             return intent;
         } else {
-            intent = ActionsUtils.createIntent();
+            intent = ActionUtils.createIntent();
             intent.setComponent(getComponentNameAutoStart(context));
             return intent;
         }*/
@@ -106,7 +106,7 @@ public class Huawei extends DeviceAbstract {
 
     @Override
     public List<Intent> getActionNotification(Context context) {
-        return Collections.singletonList(ActionsUtils.createIntent(HUAWEI_ACTION_NOTIFICATION));
+        return Collections.singletonList(ActionUtils.createIntent(HUAWEI_ACTION_NOTIFICATION));
     }
 
     @Override

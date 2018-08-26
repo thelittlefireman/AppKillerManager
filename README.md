@@ -37,7 +37,7 @@ Android Custom Roms made sometimes your apps unfunctional due to :
 * Add Tests auto with avd and intent testing
 * Add hability to customize dialog
 * Add "Tutorial Acivity type"
-* Add screenshot and "settings path" of the intent action for all phones on ReadMe
+* Add screenshot and "settings path" of the intent killerManagerAction for all phones on ReadMe
 * Add a table of possiblities and function unavailable/ not necessary on each device
 
 ## Usage
@@ -58,8 +58,8 @@ Use with a custom dialog:
  <img src="IMG/screenshot_dialog.png" width="216" height="384">
 
 ```Java
-    public void startDialog(KillerManager.Actions actions) {
-        new DialogKillerManagerBuilder().setContext(this).setAction(actions).show();
+    public void startDialog(KillerManager.Actions killerManagerAction) {
+        new DialogKillerManagerBuilder().setContext(this).setAction(killerManagerAction).show();
     }
 ```
 
@@ -167,7 +167,7 @@ $> dumpsys activity activities | grep Activity
 $> adb shell
 $> #by component name
 $> am start -n com.samsung.memorymanager/com.samsung.memorymanager.RamActivity  --user 0
-$> #by action
+$> #by killerManagerAction
 $> am start -a com.exemple.Action --user 0
 ```
 more information http://imsardine.simplbug.com/note/android/adb/commands/am-start.html
@@ -187,9 +187,9 @@ Xiaomi Mi mix | Android 6.0.1 | MIUI 8.0 | OK (No) | OK (Yes)
 
 ANDROID OS | CUSTOM ROM | AutoStart EasyMode | AutoStart List | PowerSavingMode EasyMode | PowerSavingMode List
 --- | --- | --- | --- | --- | ---
-Android 4.4 | EMUI 3.0.1 | | | | ACTION huawei.intent.action.HSM_PROTECTED_APPS |
-Android 6.0.1 | EMUI 4.1 | | | | ACTION huawei.intent.action.HSM_PROTECTED_APPS |
-Android 6.0.1 | MIUI 8.0 | | ACTION miui.intent.action.OP_AUTO_START | INTENT "com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"  extras : package_name,package_level | ACTION miui.intent.action.POWER_HIDE_MODE_APP_LIST
+Android 4.4 | EMUI 3.0.1 | | | | ACTION huawei.intent.killerManagerAction.HSM_PROTECTED_APPS |
+Android 6.0.1 | EMUI 4.1 | | | | ACTION huawei.intent.killerManagerAction.HSM_PROTECTED_APPS |
+Android 6.0.1 | MIUI 8.0 | | ACTION miui.intent.killerManagerAction.OP_AUTO_START | INTENT "com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"  extras : package_name,package_level | ACTION miui.intent.killerManagerAction.POWER_HIDE_MODE_APP_LIST
 
 ## THANKS TO:
 Sylvain BORELLI

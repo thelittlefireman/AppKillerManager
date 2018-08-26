@@ -3,40 +3,25 @@ package com.thelittlefireman.appkillermanager.managers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 
 import com.thelittlefireman.appkillermanager.BuildConfig;
 import com.thelittlefireman.appkillermanager.devices.DeviceBase;
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 import com.thelittlefireman.appkillermanager.utils.SystemUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class KillerManager {
 
-    public enum Actions {
-        ACTION_AUTOSTART("ACTION_AUTOSTART"),
-        ACTION_NOTIFICATIONS("ACTION_NOTIFICATIONS"),
-        ACTION_POWERSAVING("ACTION_POWERSAVING");
-
-        private String mValue;
-
-        Actions(String value) {
-            this.mValue = value;
-        }
-
-        public String toString() {
-            return this.mValue;
-        }
-    }
-
     private static DeviceBase sDevice;
 
-    private static HashMap<Actions, Integer> sCurrentNbActions;
+    private static HashMap<KillerManagerAction, Integer> sCurrentNbActions;
 
-    private static final int REQUEST_CODE_INTENT = 52000;
+    private static final int REQUEST_CODE_KILLER_MANAGER_ACTION = 52000;
 
     public static DeviceBase getDevice() {
         return sDevice;
@@ -50,17 +35,17 @@ public class KillerManager {
         HyperLog.setURL("API URL");*/
         sDevice = DevicesManager.getDevice();
         sCurrentNbActions = new HashMap<>();
-        sCurrentNbActions.put(Actions.ACTION_AUTOSTART, 0);
-        sCurrentNbActions.put(Actions.ACTION_NOTIFICATIONS, 0);
-        sCurrentNbActions.put(Actions.ACTION_POWERSAVING, 0);
+        sCurrentNbActions.put(KillerManagerAction.ACTION_AUTOSTART, 0);
+        sCurrentNbActions.put(KillerManagerAction.ACTION_NOTIFICATIONS, 0);
+        sCurrentNbActions.put(KillerManagerAction.ACTION_POWERSAVING, 0);
     }
 
 
-    public static boolean isActionAvailable(Context context, Actions actions) {
+    public static boolean isActionAvailable(Context context, KillerManagerAction killerManagerAction) {
         sDevice = DevicesManager.getDevice();
         boolean actionAvailable = false;
         if (sDevice != null) {
-            switch (actions) {
+            switch (killerManagerAction) {
                 case ACTION_AUTOSTART:
                     actionAvailable = sDevice.isActionAutoStartAvailable(context);
                     break;
@@ -75,20 +60,23 @@ public class KillerManager {
         return actionAvailable;
     }
 
+    public static int getNumberOfIntentFromAction(Context context, KillerManagerAction killerManagerAction) {
+        return getIntentFromAction(context, killerManagerAction).size();
+    }
+
     /**
-     * Return the intent for a specific action
+     * Return the intent for a specific killerManagerAction
      *
      * @param context the current context
-     * @param actions the wanted actions
+     * @param killerManagerAction  the wanted killerManagerAction
      * @return the intent
      */
-    @Nullable
-    private static List<Intent> getIntentFromAction(Context context, Actions actions) {
+    private static List<Intent> getIntentFromAction(Context context, KillerManagerAction killerManagerAction) {
         init(context);
         sDevice = DevicesManager.getDevice();
         if (sDevice != null) {
             List<Intent> intentList = null;
-            switch (actions) {
+            switch (killerManagerAction) {
                 case ACTION_AUTOSTART:
                     intentList = sDevice.getActionAutoStart(context);
                     break;
@@ -99,78 +87,86 @@ public class KillerManager {
                     intentList = sDevice.getActionNotification(context);
                     break;
             }
-            if (intentList != null && !intentList.isEmpty() && ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-                // Intent found action succeed
+            if (intentList != null && !intentList.isEmpty() && ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
+                // Intent found killerManagerAction succeed
                 return intentList;
             } else {
                 LogUtils.e(KillerManager.class.getName(), "INTENT NOT FOUND :" +
-                        ActionsUtils.getExtrasDebugInformations(intentList) +
+                        ActionUtils.getExtrasDebugInformations(intentList) +
                         "LibraryVersionName :" + BuildConfig.VERSION_NAME +
                         "LibraryVersionCode :" + BuildConfig.VERSION_CODE +
-                        "Actions \n" + actions.name() + "SYSTEM UTILS \n" +
+                        "KillerManagerAction \n" + killerManagerAction.name() + "SYSTEM UTILS \n" +
                         SystemUtils.getDefaultDebugInformation() + "DEVICE \n" +
                         sDevice.getExtraDebugInformations(context));
-                // Intent not found action failed
-                return null;
+                // Intent not found killerManagerAction failed
+                return Collections.emptyList();
             }
         } else {
-            // device not found action failed
-            return null;
+            // device not found killerManagerAction failed
+            return Collections.emptyList();
                /* LogUtils.e(KillerManager.class.getName(), "DEVICE NOT FOUND" + "SYSTEM UTILS \n" +
                         SystemUtils.getDefaultDebugInformation());*/
         }
     }
 
     /**
-     * Execute the action
+     * Execute the killerManagerAction
      *
      * @param activity the current activity
-     * @param actions  the wanted action to execute
-     * @return true : action succeed; false action failed
+     * @param killerManagerAction   the wanted killerManagerAction to execute
+     * @return true : killerManagerAction succeed; false killerManagerAction failed
      */
-    public static boolean doAction(Activity activity, Actions actions) {
-        return doAction(activity, actions, sCurrentNbActions.get(actions));
+    public static boolean doAction(Activity activity, KillerManagerAction killerManagerAction) {
+        return doAction(activity, killerManagerAction, sCurrentNbActions.get(killerManagerAction));
     }
 
     /**
-     * Execute the action
+     * Execute the killerManagerAction
      *
      * @param activity the current activity
-     * @param actions  the wanted action to execute
-     * @return true : action succeed; false action failed
+     * @param killerManagerAction   the wanted killerManagerAction to execute
+     * @return true : killerManagerAction succeed; false killerManagerAction failed
      */
-    private static boolean doAction(Activity activity, Actions actions, int index) {
+    private static boolean doAction(Activity activity, KillerManagerAction killerManagerAction, int index) {
         // Avoid main app to crash when intent denied by using try catch
         try {
-            List<Intent> intentList = getIntentFromAction(activity, actions);
+            List<Intent> intentList = getIntentFromAction(activity, killerManagerAction);
             if (intentList != null && !intentList.isEmpty() && intentList.size() > index) {
                 Intent intent = intentList.get(index);
-                if (ActionsUtils.isIntentAvailable(activity, intent)) {
-                    activity.startActivityForResult(intent, REQUEST_CODE_INTENT);
-                    // Intent found action succeed
+                if (ActionUtils.isIntentAvailable(activity, intent)) {
+                    activity.startActivityForResult(intent, REQUEST_CODE_KILLER_MANAGER_ACTION);
+                    // Intent found killerManagerAction succeed
                     return true;
                 }
             }
 
         } catch (Exception e) {
-            // Exception handle action failed
+            // Exception handle killerManagerAction failed
             LogUtils.e(KillerManager.class.getName(), e.getMessage());
             return false;
         }
         return false;
     }
 
-    public static void onActivityResult(Activity activity, Actions actions) {
-        int value = sCurrentNbActions.get(actions);
-        value++;
-        sCurrentNbActions.put(actions, value);
+    public static void onActivityResult(Activity activity, KillerManagerAction killerManagerAction, int requestCode) {
+        if(requestCode == REQUEST_CODE_KILLER_MANAGER_ACTION) {
+            int value = sCurrentNbActions.get(killerManagerAction);
+            value++;
+            sCurrentNbActions.put(killerManagerAction, value);
 
-        List<Intent> intentList = getIntentFromAction(activity, actions);
-        if (intentList != null && !intentList.isEmpty() && intentList.size() > sCurrentNbActions.get(actions)) {
-            doAction(activity, actions, sCurrentNbActions.get(actions));
-        } else {
-            // reset if no more intent
-            sCurrentNbActions.put(actions, 0);
+            List<Intent> intentList = getIntentFromAction(activity, killerManagerAction);
+            if (intentList != null && !intentList.isEmpty() && intentList.size() > sCurrentNbActions.get(killerManagerAction)) {
+                doAction(activity, killerManagerAction, sCurrentNbActions.get(killerManagerAction));
+            } else {
+                // reset if no more intent
+                sCurrentNbActions.put(killerManagerAction, 0);
+            }
+        }
+    }
+
+    public static void onActivityResultForDialog(Activity activity, KillerManagerAction killerManagerAction, int requestCode) {
+        if(requestCode == REQUEST_CODE_KILLER_MANAGER_ACTION) {
+
         }
     }
 }

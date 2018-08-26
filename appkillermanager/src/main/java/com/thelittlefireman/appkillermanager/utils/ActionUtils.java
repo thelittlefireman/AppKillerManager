@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionsUtils {
+public class ActionUtils {
 
     public static Intent createIntent() {
         Intent intent = new Intent();
@@ -53,11 +53,11 @@ public class ActionsUtils {
     }
 
     public static boolean isIntentAvailable(@NonNull Context ctx, @NonNull String actionIntent) {
-        return isIntentAvailable(ctx, ActionsUtils.createIntent().setAction(actionIntent));
+        return isIntentAvailable(ctx, ActionUtils.createIntent().setAction(actionIntent));
     }
 
     public static boolean isIntentAvailable(@NonNull Context ctx, @NonNull ComponentName componentName) {
-        return isIntentAvailable(ctx, ActionsUtils.createIntent().setComponent(componentName));
+        return isIntentAvailable(ctx, ActionUtils.createIntent().setComponent(componentName));
     }
 
     public static boolean isAtLeastOneIntentAvailable(@NonNull Context ctx, @NonNull List<Intent> intentList) {

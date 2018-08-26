@@ -5,10 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class OnePlus extends DeviceAbstract {
     @Override
     public List<Intent> getActionAutoStart(Context context) {
         return Collections.singletonList(
-                ActionsUtils.createIntent(ONEPLUS_COMPONENTNAMES));
+                ActionUtils.createIntent(ONEPLUS_COMPONENTNAMES));
     }
 
     @Override

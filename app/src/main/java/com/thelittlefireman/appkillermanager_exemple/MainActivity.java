@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
     @BindView(R.id.idByDialog)
     AppCompatCheckBox mAppCompatCheckBoxByDialog;
 
-    private KillerManager.Actions mActions;
+    private KillerManager.Action mAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +49,10 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mAppCompatCheckBoxByDialog.isChecked()) {
-                    mActions = KillerManager.Actions.ACTION_POWERSAVING;
-                    startDialog(mActions);
+                    mAction = KillerManager.Action.ACTION_POWERSAVING;
+                    startDialog(mAction);
                 } else {
-                    KillerManager.doAction(MainActivity.this, mActions);
+                    KillerManager.doAction(MainActivity.this, mAction);
                 }
             }
         });
@@ -60,10 +60,10 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mAppCompatCheckBoxByDialog.isChecked()) {
-                    mActions = KillerManager.Actions.ACTION_AUTOSTART;
-                    startDialog(mActions);
+                    mAction = KillerManager.Action.ACTION_AUTOSTART;
+                    startDialog(mAction);
                 } else {
-                    KillerManager.doAction(MainActivity.this, mActions);
+                    KillerManager.doAction(MainActivity.this, mAction);
                 }
             }
         });
@@ -71,23 +71,23 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mAppCompatCheckBoxByDialog.isChecked()) {
-                    mActions = KillerManager.Actions.ACTION_NOTIFICATIONS;
-                    startDialog(mActions);
+                    mAction = KillerManager.Action.ACTION_NOTIFICATIONS;
+                    startDialog(mAction);
                 } else {
-                    KillerManager.doAction(MainActivity.this, mActions);
+                    KillerManager.doAction(MainActivity.this, mAction);
                 }
             }
         });
     }
 
-    public void startDialog(KillerManager.Actions actions) {
+    public void startDialog(KillerManager.Action action) {
 
-        new DialogKillerManagerBuilder().setContext(this).setAction(actions).show();
+        new DialogKillerManagerBuilder().setActivity(this).setAction(action).show();
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        KillerManager.onActivityResult(MainActivity.this, mActions);
+        KillerManager.onActivityResult(MainActivity.this, mAction,requestCode);
     }
 }

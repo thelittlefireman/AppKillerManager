@@ -5,10 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class HTC extends DeviceAbstract {
 
     @Override
     public List<Intent> getActionPowerSaving(Context context) {
-        Intent intent = ActionsUtils.createIntent(HTC_COMPONENENTNAMES_POWERSAVING);
+        Intent intent = ActionUtils.createIntent(HTC_COMPONENENTNAMES_POWERSAVING);
         return Collections.singletonList(intent);
     }
 

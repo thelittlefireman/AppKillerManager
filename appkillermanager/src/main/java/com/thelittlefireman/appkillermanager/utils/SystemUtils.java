@@ -82,7 +82,7 @@ public class SystemUtils {
         Runtime.getRuntime().exec(cmd);
     }
     /**
-     * Open an Action by using Application Manager System (prevent from crash permission exception)
+     * Open an KillerManagerAction by using Application Manager System (prevent from crash permission exception)
      *
      * @param context current application Context
      * @param intentAction  action of the target application (exemple: com.huawei.systemmanager)

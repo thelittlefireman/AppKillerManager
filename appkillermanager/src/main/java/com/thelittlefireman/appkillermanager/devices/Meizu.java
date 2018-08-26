@@ -8,7 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Collections;
@@ -54,13 +54,13 @@ public class Meizu extends DeviceAbstract {
 
     @Override
     public List<Intent> getActionPowerSaving(Context context) {
-        Intent intent = ActionsUtils.createIntent();
+        Intent intent = ActionUtils.createIntent();
         MEIZU_SECURITY_CENTER_VERSION mSecVersion = getMeizuSecVersion(context);
         intent.setAction(MEIZU_POWERSAVING_ACTION);
-        if (ActionsUtils.isIntentAvailable(context, intent)) {
+        if (ActionUtils.isIntentAvailable(context, intent)) {
             return Collections.singletonList(intent);
         }
-        intent = ActionsUtils.createIntent();
+        intent = ActionUtils.createIntent();
         if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_2_2) {
             intent.setClassName(MEIZU_DEFAULT_PACKAGE, MEIZU_POWERSAVING_ACTIVITY_V2_2);
         } else if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_3_4) {
@@ -79,14 +79,14 @@ public class Meizu extends DeviceAbstract {
     }
 
     private Intent getDefaultSettingAction(Context context) {
-        Intent intent = ActionsUtils.createIntent(MEIZU_DEFAULT_ACTION_APPSPEC);
+        Intent intent = ActionUtils.createIntent(MEIZU_DEFAULT_ACTION_APPSPEC);
         intent.putExtra(MEIZU_DEFAULT_EXTRA_PACKAGE, context.getPackageName());
         return intent;
     }
     @Override
     public List<Intent> getActionNotification(Context context) {
         MEIZU_SECURITY_CENTER_VERSION mSecVersion = getMeizuSecVersion(context);
-        Intent intent = ActionsUtils.createIntent();
+        Intent intent = ActionUtils.createIntent();
         if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_3_7 || mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_4_1) {
             intent.setComponent(new ComponentName(MEIZU_DEFAULT_PACKAGE, MEIZU_NOTIFICATION_ACTIVITY));
             return Collections.singletonList(intent);
@@ -112,12 +112,12 @@ public class Meizu extends DeviceAbstract {
         stringBuilder.append("MeizuSecPackageVersion:").append(versionStr);
 
         // ----- PACAKGE INFORMATIONS -----
-        stringBuilder.append(MEIZU_DEFAULT_ACTION_APPSPEC).append(ActionsUtils.isIntentAvailable(context, MEIZU_DEFAULT_ACTION_APPSPEC));
-        stringBuilder.append(MEIZU_POWERSAVING_ACTION).append(ActionsUtils.isIntentAvailable(context, MEIZU_POWERSAVING_ACTION));
-        stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_POWERSAVING_ACTIVITY_V2_2).append(ActionsUtils.isIntentAvailable(context, new ComponentName(MEIZU_DEFAULT_PACKAGE,MEIZU_POWERSAVING_ACTIVITY_V2_2)));
-        stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_POWERSAVING_ACTIVITY_V3_4).append(ActionsUtils.isIntentAvailable(context, new ComponentName(MEIZU_DEFAULT_PACKAGE,MEIZU_POWERSAVING_ACTIVITY_V3_4)));
-        stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_POWERSAVING_ACTIVITY_V3_7).append(ActionsUtils.isIntentAvailable(context, new ComponentName(MEIZU_DEFAULT_PACKAGE,MEIZU_POWERSAVING_ACTIVITY_V3_7)));
-        stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_NOTIFICATION_ACTIVITY).append(ActionsUtils.isIntentAvailable(context, MEIZU_POWERSAVING_ACTION));
+        stringBuilder.append(MEIZU_DEFAULT_ACTION_APPSPEC).append(ActionUtils.isIntentAvailable(context, MEIZU_DEFAULT_ACTION_APPSPEC));
+        stringBuilder.append(MEIZU_POWERSAVING_ACTION).append(ActionUtils.isIntentAvailable(context, MEIZU_POWERSAVING_ACTION));
+        stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_POWERSAVING_ACTIVITY_V2_2).append(ActionUtils.isIntentAvailable(context, new ComponentName(MEIZU_DEFAULT_PACKAGE,MEIZU_POWERSAVING_ACTIVITY_V2_2)));
+        stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_POWERSAVING_ACTIVITY_V3_4).append(ActionUtils.isIntentAvailable(context, new ComponentName(MEIZU_DEFAULT_PACKAGE,MEIZU_POWERSAVING_ACTIVITY_V3_4)));
+        stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_POWERSAVING_ACTIVITY_V3_7).append(ActionUtils.isIntentAvailable(context, new ComponentName(MEIZU_DEFAULT_PACKAGE,MEIZU_POWERSAVING_ACTIVITY_V3_7)));
+        stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_NOTIFICATION_ACTIVITY).append(ActionUtils.isIntentAvailable(context, MEIZU_POWERSAVING_ACTION));
         return stringBuilder.toString();
     }
 

@@ -4,9 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.NonNull;
 
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.ArrayList;
@@ -86,8 +85,8 @@ public class Oppo extends DeviceAbstract {
     @Override
     public List<Intent> getActionPowerSaving(Context context) {
         List<Intent> intentList;
-        intentList = ActionsUtils.createIntentList(OPPO_COMPONENTSNAMES_POWERSAVING_COLOROS);
-        if (ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
+        intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_POWERSAVING_COLOROS);
+        if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
             return intentList;
         }
         return null;
@@ -96,18 +95,18 @@ public class Oppo extends DeviceAbstract {
     @Override
     public List<Intent> getActionAutoStart(Context context) {
         List<Intent> intentList;
-        intentList = ActionsUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_3_0);
-        if (ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
+        intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_3_0);
+        if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
             return intentList;
         }
 
-        intentList = ActionsUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_2_1);
-        if (ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
+        intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_2_1);
+        if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
             return intentList;
         }
 
-        intentList = ActionsUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_OLDER);
-        if (ActionsUtils.isAtLeastOneIntentAvailable(context, intentList)) {
+        intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_OLDER);
+        if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
             return intentList;
         }
         return null;
@@ -116,7 +115,7 @@ public class Oppo extends DeviceAbstract {
     @Override
     public List<Intent> getActionNotification(Context context) {
         return Collections.singletonList(
-                ActionsUtils.createIntent(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS));
+                ActionUtils.createIntent(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS));
     }
 
     @Override

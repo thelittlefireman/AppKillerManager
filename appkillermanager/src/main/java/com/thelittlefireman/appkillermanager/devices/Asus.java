@@ -7,7 +7,7 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 
 import com.thelittlefireman.appkillermanager.R;
-import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
+import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
@@ -59,7 +59,7 @@ public class Asus extends DeviceAbstract {
 
     @Override
     public List<Intent> getActionAutoStart(Context context) {
-        Intent intent = ActionsUtils.createIntent(ASUS_COMPONENTNAMES_AUTOSTART);
+        Intent intent = ActionUtils.createIntent(ASUS_COMPONENTNAMES_AUTOSTART);
         intent.putExtra("showNotice", true);
         return Collections.singletonList(intent);
     }
@@ -67,7 +67,7 @@ public class Asus extends DeviceAbstract {
     @Override
     public List<Intent> getActionNotification(Context context) {
         // Need to clic on notifications items
-        Intent intent = ActionsUtils.createIntent(ASUS_COMPONENTNAMES_NOTIFICATION);
+        Intent intent = ActionUtils.createIntent(ASUS_COMPONENTNAMES_NOTIFICATION);
         intent.putExtra("showNotice", true);
         return Collections.singletonList(intent);
     }
