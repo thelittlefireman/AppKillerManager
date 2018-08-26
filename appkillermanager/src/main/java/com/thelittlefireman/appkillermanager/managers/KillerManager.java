@@ -1,5 +1,6 @@
 package com.thelittlefireman.appkillermanager.managers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -32,6 +33,10 @@ public class KillerManager {
 
     private static DeviceBase sDevice;
 
+    private static int sCurrentNbActions;
+
+    private static final int REQUEST_CODE_INTENT = 52000;
+
     public static DeviceBase getDevice() {
         return sDevice;
     }
@@ -43,6 +48,7 @@ public class KillerManager {
         HyperLog.setLogLevel(Log.VERBOSE);
         HyperLog.setURL("API URL");*/
         sDevice = DevicesManager.getDevice();
+        sCurrentNbActions = 0;
     }
 
 
@@ -114,18 +120,32 @@ public class KillerManager {
     /**
      * Execute the action
      *
-     * @param context the current context
+     * @param activity the current activity
      * @param actions the wanted action to execute
      * @return true : action succeed; false action failed
      */
-    public static boolean doAction(Context context, Actions actions) {
+    public static boolean doAction(Activity activity, Actions actions) {
+       return doAction(activity, actions, sCurrentNbActions);
+    }
+
+    /**
+     * Execute the action
+     *
+     * @param activity the current activity
+     * @param actions the wanted action to execute
+     * @return true : action succeed; false action failed
+     */
+    private static boolean doAction(Activity activity, Actions actions, int index) {
         // Avoid main app to crash when intent denied by using try catch
         try {
-            Intent intent = getIntentFromAction(context, actions);
-            if (intent != null && ActionsUtils.isIntentAvailable(context, intent)) {
-                context.startActivity(intent);
-                // Intent found action succeed
-                return true;
+            List<Intent> intentList = getIntentFromAction(activity, actions);
+            if (intentList != null && !intentList.isEmpty() && intentList.size() > index) {
+                Intent intent = intentList.get(index);
+                if (ActionsUtils.isIntentAvailable(activity, intent)) {
+                    activity.startActivityForResult(intent,REQUEST_CODE_INTENT);
+                    // Intent found action succeed
+                    return true;
+                }
             }
 
         } catch (Exception e) {
@@ -136,15 +156,26 @@ public class KillerManager {
         return false;
     }
 
-    public static void doActionAutoStart(Context context) {
-        doAction(context, Actions.ACTION_AUTOSTART);
+    public static void onActivityResult(Activity activity, Actions actions) {
+        sCurrentNbActions++;
+        List<Intent> intentList = getIntentFromAction(activity, actions);
+        if (intentList != null && !intentList.isEmpty() && intentList.size() > sCurrentNbActions) {
+            doAction(activity, actions, sCurrentNbActions);
+        } else {
+            // reset if no more intent
+            sCurrentNbActions = 0;
+        }
     }
 
-    public static void doActionNotification(Context context) {
-        doAction(context, Actions.ACTION_NOTIFICATIONS);
+    public static void doActionAutoStart(Activity activity) {
+        doAction(activity, Actions.ACTION_AUTOSTART);
     }
 
-    public static void doActionPowerSaving(Context context) {
-        doAction(context, Actions.ACTION_POWERSAVING);
+    public static void doActionNotification(Activity activity) {
+        doAction(activity, Actions.ACTION_NOTIFICATIONS);
+    }
+
+    public static void doActionPowerSaving(Activity activity) {
+        doAction(activity, Actions.ACTION_POWERSAVING);
     }
 }

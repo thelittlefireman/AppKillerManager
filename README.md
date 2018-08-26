@@ -65,16 +65,52 @@ Use with a custom dialog:
 
 Or use it directly :
 ```Java
-// Open the corresponding Power Saving Settings
-KillerManager.doActionPowerSaving(MyContext);
+@Override
+public void onCreate(Bundle savedInstanceState) {
+    ...
+    // Open the corresponding Power Saving Settings
+    KillerManager.doActionPowerSaving(mActivity);
+    ...
+}
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    ...
+    KillerManager.onActivityResultonActivityResult(mContext,Actions.ACTION_POWERSAVING);
+    ...
+}
 ```
 ```Java
-// Open the corresponding Auto Start permission Settings
-KillerManager.doActionAutoStart(MyContext);
+@Override
+public void onCreate(Bundle savedInstanceState) {
+    ...
+    // Open the corresponding Auto Start permission Settings
+    KillerManager.doActionAutoStart(mActivity);
+    ...
+}
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    ...
+    KillerManager.onActivityResultonActivityResult(mContext,Actions.ACTION_AUTOSTART);
+    ...
+}
 ```
 ```Java
-// Open the corresponding Notification permission Settings
-KillerManager.doActionNotification(MyContext);
+@Override
+public void onCreate(Bundle savedInstanceState) {
+    ...
+    // Open the corresponding Notification permission Settings
+    KillerManager.doActionNotification(mActivity);
+    ...
+}
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    ...
+    KillerManager.onActivityResultonActivityResult(mContext,Actions.ACTION_NOTIFICATIONS);
+    ...
+}
 ```
 
 ### Working phone & related views :
