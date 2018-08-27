@@ -142,6 +142,36 @@ Power Saving Settings | <img src="IMG/huawei.png" width="108" height="192"> | N/
 Auto Start permission Settings | N/A | N/A | N/A | N/A |
 Notification permission Settings | N/A | N/A | N/A | N/A |
 
+### Tested Activity/Actions
+
+Samsung
+
+Acivity | Action | Extras | Result
+--- | --- | --- | ---
+N/A | com.samsung.android.sm.ACTION_SM_NOTIFICATION_SETTING | | KO Need permissions
+Huawei
+
+Acivity | Action | Extras | Result
+--- | --- | --- | ---
+
+Xiaomi
+
+Acivity | Action | Extras | Result
+--- | --- | --- | ---
+N/A | miui.intent.action.OP_AUTO_START | | List autostart app OK
+com.miui.permcenter.autostart.AutoStartDetailManagementActivity | N/A | pkg_name, pkg_label, action(unkonwn), pkg_position(pos in the list on pressback), white_list | Detail AutoStart (one app) OK
+com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity | miui.intent.action.POWER_HIDE_MODE_APP_LIST | | List Power save OK
+com.miui.powerkeeper.ui.HiddenAppsConfigActivity | miui.intent.action.HIDDEN_APPS_CONFIG_ACTIVITY | package_name, package_label |  Detail Power save OK
+
+Meizu
+
+Version (com.meizu.safe) | Acivity | Action | Extras | Result
+--- | --- | --- | --- | ---
+3.7 | com.meizu.safe.powerui.PowerAppPermissionActivity | com.meizu.power.PowerAppKilledNotification | PowerSaving WhiteList UNTESTED
+3.4 | com.meizu.safe.powerui.AppPowerManagerActivity | | PowerSaving WhiteList UNTESTED
+2.2 | com.meizu.safe.cleaner.RubbishCleanMainActivity | | PowerSaving WhiteList UNTESTED
+? | | com.meizu.safe.security.SHOW_APPSEC | packageName | Default Settings package UNTESTED 
+
 ## Maintainers
 [thelittlefireman](https://github.com/thelittlefireman)
 
