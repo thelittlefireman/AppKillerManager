@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+// TODO CHANGE TO SINGLETON
 public class KillerManager {
 
     private static DeviceBase sDevice;
@@ -58,10 +59,6 @@ public class KillerManager {
             }
         }
         return actionAvailable;
-    }
-
-    public static int getNumberOfIntentFromAction(Context context, KillerManagerAction killerManagerAction) {
-        return getIntentFromAction(context, killerManagerAction).size();
     }
 
     /**
