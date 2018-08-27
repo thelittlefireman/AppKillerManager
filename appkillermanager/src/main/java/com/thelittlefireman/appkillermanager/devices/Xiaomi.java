@@ -25,7 +25,7 @@ public class Xiaomi extends DeviceAbstract {
     private static final String MIUI_ACTION_POWER_SAVE_LIST = "miui.intent.action.POWER_HIDE_MODE_APP_LIST"; //  OPEN DEFAULT LIST BATTERYSAVER
     private static final ComponentName MIUI_COMPONENTSNAMES_POWERSAVE_LIST = new ComponentName(MIUI_PACKAGE_POWERSAVE, "com.miui.powerkeeper.ui.HiddenAppsContainerManagementActivity"); // == ACTION POWER_HIDE_MODE_APP_LIST
 
-    private static final String MIUI_ACTION_POWER_SAVE = "ACTION miui.intent.action.HIDDEN_APPS_CONFIG_ACTIVITY"; //  OPEN DEFAULT LIST BATTERYSAVER
+    private static final String MIUI_ACTION_POWER_SAVE = "miui.intent.action.HIDDEN_APPS_CONFIG_ACTIVITY"; //  OPEN DEFAULT LIST BATTERYSAVER
     private static final ComponentName MIUI_COMPONENTSNAMES_POWERSAVE = new ComponentName(MIUI_PACKAGE_POWERSAVE,
             "com.miui.powerkeeper.ui.HiddenAppsConfigActivity");// ONE SPECIFIQUE APP == ACTION miui.intent.action.HIDDEN_APPS_CONFIG_ACTIVITY
 
@@ -43,7 +43,7 @@ public class Xiaomi extends DeviceAbstract {
     private static final String MIUI_ACTION_AUTOSTART_EXTRA_LABEL = "pkg_label";
     private static final String MIUI_ACTION_AUTOSTART_EXTRA_ACTION = "action"; // default 3 unknown parameter
     private static final String MIUI_ACTION_AUTOSTART_EXTRA_POSITION = "pkg_position"; // default -1 unknown position
-    private static final String MIUI_ACTION_AUTOSTART_EXTRA_WHITE_LIST = "pkg_label"; // default need to be false to be handle
+    private static final String MIUI_ACTION_AUTOSTART_EXTRA_WHITE_LIST = "white_list"; // default need to be false to be handle
 
     // endregion
 
