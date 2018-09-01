@@ -9,10 +9,8 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.annotation.CallSuper;
 import android.support.annotation.DrawableRes;
-import android.support.v4.app.Fragment;
 
-import com.thelittlefireman.appkillermanager.deviceUi.CommonUi;
-import com.thelittlefireman.appkillermanager.deviceUi.DeviceAbstractUi;
+import com.thelittlefireman.appkillermanager.deviceUi.DeviceBaseUi;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 
@@ -95,7 +93,7 @@ public abstract class DeviceAbstract implements DeviceBase {
     private static final String OPPO_COLOROS_NOTIFICATION_ACTIVITY_V4 = "com.android.settings.applications.InstalledAppDetails";*/
 
     @Override
-    public Class<? extends DeviceAbstractUi> getDeviceUi() {
-        return CommonUi.class;
+    public Class<? extends DeviceBaseUi> getDeviceUi() {
+        return DeviceBaseUi.class;
     }
 }

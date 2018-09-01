@@ -7,6 +7,6 @@ public interface DeviceUi {
 
     @LayoutRes
     int getLayout();
-
-    View onCreateView();
+    void onClicOpenSettings();
+    void onClicClose();
 }

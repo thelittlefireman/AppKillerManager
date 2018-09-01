@@ -32,7 +32,7 @@ public class DialogKillerManagerBuilder {
     }
 
     private KillerManagerAction mAction;
-    private DeviceBase mDevice;
+    private KillerManager mKillerManager;
 
     private boolean mEnableDontShowAgain = true;
 
@@ -98,22 +98,20 @@ public class DialogKillerManagerBuilder {
         if (mAction == null) {
             throw new NullPointerException("KillerManagerAction parameter can't be null");
         }
-        // TODO CLEANUP CODE
-        KillerManager.init(mActivity);
-        mDevice = KillerManager.getDevice();
+        mKillerManager = KillerManager.getInstance(mActivity);
 
-        if (!KillerManager.isActionAvailable(mActivity, mAction)) {
+        if (!mKillerManager.isActionAvailable(mActivity, mAction)) {
             LogUtils.i(this.getClass().getName(), "This action is not available for this device no need to show the dialog");
             return;
         }
 
-        if (KillerManager.getDevice() == null) {
+        if (mKillerManager.getDevice() == null) {
             LogUtils.i(this.getClass().getName(), "Device not in the list no need to show the dialog");
             return;
         }
 
         WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(mActivity,R.style.MaterialDialog_Light_Fullscreen);
-        dialogBuilder.addFragment(mDevice.getDeviceUi());
+        dialogBuilder.addFragment(mKillerManager.getDevice().getDeviceUi());
         dialogBuilder.showHeader(false);
 
         if (iconRes != -1) {
@@ -127,23 +125,14 @@ public class DialogKillerManagerBuilder {
         } else if (titleMessage != null && !titleMessage.isEmpty()) {
             dialogBuilder.setTitle(titleMessage);
         } else {
-            dialogBuilder.setTitle(mActivity.getString(R.string.dialog_title_notification, KillerManager.getDevice().getDeviceManufacturer().toString()));
+            dialogBuilder.setTitle(mActivity.getString(R.string.dialog_title_notification,
+                    mKillerManager.getDevice().getDeviceManufacturer().toString()));
         }
-        if (contentResMessage != -1) {
-            dialogBuilder.setMessage(contentResMessage);
-        } else if (contentMessage != null && !contentMessage.isEmpty()) {
-            dialogBuilder.setMessage(contentMessage);
-        } else {
-            //TODO CUSTOM MESSAGE FOR SPECIFITQUE ACTIONS AND SPECIFIC DEVICE
-            dialogBuilder.setMessage(String.format(mActivity.getString(R.string.dialog_huawei_notification),
-                    mActivity.getString(
-                            R.string.app_name)));
-        }
+
 
         if (!(mEnableDontShowAgain && KillerManagerUtils.isDontShowAgain(mActivity, mAction))) {
             materialDialog = dialogBuilder.create();
             materialDialog.show(mActivity.getSupportFragmentManager(),DIALOG_TAG);
         }
     }
-
 }

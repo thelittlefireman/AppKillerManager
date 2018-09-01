@@ -4,9 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
-import android.support.v4.app.Fragment;
 
-import com.thelittlefireman.appkillermanager.deviceUi.DeviceAbstractUi;
+import com.thelittlefireman.appkillermanager.deviceUi.DeviceBaseUi;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.List;
@@ -39,5 +38,5 @@ public interface DeviceBase {
     List<ComponentName> getComponentNameList();
     List<String> getIntentActionList();
 
-    Class<? extends DeviceAbstractUi> getDeviceUi();
+    Class<? extends DeviceBaseUi> getDeviceUi();
 }

@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.thelittlefireman.appkillermanager.deviceUi.DeviceBaseUi;
+import com.thelittlefireman.appkillermanager.deviceUi.OppoUi;
+import com.thelittlefireman.appkillermanager.deviceUi.SamsungUi;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -137,5 +140,10 @@ public class Oppo extends DeviceAbstract {
     @Override
     public List<String> getIntentActionList() {
         return null;
+    }
+
+    @Override
+    public Class<? extends DeviceBaseUi> getDeviceUi() {
+        return OppoUi.class;
     }
 }

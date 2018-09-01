@@ -4,11 +4,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.Fragment;
 
 import com.thelittlefireman.appkillermanager.R;
-import com.thelittlefireman.appkillermanager.deviceUi.DeviceAbstractUi;
+import com.thelittlefireman.appkillermanager.deviceUi.DeviceBaseUi;
 import com.thelittlefireman.appkillermanager.deviceUi.SamsungUi;
+import com.thelittlefireman.appkillermanager.deviceUi.SimpleDeviceUi;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -138,7 +138,7 @@ public class Samsung extends DeviceAbstract {
     }
 
     @Override
-    public Class<? extends DeviceAbstractUi> getDeviceUi() {
+    public Class<? extends DeviceBaseUi> getDeviceUi() {
         return SamsungUi.class;
     }
 }

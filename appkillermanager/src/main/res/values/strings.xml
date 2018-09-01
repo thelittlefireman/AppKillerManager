@@ -3,5 +3,7 @@
     <string name="dialog_huawei_notification">%s need to be set as \'Protected App\' in settings in order to received correctly all notifications and let background tasks work properly (Musics, Services, etc)</string>
     <string name="dialog_do_not_show_again">Don\'t show again</string>
     <string name="dialog_title_notification">%s alert notification</string>
-    <string name="dialog_button">Open settings</string>
+    <string name="dialog_button_open">Open settings</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_next">Next</string>
 </resources>
