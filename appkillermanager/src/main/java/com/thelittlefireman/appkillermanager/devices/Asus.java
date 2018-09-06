@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 
 import com.thelittlefireman.appkillermanager.R;
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -51,36 +52,36 @@ public class Asus extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionPowerSaving(Context context) {
+    public List<KillerManagerAction> getActionPowerSaving(Context context) {
         // Juste need to use the regular battery non optimization
         // permission =)
         return Collections.singletonList(super.getActionDozeMode(context));
     }
 
     @Override
-    public List<Intent> getActionAutoStart(Context context) {
+    public List<KillerManagerAction> getActionAutoStart(Context context) {
         Intent intent = ActionUtils.createIntent(ASUS_COMPONENTNAMES_AUTOSTART);
         intent.putExtra("showNotice", true);
-        return Collections.singletonList(intent);
+        return Collections.singletonList(new KillerManagerAction(getHelpImageAutoStart(),intent));
     }
 
     @Override
-    public List<Intent> getActionNotification(Context context) {
+    public List<KillerManagerAction> getActionNotification(Context context) {
         // Need to clic on notifications items
         Intent intent = ActionUtils.createIntent(ASUS_COMPONENTNAMES_NOTIFICATION);
         intent.putExtra("showNotice", true);
-        return Collections.singletonList(intent);
+        return Collections.singletonList(new KillerManagerAction(getHelpImageNotification(),intent));
     }
 
-    @Override
+
     @DrawableRes
-    public int getHelpImageAutoStart() {
+    private int getHelpImageAutoStart() {
         return R.drawable.asus_autostart;
     }
 
-    @Override
+
     @DrawableRes
-    public int getHelpImageNotification() {
+    private int getHelpImageNotification() {
         return R.drawable.asus_notification;
     }
 

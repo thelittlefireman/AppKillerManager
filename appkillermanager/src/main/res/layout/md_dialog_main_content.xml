@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/md_help_image"
+        app:layout_constraintBottom_toTopOf="@+id/md_help_image_viewpager"
         android:layout_marginBottom="8dp"
         android:clipToPadding="false">
 
@@ -20,13 +20,12 @@
             android:layout_height="wrap_content"
             tools:text="@string/dialog_huawei_notification" />
     </ScrollView>
-
-    <ImageView
-        android:id="@+id/md_help_image"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/md_help_image_viewpager"
         app:layout_constraintTop_toBottomOf="@+id/md_contentScrollView"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        android:layout_gravity="center_vertical|center_horizontal"
-        tools:src="@drawable/huawei_powersaving" />
+        android:layout_gravity="center_vertical|center_horizontal" />
+
 </android.support.constraint.ConstraintLayout>

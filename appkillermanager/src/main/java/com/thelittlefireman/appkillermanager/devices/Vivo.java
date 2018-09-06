@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -52,34 +53,30 @@ public class Vivo extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionPowerSaving(Context context) {
+    public List<KillerManagerAction> getActionPowerSaving(Context context) {
         return null;
     }
 
     @Override
-    public List<Intent> getActionAutoStart(Context context) {
+    public List<KillerManagerAction> getActionAutoStart(Context context) {
         Intent intent;
         intent = ActionUtils.createIntent(VIVO_COMPONENTNAMES_2_6);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(intent);
+            return Collections.singletonList(new KillerManagerAction(intent));
         }
 
         intent = ActionUtils.createIntent(VIVO_COMPONENTNAMES_3_0);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(intent);
+            return Collections.singletonList(new KillerManagerAction(intent));
         }
         return null;
     }
 
     @Override
-    public List<Intent> getActionNotification(Context context) {
+    public List<KillerManagerAction> getActionNotification(Context context) {
         return null;
     }
 
-    @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
-    }
 
     @Override
     public List<ComponentName> getComponentNameList() {

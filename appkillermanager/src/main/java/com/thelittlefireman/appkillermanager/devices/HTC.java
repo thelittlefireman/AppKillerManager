@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -45,26 +46,21 @@ public class HTC extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionPowerSaving(Context context) {
+    public List<KillerManagerAction> getActionPowerSaving(Context context) {
         Intent intent = ActionUtils.createIntent(HTC_COMPONENENTNAMES_POWERSAVING);
-        return Collections.singletonList(intent);
+        return Collections.singletonList(new KillerManagerAction(intent));
     }
 
     @Override
-    public List<Intent> getActionAutoStart(Context context) {
+    public List<KillerManagerAction> getActionAutoStart(Context context) {
         return null;
     }
 
     @Override
-    public List<Intent> getActionNotification(Context context) {
+    public List<KillerManagerAction> getActionNotification(Context context) {
         return null;
     }
 
-
-    @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
-    }
 
     @Override
     public List<ComponentName> getComponentNameList() {

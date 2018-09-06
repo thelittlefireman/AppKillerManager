@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
@@ -77,32 +78,27 @@ public class Xiaomi extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionPowerSaving(Context context) {
+    public List<KillerManagerAction> getActionPowerSaving(Context context) {
         Intent intent = ActionUtils.createIntent(MIUI_ACTION_POWER_SAVE);
         intent.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_NAME, context.getPackageName());
         intent.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_LABEL, SystemUtils.getApplicationName(context));
-        return Collections.singletonList(intent);
+        return Collections.singletonList(new KillerManagerAction(intent));
     }
 
     @Override
-    public List<Intent> getActionAutoStart(Context context) {
+    public List<KillerManagerAction> getActionAutoStart(Context context) {
         Intent intent = ActionUtils.createIntent(MIUI_COMPONENTSNAMES_AUTOSTART);
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_NAME, context.getPackageName());
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_LABEL, SystemUtils.getApplicationName(context));
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_ACTION, 3);
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_POSITION, -1);
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_WHITE_LIST, false);
-        return Collections.singletonList(intent);
+        return Collections.singletonList(new KillerManagerAction(intent));
     }
 
     @Override
-    public List<Intent> getActionNotification(Context context) {
+    public List<KillerManagerAction> getActionNotification(Context context) {
         return null;
-    }
-
-    @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
     }
 
     @Override

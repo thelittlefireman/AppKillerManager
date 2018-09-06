@@ -2,9 +2,9 @@ package com.thelittlefireman.appkillermanager.devices;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -49,25 +49,20 @@ public class Letv extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionPowerSaving(Context context) {
-        return Collections.singletonList(
-                ActionUtils.createIntent(LETV_COMPONENTNAMES_POWERSAVE));
+    public List<KillerManagerAction> getActionPowerSaving(Context context) {
+        return Collections.singletonList(new KillerManagerAction(
+                ActionUtils.createIntent(LETV_COMPONENTNAMES_POWERSAVE)));
     }
 
     @Override
-    public List<Intent> getActionAutoStart(Context context) {
-        return Collections.singletonList(
-                ActionUtils.createIntent(LETV_COMPONENTNAMES_AUTOSTART));
+    public List<KillerManagerAction> getActionAutoStart(Context context) {
+        return Collections.singletonList(new KillerManagerAction(
+                ActionUtils.createIntent(LETV_COMPONENTNAMES_AUTOSTART)));
     }
 
     @Override
-    public List<Intent> getActionNotification(Context context) {
+    public List<KillerManagerAction> getActionNotification(Context context) {
         return null;
-    }
-
-    @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
     }
 
     @Override

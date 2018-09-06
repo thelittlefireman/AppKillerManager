@@ -1,23 +1,20 @@
 package com.thelittlefireman.appkillermanager.ui;
 
-import android.app.Activity;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.thelittlefireman.appkillermanager.R;
-import com.thelittlefireman.appkillermanager.devices.DeviceBase;
 import com.thelittlefireman.appkillermanager.managers.KillerManager;
-import com.thelittlefireman.appkillermanager.utils.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.KillerManagerUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 
 import de.mrapp.android.dialog.WizardDialog;
 
 public class DialogKillerManagerBuilder {
-    private static final String DIALOG_TAG= "KILLER_MANAGER_DIALOG";
+    private static final String DIALOG_TAG = "KILLER_MANAGER_DIALOG";
     private AppCompatActivity mActivity;
 
     public DialogKillerManagerBuilder() {
@@ -31,7 +28,7 @@ public class DialogKillerManagerBuilder {
         mActivity = activity;
     }
 
-    private KillerManagerAction mAction;
+    private KillerManagerActionType mAction;
     private KillerManager mKillerManager;
 
     private boolean mEnableDontShowAgain = true;
@@ -54,7 +51,7 @@ public class DialogKillerManagerBuilder {
         return this;
     }
 
-    public DialogKillerManagerBuilder setAction(KillerManagerAction action) {
+    public DialogKillerManagerBuilder setAction(KillerManagerActionType action) {
         mAction = action;
         return this;
     }
@@ -96,12 +93,13 @@ public class DialogKillerManagerBuilder {
             throw new NullPointerException("Activity parameter can't be null");
         }
         if (mAction == null) {
-            throw new NullPointerException("KillerManagerAction parameter can't be null");
+            throw new NullPointerException("KillerManagerActionType parameter can't be null");
         }
         mKillerManager = KillerManager.getInstance(mActivity);
 
         if (!mKillerManager.isActionAvailable(mActivity, mAction)) {
-            LogUtils.i(this.getClass().getName(), "This action is not available for this device no need to show the dialog");
+            LogUtils.i(this.getClass().getName(),
+                       "This action is not available for this device no need to show the dialog");
             return;
         }
 
@@ -110,7 +108,8 @@ public class DialogKillerManagerBuilder {
             return;
         }
 
-        WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(mActivity,R.style.MaterialDialog_Light_Fullscreen);
+        WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(mActivity,
+                                                                      R.style.MaterialDialog_Light_Fullscreen);
         dialogBuilder.addFragment(mKillerManager.getDevice().getDeviceUi());
         dialogBuilder.showHeader(false);
 
@@ -126,13 +125,12 @@ public class DialogKillerManagerBuilder {
             dialogBuilder.setTitle(titleMessage);
         } else {
             dialogBuilder.setTitle(mActivity.getString(R.string.dialog_title_notification,
-                    mKillerManager.getDevice().getDeviceManufacturer().toString()));
+                                                       mKillerManager.getDevice().getDeviceManufacturer().toString()));
         }
-
 
         if (!(mEnableDontShowAgain && KillerManagerUtils.isDontShowAgain(mActivity, mAction))) {
             materialDialog = dialogBuilder.create();
-            materialDialog.show(mActivity.getSupportFragmentManager(),DIALOG_TAG);
+            materialDialog.show(mActivity.getSupportFragmentManager(), DIALOG_TAG);
         }
     }
 }

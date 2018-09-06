@@ -30,10 +30,10 @@ secures pref
 
 samsung 
 
-Intent intent = new Intent();
-intent.setComponent(new ComponentName("com.samsung.android.sm", "com.samsung.android.sm.ui.battery.BatteryActivity"));
+Intent intentAction = new Intent();
+intentAction.setComponent(new ComponentName("com.samsung.android.sm", "com.samsung.android.sm.ui.battery.BatteryActivity"));
 try {
-    getActivity().startActivity(intent);
+    getActivity().startActivity(intentAction);
 } catch (ActivityNotFoundException ex) {
     Toast.makeText(getActivity(), "Smart manager not installed on this device", Toast.LENGTH_LONG)
             .show();
@@ -77,8 +77,8 @@ https://stackoverflow.com/questions/33818970/how-to-open-app-permission-settings
 
 https://gist.github.com/olegcherr/dc79af4a0a82473e560e1b191a2bea02
 
-    private static boolean isIntentAvailable(Intent intent, Context context) {
-        return intent != null && context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0;
+    private static boolean isIntentAvailable(Intent intentAction, Context context) {
+        return intentAction != null && context.getPackageManager().queryIntentActivities(intentAction, PackageManager.MATCH_DEFAULT_ONLY).size() > 0;
 }
 
 // permissions 

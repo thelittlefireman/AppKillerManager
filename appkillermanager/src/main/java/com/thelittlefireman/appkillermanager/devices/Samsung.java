@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.thelittlefireman.appkillermanager.R;
-import com.thelittlefireman.appkillermanager.deviceUi.DeviceBaseUi;
-import com.thelittlefireman.appkillermanager.deviceUi.SamsungUi;
-import com.thelittlefireman.appkillermanager.deviceUi.SimpleDeviceUi;
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -82,45 +80,48 @@ public class Samsung extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionPowerSaving(Context context) {
+    public List<KillerManagerAction> getActionPowerSaving(Context context) {
         Intent intent = ActionUtils.createIntent();
         intent.setAction(SAMSUNG_ACTION_POWERSAVING);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(intent);
+            return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
+                                                                     intent));
         }
         // reset
         intent = ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V3);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(intent);
+            return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
+                                                                     intent));
         }
 
         intent = ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V2);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(intent);
+            return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
+                                                                     intent));
         }
         intent = ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V1);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(intent);
+            return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
+                                                                     intent));
         }
         return null;
     }
 
     // FIXME Currently not working : not available, ITS NOT AUTOSTART ITS MEMORY MANAGER
     @Override
-    public List<Intent> getActionAutoStart(Context context) {
-        return Collections.singletonList(
-                ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_MEMORYMANAGER_V3));
+    public List<KillerManagerAction> getActionAutoStart(Context context) {
+        return Collections.singletonList(new KillerManagerAction(
+                ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_MEMORYMANAGER_V3)));
     }
 
     // FIXME : NOTWORKOING NEED PERMISSIONS SETTINGS OR SOMETHINGS ELSE
     @Override
-    public List<Intent> getActionNotification(Context context) {
-        return Collections.singletonList(
-                ActionUtils.createIntent(SAMSUNG_ACTION_NOTIFICATION));
+    public List<KillerManagerAction> getActionNotification(Context context) {
+        return Collections.singletonList(new KillerManagerAction(
+                ActionUtils.createIntent(SAMSUNG_ACTION_NOTIFICATION)));
     }
 
-    @Override
-    public int getHelpImagePowerSaving() {
+    private int getHelpImagePowerSaving() {
         return R.drawable.samsung;
     }
 
@@ -135,10 +136,5 @@ public class Samsung extends DeviceAbstract {
     @Override
     public List<String> getIntentActionList() {
         return SAMSUNG_INTENTACTIONS;
-    }
-
-    @Override
-    public Class<? extends DeviceBaseUi> getDeviceUi() {
-        return SamsungUi.class;
     }
 }

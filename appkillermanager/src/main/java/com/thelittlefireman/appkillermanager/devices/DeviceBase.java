@@ -2,10 +2,8 @@ package com.thelittlefireman.appkillermanager.devices;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.DrawableRes;
 
-import com.thelittlefireman.appkillermanager.deviceUi.DeviceBaseUi;
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.List;
@@ -17,10 +15,10 @@ public interface DeviceBase {
     boolean isActionAutoStartAvailable(Context context);
     boolean isActionNotificationAvailable(Context context);
     boolean needToUseAlongwithActionDoseMode();
-    List<Intent> getActionPowerSaving(Context context);
-    List<Intent> getActionAutoStart(Context context);
+    List<KillerManagerAction> getActionPowerSaving(Context context);
+    List<KillerManagerAction> getActionAutoStart(Context context);
     // FIXME IS IT REALY NEEDED ? ==> REPLACE BY OTHER FUNCTION ?
-    List<Intent> getActionNotification(Context context);
+    List<KillerManagerAction> getActionNotification(Context context);
     // TODO ADD FOR MEMORY OPTIMIZATION : https://github.com/00aj99/CRomAppWhitelist
     String getExtraDebugInformations(Context context);
 
@@ -29,14 +27,9 @@ public interface DeviceBase {
      * @param context the current context
      * @return the Intent to open the doze mode settings
      */
-    Intent getActionDozeMode(Context context);
+    KillerManagerAction getActionDozeMode(Context context);
     boolean isActionDozeModeNotNecessary(Context context);
-    @DrawableRes int getHelpImagePowerSaving();
-    @DrawableRes int getHelpImageAutoStart();
-    @DrawableRes int getHelpImageNotification();
 
     List<ComponentName> getComponentNameList();
     List<String> getIntentActionList();
-
-    Class<? extends DeviceBaseUi> getDeviceUi();
 }

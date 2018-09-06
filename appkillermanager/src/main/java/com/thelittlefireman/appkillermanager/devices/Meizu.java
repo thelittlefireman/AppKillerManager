@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -53,12 +54,12 @@ public class Meizu extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionPowerSaving(Context context) {
+    public List<KillerManagerAction> getActionPowerSaving(Context context) {
         Intent intent = ActionUtils.createIntent();
         MEIZU_SECURITY_CENTER_VERSION mSecVersion = getMeizuSecVersion(context);
         intent.setAction(MEIZU_POWERSAVING_ACTION);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(intent);
+            return Collections.singletonList(new KillerManagerAction(intent));
         }
         intent = ActionUtils.createIntent();
         if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_2_2) {
@@ -68,14 +69,15 @@ public class Meizu extends DeviceAbstract {
         } else if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_3_7) {
             intent.setClassName(MEIZU_DEFAULT_PACKAGE, MEIZU_POWERSAVING_ACTIVITY_V3_7);
         } else {
-            return Collections.singletonList(getDefaultSettingAction(context));
+            return Collections.singletonList(new KillerManagerAction(getDefaultSettingAction(context)));
         }
-        return Collections.singletonList(intent);
+        return Collections.singletonList(new KillerManagerAction(intent));
     }
 
     @Override
-    public List<Intent> getActionAutoStart(Context context) {
-        return Collections.singletonList(getDefaultSettingAction(context));
+    public List<KillerManagerAction> getActionAutoStart(Context context) {
+        return Collections.singletonList(new KillerManagerAction(
+                getDefaultSettingAction(context)));
     }
 
     private Intent getDefaultSettingAction(Context context) {
@@ -84,14 +86,14 @@ public class Meizu extends DeviceAbstract {
         return intent;
     }
     @Override
-    public List<Intent> getActionNotification(Context context) {
+    public List<KillerManagerAction> getActionNotification(Context context) {
         MEIZU_SECURITY_CENTER_VERSION mSecVersion = getMeizuSecVersion(context);
         Intent intent = ActionUtils.createIntent();
         if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_3_7 || mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_4_1) {
             intent.setComponent(new ComponentName(MEIZU_DEFAULT_PACKAGE, MEIZU_NOTIFICATION_ACTIVITY));
-            return Collections.singletonList(intent);
+            return Collections.singletonList(new KillerManagerAction(intent));
         } else {
-            return Collections.singletonList(getDefaultSettingAction(context));
+            return Collections.singletonList(new KillerManagerAction(getDefaultSettingAction(context)));
         }
     }
 
@@ -119,11 +121,6 @@ public class Meizu extends DeviceAbstract {
         stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_POWERSAVING_ACTIVITY_V3_7).append(ActionUtils.isIntentAvailable(context, new ComponentName(MEIZU_DEFAULT_PACKAGE,MEIZU_POWERSAVING_ACTIVITY_V3_7)));
         stringBuilder.append(MEIZU_DEFAULT_PACKAGE+MEIZU_NOTIFICATION_ACTIVITY).append(ActionUtils.isIntentAvailable(context, MEIZU_POWERSAVING_ACTION));
         return stringBuilder.toString();
-    }
-
-    @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
     }
 
     @Override

@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.thelittlefireman.appkillermanager.deviceUi.DeviceBaseUi;
-import com.thelittlefireman.appkillermanager.deviceUi.OppoUi;
-import com.thelittlefireman.appkillermanager.deviceUi.SamsungUi;
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -23,6 +21,8 @@ public class Oppo extends DeviceAbstract {
      * rom ProcessRecord{7eba0ba 27527:crb.call.follow.mycrm/u0a229} (pid=27527, uid=10229)
      * requires oppo.permission.OPPO_COMPONENT_SAFE
      */
+        /*    private static final String OPPO_COLOROS_NOTIFICATION_PACKAGER_V4 = "com.android.settings";
+    private static final String OPPO_COLOROS_NOTIFICATION_ACTIVITY_V4 = "com.android.settings.applications.InstalledAppDetails";*/
 
     private static final String PACAKGE_AUTOSTART_COLORSOS_3_0 = "com.coloros.safecenter";
 
@@ -86,44 +86,43 @@ public class Oppo extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionPowerSaving(Context context) {
+    public List<KillerManagerAction> getActionPowerSaving(Context context) {
         List<Intent> intentList;
         intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_POWERSAVING_COLOROS);
         if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return intentList;
+            return KillerManagerAction.generateKillerManagerActionList(
+                    intentList);
         }
         return null;
     }
 
     @Override
-    public List<Intent> getActionAutoStart(Context context) {
+    public List<KillerManagerAction> getActionAutoStart(Context context) {
         List<Intent> intentList;
         intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_3_0);
         if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return intentList;
+            return KillerManagerAction.generateKillerManagerActionList(
+                    intentList);
         }
 
         intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_2_1);
         if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return intentList;
+            return KillerManagerAction.generateKillerManagerActionList(
+                    intentList);
         }
 
         intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_OLDER);
         if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return intentList;
+            return KillerManagerAction.generateKillerManagerActionList(
+                    intentList);
         }
         return null;
     }
 
     @Override
-    public List<Intent> getActionNotification(Context context) {
-        return Collections.singletonList(
-                ActionUtils.createIntent(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS));
-    }
-
-    @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
+    public List<KillerManagerAction> getActionNotification(Context context) {
+        return Collections.singletonList(new KillerManagerAction(
+                ActionUtils.createIntent(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS)));
     }
 
     @Override
@@ -140,10 +139,5 @@ public class Oppo extends DeviceAbstract {
     @Override
     public List<String> getIntentActionList() {
         return null;
-    }
-
-    @Override
-    public Class<? extends DeviceBaseUi> getDeviceUi() {
-        return OppoUi.class;
     }
 }

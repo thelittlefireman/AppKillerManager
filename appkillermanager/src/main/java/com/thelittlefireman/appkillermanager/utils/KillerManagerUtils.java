@@ -3,7 +3,7 @@ package com.thelittlefireman.appkillermanager.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.thelittlefireman.appkillermanager.managers.KillerManager;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -20,13 +20,13 @@ public class KillerManagerUtils {
      * @param action
      * @param enable
      */
-    public static void setDontShowAgain(Context mContext, KillerManagerAction action, boolean enable){
+    public static void setDontShowAgain(Context mContext, KillerManagerActionType action, boolean enable){
         final SharedPreferences.Editor editor = getSharedPreferences(mContext).edit();
         editor.putBoolean(DONT_SHOW_AGAIN+action.toString(),enable);
         editor.apply();
     }
 
-    public static boolean isDontShowAgain(Context mContext, KillerManagerAction action){
+    public static boolean isDontShowAgain(Context mContext, KillerManagerActionType action){
         return getSharedPreferences(mContext).getBoolean(DONT_SHOW_AGAIN+action.toString(),false);
     }
 }

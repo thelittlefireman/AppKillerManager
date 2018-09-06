@@ -2,13 +2,13 @@ package com.thelittlefireman.appkillermanager.devices;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
 import com.thelittlefireman.appkillermanager.R;
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -85,12 +85,13 @@ public class Huawei extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionPowerSaving(Context context) {
-        return Collections.singletonList(ActionUtils.createIntent(HUAWEI_ACTION_POWERSAVING));
+    public List<KillerManagerAction> getActionPowerSaving(Context context) {
+        return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
+                ActionUtils.createIntent(HUAWEI_ACTION_POWERSAVING)));
     }
 
     @Override
-    public List<Intent> getActionAutoStart(Context context) {
+    public List<KillerManagerAction> getActionAutoStart(Context context) {
         // AUTOSTART not used in huawei
         return null;
         /*Intent intent = ActionUtils.createIntent();
@@ -105,8 +106,9 @@ public class Huawei extends DeviceAbstract {
     }
 
     @Override
-    public List<Intent> getActionNotification(Context context) {
-        return Collections.singletonList(ActionUtils.createIntent(HUAWEI_ACTION_NOTIFICATION));
+    public List<KillerManagerAction> getActionNotification(Context context) {
+        return Collections.singletonList(new KillerManagerAction(
+                ActionUtils.createIntent(HUAWEI_ACTION_NOTIFICATION)));
     }
 
     @Override
@@ -128,8 +130,7 @@ public class Huawei extends DeviceAbstract {
         return stringBuilder.toString();
     }
 
-    @Override
-    public int getHelpImagePowerSaving() {
+    private int getHelpImagePowerSaving() {
         return R.drawable.huawei_powersaving;
     }
 

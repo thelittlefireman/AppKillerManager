@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.thelittlefireman.appkillermanager.managers.KillerManager;
 import com.thelittlefireman.appkillermanager.ui.DialogKillerManagerBuilder;
-import com.thelittlefireman.appkillermanager.utils.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 
 import butterknife.BindView;
@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
     @BindView(R.id.idByDialog)
     AppCompatCheckBox mAppCompatCheckBoxByDialog;
 
-    private KillerManagerAction mAction;
+    private KillerManagerActionType mAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mAppCompatCheckBoxByDialog.isChecked()) {
-                    mAction = KillerManagerAction.ACTION_POWERSAVING;
+                    mAction = KillerManagerActionType.ACTION_POWERSAVING;
                     startDialog(mAction);
                 } else {
                     KillerManager.doAction(MainActivity.this, mAction);
@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mAppCompatCheckBoxByDialog.isChecked()) {
-                    mAction = KillerManagerAction.ACTION_AUTOSTART;
+                    mAction = KillerManagerActionType.ACTION_AUTOSTART;
                     startDialog(mAction);
                 } else {
                     KillerManager.doAction(MainActivity.this, mAction);
@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mAppCompatCheckBoxByDialog.isChecked()) {
-                    mAction = KillerManagerAction.ACTION_NOTIFICATIONS;
+                    mAction = KillerManagerActionType.ACTION_NOTIFICATIONS;
                     startDialog(mAction);
                 } else {
                     KillerManager.doAction(MainActivity.this, mAction);
@@ -81,7 +81,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    public void startDialog(KillerManagerAction action) {
+    public void startDialog(KillerManagerActionType action) {
 
         new DialogKillerManagerBuilder().setActivity(this).setAction(action).show();
 

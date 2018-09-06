@@ -1,13 +1,13 @@
-package com.thelittlefireman.appkillermanager.utils;
+package com.thelittlefireman.appkillermanager.models;
 
-public enum KillerManagerAction {
+public enum KillerManagerActionType {
     ACTION_AUTOSTART("ACTION_AUTOSTART"),
     ACTION_NOTIFICATIONS("ACTION_NOTIFICATIONS"),
     ACTION_POWERSAVING("ACTION_POWERSAVING");
 
     private String mValue;
 
-    KillerManagerAction(String value) {
+    KillerManagerActionType(String value) {
         this.mValue = value;
     }
 

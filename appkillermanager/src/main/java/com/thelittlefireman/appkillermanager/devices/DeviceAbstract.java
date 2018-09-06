@@ -8,9 +8,8 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.annotation.CallSuper;
-import android.support.annotation.DrawableRes;
 
-import com.thelittlefireman.appkillermanager.deviceUi.DeviceBaseUi;
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 
@@ -43,24 +42,6 @@ public abstract class DeviceAbstract implements DeviceBase {
     }
 
     @Override
-    @DrawableRes
-    public int getHelpImageAutoStart() {
-        return 0;
-    }
-
-    @Override
-    @DrawableRes
-    public int getHelpImageNotification() {
-        return 0;
-    }
-
-    @DrawableRes
-    @Override
-    public int getHelpImagePowerSaving() {
-        return 0;
-    }
-
-    @Override
     public boolean isActionDozeModeNotNecessary(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -70,7 +51,7 @@ public abstract class DeviceAbstract implements DeviceBase {
     }
 
     @Override
-    public Intent getActionDozeMode(Context context) {
+    public KillerManagerAction getActionDozeMode(Context context) {
         //Android 7.0+ Doze
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -81,19 +62,13 @@ public abstract class DeviceAbstract implements DeviceBase {
                 // due to Google play device policy restriction !
                 dozeIntent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
                 dozeIntent.setData(Uri.parse("package:" + context.getPackageName()));
-                return dozeIntent;
+                // TODO add text
+                return new KillerManagerAction(dozeIntent);
             } else {
                 LogUtils.i(this.getClass().getName(), "getActionDozeMode" + "App is already enable to ignore doze " +
                         "battery optimization");
             }
         }
         return null;
-    }
-    /*    private static final String OPPO_COLOROS_NOTIFICATION_PACKAGER_V4 = "com.android.settings";
-    private static final String OPPO_COLOROS_NOTIFICATION_ACTIVITY_V4 = "com.android.settings.applications.InstalledAppDetails";*/
-
-    @Override
-    public Class<? extends DeviceBaseUi> getDeviceUi() {
-        return DeviceBaseUi.class;
     }
 }
