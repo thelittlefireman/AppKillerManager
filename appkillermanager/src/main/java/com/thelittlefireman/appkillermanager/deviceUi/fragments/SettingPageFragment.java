@@ -3,26 +3,30 @@ package com.thelittlefireman.appkillermanager.deviceUi.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.DrawableRes;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.thelittlefireman.appkillermanager.R;
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.utils.KillerManagerUtils;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.thelittlefireman.appkillermanager.R;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class SettingPageFragment extends Fragment {
+public class SettingPageFragment extends Fragment  implements SettingPageFragmentClicListener {
     //https://guides.codepath.com/android/viewpager-with-fragmentpageradapter
 
     List<Integer> mHelpImageList;
@@ -30,27 +34,22 @@ public class SettingPageFragment extends Fragment {
 
     private int mCurrentPage;
 
-    private static final String HELP_TEXT ="HELP_TEXT";
-    private static final String HELP_IMAGE="HELP_IMAGE";
-
+    private static final String KILLER_MANAGER_ACTION ="KILLER_MANAGER_ACTION";
 
     private String mContentMessage;
 
-    private Intent mIntentAction;
+    private KillerManagerAction mKillerManagerAction;
+
     protected LayoutInflater mInfalter;
+    protected CheckBox mDoNotShowAgainCheckBox;
 
-    public void setIntentAction(Intent intentAction) {
-        mIntentAction = intentAction;
-    }
+    protected Button mButtonOpenSettings;
+    protected Button mButtonClose;
 
-    @DrawableRes
-    private int mHelpImage;
-
-    public static SettingPageFragment newInstance(String helpText, @DrawableRes int helpImage) {
+    public static SettingPageFragment newInstance(KillerManagerAction killerManagerAction) {
         SettingPageFragment fragmentFirst = new SettingPageFragment();
         Bundle args = new Bundle();
-        args.putString(HELP_TEXT, helpText);
-        args.putInt(HELP_IMAGE, helpImage);
+        args.putString(KILLER_MANAGER_ACTION, killerManagerAction.getjSOn);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -58,11 +57,9 @@ public class SettingPageFragment extends Fragment {
     // Store instance variables based on arguments passed
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        mContentMessage = getArguments().getString(HELP_TEXT);
-        mHelpImage = getArguments().getInt(HELP_IMAGE);
-        mHelpImageList = new ArrayList<>();
-        mHelpImageList.add(
+        mKillerManagerAction = getArguments().getString(HELP_TEXT).fromJson;
     }
 
     @Nullable
@@ -73,13 +70,41 @@ public class SettingPageFragment extends Fragment {
         TextView textView = mFragmentView.findViewById(R.id.md_content_message);
 
         textView.setText(mContentMessage);
-        //TODO CUSTOM MESSAGE FOR SPECIFITQUE ACTIONS AND SPECIFIC DEVICE
+        mButtonOpenSettings = mFragmentView.findViewById(R.id.md_button_open_settings);
+        mButtonClose = mFragmentView.findViewById(R.id.md_button_close);
+
+
+        mButtonOpenSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClicOpenSettings();
+            }
+        });
+        mButtonClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClicClose();
+            }
+        });
+        // ----  Common UI ----
+        if (mKillerManagerAction.isEnableDontShowAgain()) {
+            mDoNotShowAgainCheckBox.setVisibility(View.VISIBLE);
+            mDoNotShowAgainCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    KillerManagerUtils.setDontShowAgain(getActivity(), mActionType, isChecked);
+                }
+            });
+        } else {
+            mDoNotShowAgainCheckBox.setVisibility(View.GONE);
+        }
+       /* //TODO CUSTOM MESSAGE FOR SPECIFITQUE ACTIONS AND SPECIFIC DEVICE
         mContentMessage.setText(String.format(getString(R.string.dialog_huawei_notification),
-                                              getString(R.string.app_name)));
+                                              getString(R.string.app_name)));*/
 
         // Inflate the layout for this fragment
 
-        mHelpImageViewPager = mFragmentView.findViewById(R.id.md_dialog_samsung_pager_imageView);
+        mHelpImageViewPager = mFragmentView.findViewById(R.id.md_help_image_viewpager);
         mHelpImageViewPager.setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
@@ -89,8 +114,8 @@ public class SettingPageFragment extends Fragment {
             @NonNull
             @Override
             public Object instantiateItem(@NonNull ViewGroup view, int position) {
-                View myImageLayout = mInfalter.inflate(R.layout.md_dialog_help_image_viewpager_content, view, false);
-                ImageView myImage = myImageLayout.findViewById(R.id.md_help_image_imageview);
+                View myImageLayout = mInfalter.inflate(R.layout.md_dialog_main_content_image_item, view, false);
+                ImageView myImage = myImageLayout.findViewById(R.id.md_help_image);
                 myImage.setImageResource(mHelpImageList.get(position));
                 view.addView(myImageLayout, 0);
                 return myImageLayout;
@@ -121,5 +146,21 @@ public class SettingPageFragment extends Fragment {
         }, 2500, 2500);
 
         return mFragmentView;
+    }
+
+    @Override
+    public void onClicOpenSettings() {
+        mKillerManager.doAction(getActivity(), mActionType);
+    }
+
+    @Override
+    public void onClicClose() {
+        //TODO
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        mKillerManager.onActivityResult(getActivity(), mActionType, requestCode);
     }
 }

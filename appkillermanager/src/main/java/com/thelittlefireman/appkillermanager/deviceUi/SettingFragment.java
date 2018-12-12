@@ -1,42 +1,30 @@
 package com.thelittlefireman.appkillermanager.deviceUi;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.thelittlefireman.appkillermanager.R;
+import com.thelittlefireman.appkillermanager.deviceUi.fragments.SettingPageFragment;
+import com.thelittlefireman.appkillermanager.managers.KillerManager;
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.ui.DialogKillerManagerBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
-import com.thelittlefireman.appkillermanager.R;
-import com.thelittlefireman.appkillermanager.deviceUi.fragments.SettingPageFragment;
-import com.thelittlefireman.appkillermanager.managers.KillerManager;
-import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
-import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
-import com.thelittlefireman.appkillermanager.ui.DialogKillerManagerBuilder;
-import com.thelittlefireman.appkillermanager.utils.KillerManagerUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class SettingFragment extends Fragment implements SettingFragmentClicListener {
+public class SettingFragment extends Fragment{
     protected View mRootView;
 
-    protected KillerManagerActionType mAction;
-
     protected DialogKillerManagerBuilder mDialogKillerManagerBuilder;
-
-    protected CheckBox mDoNotShowAgainCheckBox;
-
-    protected Button mButtonOpenSettings;
-    protected Button mButtonClose;
 
     protected LayoutInflater mInfalter;
 
@@ -45,6 +33,16 @@ public class SettingFragment extends Fragment implements SettingFragmentClicList
     protected KillerManager mKillerManager = KillerManager.getInstance(getContext());
     private List<SettingPageFragment> mSettingPageFragmentList;
 
+    private List<KillerManagerAction> mKillerManagerActionList;
+
+    public static SettingFragment newInstance(List<KillerManagerAction> killerManagerActionList) {
+        SettingFragment fragmentFirst = new SettingFragment();
+        Bundle args = new Bundle();
+        args.putString(HELP_TEXT, helpText);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -52,48 +50,19 @@ public class SettingFragment extends Fragment implements SettingFragmentClicList
         super.onCreateView(inflater, container, savedInstanceState);
         mInfalter = inflater;
         mSettingPageFragmentList = new ArrayList<>();
-        
-        mRootView = inflater.inflate(R.layout.md_dialog_simple_ui, container, false);
-        mButtonOpenSettings = mRootView.findViewById(R.id.md_button_open_settings);
-        mButtonClose = mRootView.findViewById(R.id.md_button_close);
-        mViewPager = mRootView.findViewById(R.id.md_help_image_viewpager);
 
-        mButtonOpenSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClicOpenSettings();
-            }
-        });
-        mButtonClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClicClose();
-            }
-        });
-        // ----  Common UI ----
-        if (mDialogKillerManagerBuilder.isEnableDontShowAgain()) {
-            mDoNotShowAgainCheckBox.setVisibility(View.VISIBLE);
-            mDoNotShowAgainCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    KillerManagerUtils.setDontShowAgain(getActivity(), mAction, isChecked);
-                }
-            });
-        } else {
-            mDoNotShowAgainCheckBox.setVisibility(View.GONE);
-        }
+        mRootView = inflater.inflate(R.layout.md_dialog_ui, container, false);
+        mViewPager = mRootView.findViewById(R.id.md_help_image_viewpager);
 
         mViewPager.setAdapter(new SettingPageAdapter(getFragmentManager()));
 
-        initKillerManagerAction()
+        initKillerManagerAction(mKillerManagerActionList);
         return mRootView;
     }
 
     private void initKillerManagerAction(List<KillerManagerAction> killerManagerActionList) {
         for (KillerManagerAction killerManagerAction : killerManagerActionList) {
-            SettingPageFragment settingPageFragment = SettingPageFragment.newInstance(killerManagerAction.getHelpText(),
-                                                                                      killerManagerAction.getHelpImage());
-            settingPageFragment.setIntentAction(killerManagerAction.getIntentAction());
+            SettingPageFragment settingPageFragment = SettingPageFragment.newInstance(killerManagerAction);
             mSettingPageFragmentList.add(settingPageFragment);
         }
     }
@@ -119,21 +88,4 @@ public class SettingFragment extends Fragment implements SettingFragmentClicList
             return false;
         }
     }
-
-    @Override
-    public void onClicOpenSettings() {
-        mKillerManager.doAction(getActivity(), mAction);
-    }
-
-    @Override
-    public void onClicClose() {
-        //TODO
-    }
-
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-        mKillerManager.onActivityResult(getActivity(), mAction, requestCode);
-    }
-
 }

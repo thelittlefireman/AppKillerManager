@@ -87,8 +87,7 @@ public class Oppo extends DeviceAbstract {
 
     @Override
     public List<KillerManagerAction> getActionPowerSaving(Context context) {
-        List<Intent> intentList;
-        intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_POWERSAVING_COLOROS);
+        List<Intent> intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_POWERSAVING_COLOROS);
         if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
             return KillerManagerAction.generateKillerManagerActionList(
                     intentList);

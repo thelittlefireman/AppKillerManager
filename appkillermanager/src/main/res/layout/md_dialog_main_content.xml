@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/md_contentScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/md_help_image_viewpager"
         android:layout_marginBottom="8dp"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@+id/md_help_image_viewpager"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/md_content_message"
@@ -20,12 +20,35 @@
             android:layout_height="wrap_content"
             tools:text="@string/dialog_huawei_notification" />
     </ScrollView>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/md_help_image_viewpager"
-        app:layout_constraintTop_toBottomOf="@+id/md_contentScrollView"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        android:layout_gravity="center_vertical|center_horizontal" />
+        android:layout_gravity="center_vertical|center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/md_contentScrollView" />
+    <Button
+        android:id="@+id/md_button_next"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/dialog_button_next"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/footer" />
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/md_dialog_footer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/md_button_next"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/md_help_image_viewpager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

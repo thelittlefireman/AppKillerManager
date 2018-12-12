@@ -1,14 +1,16 @@
 package com.thelittlefireman.appkillermanager.models;
 
 import android.content.Intent;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+
 public class KillerManagerAction {
 
+    //TODO CHANGE
     public static List<KillerManagerAction> generateKillerManagerActionList(List<Intent> intentList) {
         List<KillerManagerAction> killerManagerActionList = new ArrayList<>();
         for (Intent intent : intentList) {
@@ -19,40 +21,49 @@ public class KillerManagerAction {
 
     private String mHelpText;
 
+    private boolean mEnableDontShowAgain;
+
+    public boolean isEnableDontShowAgain() {
+        return mEnableDontShowAgain;
+    }
+
     @DrawableRes
-    private List<Integer> mHelpImage;
+    private List<Integer> mHelpImages;
 
     @NonNull
-    private Intent mIntentAction;
+    private List<Intent> mIntentActionList;
 
-    public KillerManagerAction(@NonNull Intent intentAction) {
-        this("", 0, intentAction);
+    protected KillerManagerActionType mActionType;
+
+    public KillerManagerAction(@NonNull List<Intent> intentActionList) {
+        this("", 0, intentActionList);
     }
 
-    public KillerManagerAction(String helpText, @NonNull Intent intentAction) {
-        this(helpText, 0, intentAction);
+    public KillerManagerAction(String helpText, @NonNull List<Intent> intentActionList) {
+        this(helpText, 0, intentActionList);
     }
 
-    public KillerManagerAction(int helpImage, @NonNull Intent intentAction) {
-        this("", helpImage, intentAction);
+    public KillerManagerAction(int helpImages, @NonNull List<Intent> intentActionList) {
+        this("", helpImages, intentActionList);
     }
 
-    public KillerManagerAction(String helpText, int helpImage, @NonNull Intent intentAction) {
+    // TODO CHANGE TO MULTIPLE IMAGE POSSIBILITY
+    public KillerManagerAction(String helpText, List<Integer> helpImageList, @NonNull List<Intent> intentActionList) {
         mHelpText = helpText;
-        mHelpImage = new ArrayList<>(helpImage);
-        mIntentAction = intentAction;
+        mHelpImages = helpImageList;
+        mIntentActionList = intentActionList;
     }
 
     public String getHelpText() {
         return mHelpText;
     }
 
-    public List<Integer> getHelpImage() {
-        return mHelpImage;
+    public List<Integer> getHelpImages() {
+        return mHelpImages;
     }
 
     @NonNull
-    public Intent getIntentAction() {
-        return mIntentAction;
+    public List<Integer> getIntentAction() {
+        return mIntentActionList;
     }
 }
