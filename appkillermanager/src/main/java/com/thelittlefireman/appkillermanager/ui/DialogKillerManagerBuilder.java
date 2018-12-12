@@ -1,9 +1,9 @@
 package com.thelittlefireman.appkillermanager.ui;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.thelittlefireman.appkillermanager.R;
 import com.thelittlefireman.appkillermanager.managers.KillerManager;

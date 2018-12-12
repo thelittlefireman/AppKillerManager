@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.support.annotation.CallSuper;
+import androidx.annotation.CallSuper;
 
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;

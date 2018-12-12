@@ -1,8 +1,8 @@
 package com.thelittlefireman.appkillermanager.models;
 
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;

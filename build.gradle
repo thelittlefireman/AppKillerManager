@@ -10,7 +10,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -39,7 +39,7 @@ task clean(type: Delete) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.10'
+    gradleVersion = '4.10.2'
 }
 
 ext{
@@ -51,5 +51,7 @@ ext{
     libModuleName = 'AppKillerManager'
     libModuleDesc = 'Android library to handle flaky App killer manager (Xiaomi, Huawei, letv, ...) and prevent from : not showing notification, services not start at boot, etc'
     libBintrayName = 'AppKillerManager'
+
+    androidxVersion1 = "1.1.0-alpha01"
 }
 
