@@ -7,11 +7,11 @@ import android.os.Build;
 
 import com.thelittlefireman.appkillermanager.R;
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Samsung extends DeviceAbstract {
@@ -80,45 +80,45 @@ public class Samsung extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction> getActionPowerSaving(Context context) {
+    public KillerManagerAction getActionPowerSaving(Context context) {
         Intent intent = ActionUtils.createIntent();
         intent.setAction(SAMSUNG_ACTION_POWERSAVING);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
-                                                                     intent));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, getHelpImagePowerSaving(),
+                                           intent);
         }
         // reset
         intent = ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V3);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
-                                                                     intent));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, getHelpImagePowerSaving(),
+                                           intent);
         }
 
         intent = ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V2);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
-                                                                     intent));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, getHelpImagePowerSaving(),
+                                           intent);
         }
         intent = ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_POWERSAVING_V1);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
-                                                                     intent));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, getHelpImagePowerSaving(),
+                                           intent);
         }
-        return null;
+        return new KillerManagerAction();
     }
 
     // FIXME Currently not working : not available, ITS NOT AUTOSTART ITS MEMORY MANAGER
     @Override
-    public List<KillerManagerAction> getActionAutoStart(Context context) {
-        return Collections.singletonList(new KillerManagerAction(
-                ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_MEMORYMANAGER_V3)));
+    public KillerManagerAction getActionAutoStart(Context context) {
+        return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART,
+                                       ActionUtils.createIntent(SAMSUNG_COMPONENTNAMES_MEMORYMANAGER_V3));
     }
 
     // FIXME : NOTWORKOING NEED PERMISSIONS SETTINGS OR SOMETHINGS ELSE
     @Override
-    public List<KillerManagerAction> getActionNotification(Context context) {
-        return Collections.singletonList(new KillerManagerAction(
-                ActionUtils.createIntent(SAMSUNG_ACTION_NOTIFICATION)));
+    public KillerManagerAction getActionNotification(Context context) {
+        return new KillerManagerAction(KillerManagerActionType.ACTION_NOTIFICATIONS,
+                                       ActionUtils.createIntent(SAMSUNG_ACTION_NOTIFICATION));
     }
 
     private int getHelpImagePowerSaving() {

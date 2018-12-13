@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -50,19 +51,19 @@ public class OnePlus extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction>  getActionPowerSaving(Context context) {
-        return null;
+    public KillerManagerAction getActionPowerSaving(Context context) {
+        return new KillerManagerAction();
     }
 
     @Override
-    public List<KillerManagerAction> getActionAutoStart(Context context) {
-        return Collections.singletonList(new KillerManagerAction(
-                ActionUtils.createIntent(ONEPLUS_COMPONENTNAMES)));
+    public KillerManagerAction getActionAutoStart(Context context) {
+        return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART,
+                                       ActionUtils.createIntent(ONEPLUS_COMPONENTNAMES));
     }
 
     @Override
-    public List<KillerManagerAction>  getActionNotification(Context context) {
-        return null;
+    public KillerManagerAction getActionNotification(Context context) {
+        return new KillerManagerAction();
     }
 
     @Override

@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Vivo extends DeviceAbstract {
@@ -53,28 +53,28 @@ public class Vivo extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction> getActionPowerSaving(Context context) {
-        return null;
+    public KillerManagerAction getActionPowerSaving(Context context) {
+        return new KillerManagerAction();
     }
 
     @Override
-    public List<KillerManagerAction> getActionAutoStart(Context context) {
+    public KillerManagerAction getActionAutoStart(Context context) {
         Intent intent;
         intent = ActionUtils.createIntent(VIVO_COMPONENTNAMES_2_6);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(new KillerManagerAction(intent));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART, intent);
         }
 
         intent = ActionUtils.createIntent(VIVO_COMPONENTNAMES_3_0);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(new KillerManagerAction(intent));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART, intent);
         }
         return null;
     }
 
     @Override
-    public List<KillerManagerAction> getActionNotification(Context context) {
-        return null;
+    public KillerManagerAction getActionNotification(Context context) {
+        return new KillerManagerAction();
     }
 
 

@@ -2,22 +2,17 @@ package com.thelittlefireman.appkillermanager.models;
 
 import android.content.Intent;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
 public class KillerManagerAction {
-
-    //TODO CHANGE
-    public static List<KillerManagerAction> generateKillerManagerActionList(List<Intent> intentList) {
-        List<KillerManagerAction> killerManagerActionList = new ArrayList<>();
-        for (Intent intent : intentList) {
-            killerManagerActionList.add(new KillerManagerAction(intent));
-        }
-        return killerManagerActionList;
-    }
 
     private String mHelpText;
 
@@ -35,23 +30,56 @@ public class KillerManagerAction {
 
     protected KillerManagerActionType mActionType;
 
-    public KillerManagerAction(@NonNull List<Intent> intentActionList) {
-        this("", 0, intentActionList);
+    public KillerManagerAction() {
+        this(KillerManagerActionType.ACTION_EMPTY, "", new ArrayList<Integer>(), new ArrayList<Intent>());
     }
 
-    public KillerManagerAction(String helpText, @NonNull List<Intent> intentActionList) {
-        this(helpText, 0, intentActionList);
+    @Deprecated
+    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, @NonNull Intent intentAction) {
+        this(killerManagerActionType, "", new ArrayList<Integer>(), Collections.singletonList(intentAction));
     }
 
-    public KillerManagerAction(int helpImages, @NonNull List<Intent> intentActionList) {
-        this("", helpImages, intentActionList);
+    @Deprecated
+    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, @NonNull List<Intent>
+            intentActionList) {
+        this(killerManagerActionType, "", new ArrayList<Integer>(), intentActionList);
+    }
+
+    @Deprecated
+    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, String helpText, @NonNull
+            List<Intent> intentActionList) {
+        this(killerManagerActionType, helpText, new ArrayList<Integer>(), intentActionList);
+    }
+
+    @Deprecated
+    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, int helpImages, @NonNull
+            Intent intentAction) {
+        this(killerManagerActionType, "", new ArrayList<Integer>(helpImages), Collections.singletonList(intentAction));
+    }
+
+    @Deprecated
+    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, int helpImages, @NonNull
+            List<Intent> intentActionList) {
+        this(killerManagerActionType, "", new ArrayList<Integer>(helpImages), intentActionList);
     }
 
     // TODO CHANGE TO MULTIPLE IMAGE POSSIBILITY
-    public KillerManagerAction(String helpText, List<Integer> helpImageList, @NonNull List<Intent> intentActionList) {
+    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, String helpText, List<Integer>
+            helpImageList, @NonNull
+                                       List<Intent>
+                                       intentActionList) {
         mHelpText = helpText;
         mHelpImages = helpImageList;
         mIntentActionList = intentActionList;
+        mActionType = killerManagerActionType;
+    }
+
+    public static String toJson(KillerManagerAction killerManagerAction) {
+        return new Gson().toJson(killerManagerAction);
+    }
+
+    public static KillerManagerAction fromJson(String json) {
+        return new Gson().fromJson(json, KillerManagerAction.class);
     }
 
     public String getHelpText() {
@@ -62,8 +90,25 @@ public class KillerManagerAction {
         return mHelpImages;
     }
 
+    public static String toJsonList(List<KillerManagerAction> killerManagerActionList) {
+        return new Gson().toJson(killerManagerActionList);
+    }
+
+    public static List<KillerManagerAction> fromJsonList(String json) {
+        return new Gson().fromJson(json, new TypeToken<List<KillerManagerAction>>() {
+        }.getType());
+    }
+
+    public KillerManagerActionType getActionType() {
+        return mActionType;
+    }
+
+    public void setActionType(KillerManagerActionType actionType) {
+        mActionType = actionType;
+    }
+
     @NonNull
-    public List<Integer> getIntentAction() {
+    public List<Intent> getIntentActionList() {
         return mIntentActionList;
     }
 }

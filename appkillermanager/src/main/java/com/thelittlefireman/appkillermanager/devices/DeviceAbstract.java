@@ -7,11 +7,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
-import androidx.annotation.CallSuper;
 
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
+
+import androidx.annotation.CallSuper;
 
 public abstract class DeviceAbstract implements DeviceBase {
     @CallSuper
@@ -63,7 +65,7 @@ public abstract class DeviceAbstract implements DeviceBase {
                 dozeIntent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
                 dozeIntent.setData(Uri.parse("package:" + context.getPackageName()));
                 // TODO add text
-                return new KillerManagerAction(dozeIntent);
+                return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, dozeIntent);
             } else {
                 LogUtils.i(this.getClass().getName(), "getActionDozeMode" + "App is already enable to ignore doze " +
                         "battery optimization");

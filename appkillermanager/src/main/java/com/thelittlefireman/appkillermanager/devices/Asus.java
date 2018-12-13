@@ -4,16 +4,17 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import androidx.annotation.DrawableRes;
 
 import com.thelittlefireman.appkillermanager.R;
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.DrawableRes;
 
 public class Asus extends DeviceAbstract {
 
@@ -52,25 +53,26 @@ public class Asus extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction> getActionPowerSaving(Context context) {
+    public KillerManagerAction getActionPowerSaving(Context context) {
         // Juste need to use the regular battery non optimization
         // permission =)
-        return Collections.singletonList(super.getActionDozeMode(context));
+        return super.getActionDozeMode(context);
     }
 
     @Override
-    public List<KillerManagerAction> getActionAutoStart(Context context) {
+    public KillerManagerAction getActionAutoStart(Context context) {
         Intent intent = ActionUtils.createIntent(ASUS_COMPONENTNAMES_AUTOSTART);
         intent.putExtra("showNotice", true);
-        return Collections.singletonList(new KillerManagerAction(getHelpImageAutoStart(),intent));
+        return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART, getHelpImageAutoStart(), intent);
     }
 
     @Override
-    public List<KillerManagerAction> getActionNotification(Context context) {
+    public KillerManagerAction getActionNotification(Context context) {
         // Need to clic on notifications items
         Intent intent = ActionUtils.createIntent(ASUS_COMPONENTNAMES_NOTIFICATION);
         intent.putExtra("showNotice", true);
-        return Collections.singletonList(new KillerManagerAction(getHelpImageNotification(),intent));
+        return new KillerManagerAction(KillerManagerActionType.ACTION_NOTIFICATIONS, getHelpImageNotification(),
+                                       intent);
     }
 
 

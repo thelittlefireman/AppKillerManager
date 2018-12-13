@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thelittlefireman.appkillermanager.R;
+import com.thelittlefireman.appkillermanager.managers.KillerManager;
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.KillerManagerUtils;
 
@@ -38,6 +39,8 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
 
     private String mContentMessage;
 
+    private KillerManager mKillerManager;
+
     private KillerManagerAction mKillerManagerAction;
 
     protected LayoutInflater mInfalter;
@@ -49,7 +52,7 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
     public static SettingPageFragment newInstance(KillerManagerAction killerManagerAction) {
         SettingPageFragment fragmentFirst = new SettingPageFragment();
         Bundle args = new Bundle();
-        args.putString(KILLER_MANAGER_ACTION, killerManagerAction.getjSOn);
+        args.putString(KILLER_MANAGER_ACTION, KillerManagerAction.toJson(killerManagerAction));
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -57,9 +60,9 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
     // Store instance variables based on arguments passed
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        mKillerManagerAction = getArguments().getString(HELP_TEXT).fromJson;
+        mKillerManager = KillerManager.getInstance(getContext());
+        mKillerManagerAction = KillerManagerAction.fromJson(getArguments().getString(KILLER_MANAGER_ACTION));
     }
 
     @Nullable
@@ -92,7 +95,7 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
             mDoNotShowAgainCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    KillerManagerUtils.setDontShowAgain(getActivity(), mActionType, isChecked);
+                    KillerManagerUtils.setDontShowAgain(getActivity(), mKillerManagerAction.getActionType(), isChecked);
                 }
             });
         } else {
@@ -150,7 +153,7 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
 
     @Override
     public void onClicOpenSettings() {
-        mKillerManager.doAction(getActivity(), mActionType);
+        mKillerManager.doAction(getActivity(), mKillerManagerAction.getActionType());
     }
 
     @Override
@@ -161,6 +164,6 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-        mKillerManager.onActivityResult(getActivity(), mActionType, requestCode);
+        mKillerManager.onActivityResult(getActivity(), mKillerManagerAction.getActionType(), requestCode);
     }
 }

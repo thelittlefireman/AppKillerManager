@@ -24,6 +24,8 @@ import androidx.viewpager.widget.ViewPager;
 public class SettingFragment extends Fragment{
     protected View mRootView;
 
+    private static final String KILLER_MANAGER_LIST = "KILLER_MANAGER_LIST";
+
     protected DialogKillerManagerBuilder mDialogKillerManagerBuilder;
 
     protected LayoutInflater mInfalter;
@@ -38,9 +40,15 @@ public class SettingFragment extends Fragment{
     public static SettingFragment newInstance(List<KillerManagerAction> killerManagerActionList) {
         SettingFragment fragmentFirst = new SettingFragment();
         Bundle args = new Bundle();
-        args.putString(HELP_TEXT, helpText);
+        args.putString(KILLER_MANAGER_LIST, KillerManagerAction.toJsonList(killerManagerActionList));
         fragmentFirst.setArguments(args);
         return fragmentFirst;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mKillerManagerActionList = KillerManagerAction.fromJsonList(getArguments().getString(KILLER_MANAGER_LIST));
     }
 
     @Nullable

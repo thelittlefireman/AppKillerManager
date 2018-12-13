@@ -9,10 +9,10 @@ import android.os.Build;
 import android.util.Log;
 
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Meizu extends DeviceAbstract {
@@ -54,12 +54,12 @@ public class Meizu extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction> getActionPowerSaving(Context context) {
+    public KillerManagerAction getActionPowerSaving(Context context) {
         Intent intent = ActionUtils.createIntent();
         MEIZU_SECURITY_CENTER_VERSION mSecVersion = getMeizuSecVersion(context);
         intent.setAction(MEIZU_POWERSAVING_ACTION);
         if (ActionUtils.isIntentAvailable(context, intent)) {
-            return Collections.singletonList(new KillerManagerAction(intent));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, intent);
         }
         intent = ActionUtils.createIntent();
         if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_2_2) {
@@ -69,15 +69,16 @@ public class Meizu extends DeviceAbstract {
         } else if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_3_7) {
             intent.setClassName(MEIZU_DEFAULT_PACKAGE, MEIZU_POWERSAVING_ACTIVITY_V3_7);
         } else {
-            return Collections.singletonList(new KillerManagerAction(getDefaultSettingAction(context)));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING,
+                                           getDefaultSettingAction(context));
         }
-        return Collections.singletonList(new KillerManagerAction(intent));
+        return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, intent);
     }
 
     @Override
-    public List<KillerManagerAction> getActionAutoStart(Context context) {
-        return Collections.singletonList(new KillerManagerAction(
-                getDefaultSettingAction(context)));
+    public KillerManagerAction getActionAutoStart(Context context) {
+        return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART,
+                                       getDefaultSettingAction(context));
     }
 
     private Intent getDefaultSettingAction(Context context) {
@@ -86,14 +87,15 @@ public class Meizu extends DeviceAbstract {
         return intent;
     }
     @Override
-    public List<KillerManagerAction> getActionNotification(Context context) {
+    public KillerManagerAction getActionNotification(Context context) {
         MEIZU_SECURITY_CENTER_VERSION mSecVersion = getMeizuSecVersion(context);
         Intent intent = ActionUtils.createIntent();
         if (mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_3_7 || mSecVersion == MEIZU_SECURITY_CENTER_VERSION.SEC_4_1) {
             intent.setComponent(new ComponentName(MEIZU_DEFAULT_PACKAGE, MEIZU_NOTIFICATION_ACTIVITY));
-            return Collections.singletonList(new KillerManagerAction(intent));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_NOTIFICATIONS, intent);
         } else {
-            return Collections.singletonList(new KillerManagerAction(getDefaultSettingAction(context)));
+            return new KillerManagerAction(KillerManagerActionType.ACTION_NOTIFICATIONS,
+                                           getDefaultSettingAction(context));
         }
     }
 

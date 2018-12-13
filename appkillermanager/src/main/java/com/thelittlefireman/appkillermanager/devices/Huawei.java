@@ -9,11 +9,11 @@ import android.util.Log;
 
 import com.thelittlefireman.appkillermanager.R;
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static com.thelittlefireman.appkillermanager.utils.SystemUtils.getEmuiRomName;
@@ -69,15 +69,15 @@ public class Huawei extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction> getActionPowerSaving(Context context) {
-        return Collections.singletonList(new KillerManagerAction(getHelpImagePowerSaving(),
-                ActionUtils.createIntent(HUAWEI_ACTION_POWERSAVING)));
+    public KillerManagerAction getActionPowerSaving(Context context) {
+        return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, getHelpImagePowerSaving(),
+                                       ActionUtils.createIntent(HUAWEI_ACTION_POWERSAVING));
     }
 
     @Override
-    public List<KillerManagerAction> getActionAutoStart(Context context) {
+    public KillerManagerAction getActionAutoStart(Context context) {
         // AUTOSTART not used in huawei
-        return null;
+        return new KillerManagerAction();
         /*Intent intent = ActionUtils.createIntent();
         intent.setAction(HUAWEI_ACTION_AUTOSTART);
         if (ActionUtils.isIntentAvailable(context, intent)) {
@@ -90,9 +90,9 @@ public class Huawei extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction> getActionNotification(Context context) {
-        return Collections.singletonList(new KillerManagerAction(
-                ActionUtils.createIntent(HUAWEI_ACTION_NOTIFICATION)));
+    public KillerManagerAction getActionNotification(Context context) {
+        return new KillerManagerAction(KillerManagerActionType.ACTION_NOTIFICATIONS,
+                                       ActionUtils.createIntent(HUAWEI_ACTION_NOTIFICATION));
     }
 
     @Override

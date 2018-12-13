@@ -8,6 +8,8 @@ import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 public interface DeviceBase {
     boolean isThatRom();
     Manufacturer getDeviceManufacturer();
@@ -15,10 +17,16 @@ public interface DeviceBase {
     boolean isActionAutoStartAvailable(Context context);
     boolean isActionNotificationAvailable(Context context);
     boolean needToUseAlongwithActionDoseMode();
-    List<KillerManagerAction> getActionPowerSaving(Context context);
-    List<KillerManagerAction> getActionAutoStart(Context context);
+
+    @NonNull
+    KillerManagerAction getActionPowerSaving(Context context);
+
+    @NonNull
+    KillerManagerAction getActionAutoStart(Context context);
+
     // FIXME IS IT REALY NEEDED ? ==> REPLACE BY OTHER FUNCTION ?
-    List<KillerManagerAction> getActionNotification(Context context);
+    @NonNull
+    KillerManagerAction getActionNotification(Context context);
     // TODO ADD FOR MEMORY OPTIMIZATION : https://github.com/00aj99/CRomAppWhitelist
     String getExtraDebugInformations(Context context);
 

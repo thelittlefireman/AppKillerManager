@@ -62,6 +62,8 @@ public class KillerManager {
                 case ACTION_NOTIFICATIONS:
                     actionAvailable = mDevice.isActionNotificationAvailable(context);
                     break;
+                case ACTION_EMPTY:
+                    actionAvailable = false;
             }
         }
         return actionAvailable;
@@ -80,14 +82,16 @@ public class KillerManager {
             List<Intent> intentList = null;
             switch (killerManagerActionType) {
                 case ACTION_AUTOSTART:
-                    intentList = mDevice.getActionAutoStart(context);
+                    intentList = mDevice.getActionAutoStart(context).getIntentActionList();
                     break;
                 case ACTION_POWERSAVING:
-                    intentList = mDevice.getActionPowerSaving(context);
+                    intentList = mDevice.getActionPowerSaving(context).getIntentActionList();
                     break;
                 case ACTION_NOTIFICATIONS:
-                    intentList = mDevice.getActionNotification(context);
+                    intentList = mDevice.getActionNotification(context).getIntentActionList();
                     break;
+                case ACTION_EMPTY:
+                    intentList = Collections.emptyList();
             }
             if (intentList != null && !intentList.isEmpty() && ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
                 // Intent found killerManagerActionType succeed

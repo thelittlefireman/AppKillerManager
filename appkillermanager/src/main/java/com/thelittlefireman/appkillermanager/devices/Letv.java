@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
@@ -49,20 +50,20 @@ public class Letv extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction> getActionPowerSaving(Context context) {
-        return Collections.singletonList(new KillerManagerAction(
-                ActionUtils.createIntent(LETV_COMPONENTNAMES_POWERSAVE)));
+    public KillerManagerAction getActionPowerSaving(Context context) {
+        return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING,
+                                       ActionUtils.createIntent(LETV_COMPONENTNAMES_POWERSAVE));
     }
 
     @Override
-    public List<KillerManagerAction> getActionAutoStart(Context context) {
-        return Collections.singletonList(new KillerManagerAction(
-                ActionUtils.createIntent(LETV_COMPONENTNAMES_AUTOSTART)));
+    public KillerManagerAction getActionAutoStart(Context context) {
+        return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART,
+                                       ActionUtils.createIntent(LETV_COMPONENTNAMES_AUTOSTART));
     }
 
     @Override
-    public List<KillerManagerAction> getActionNotification(Context context) {
-        return null;
+    public KillerManagerAction getActionNotification(Context context) {
+        return new KillerManagerAction();
     }
 
     @Override

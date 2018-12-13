@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 import com.thelittlefireman.appkillermanager.utils.SystemUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Xiaomi extends DeviceAbstract {
@@ -78,27 +78,27 @@ public class Xiaomi extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction> getActionPowerSaving(Context context) {
+    public KillerManagerAction getActionPowerSaving(Context context) {
         Intent intent = ActionUtils.createIntent(MIUI_ACTION_POWER_SAVE);
         intent.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_NAME, context.getPackageName());
         intent.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_LABEL, SystemUtils.getApplicationName(context));
-        return Collections.singletonList(new KillerManagerAction(intent));
+        return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, intent);
     }
 
     @Override
-    public List<KillerManagerAction> getActionAutoStart(Context context) {
+    public KillerManagerAction getActionAutoStart(Context context) {
         Intent intent = ActionUtils.createIntent(MIUI_COMPONENTSNAMES_AUTOSTART);
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_NAME, context.getPackageName());
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_LABEL, SystemUtils.getApplicationName(context));
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_ACTION, 3);
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_POSITION, -1);
         intent.putExtra(MIUI_ACTION_AUTOSTART_EXTRA_WHITE_LIST, false);
-        return Collections.singletonList(new KillerManagerAction(intent));
+        return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART, intent);
     }
 
     @Override
-    public List<KillerManagerAction> getActionNotification(Context context) {
-        return null;
+    public KillerManagerAction getActionNotification(Context context) {
+        return new KillerManagerAction();
     }
 
     @Override

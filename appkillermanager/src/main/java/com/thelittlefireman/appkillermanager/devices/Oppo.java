@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.ActionUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Oppo extends DeviceAbstract {
@@ -86,42 +86,38 @@ public class Oppo extends DeviceAbstract {
     }
 
     @Override
-    public List<KillerManagerAction> getActionPowerSaving(Context context) {
+    public KillerManagerAction getActionPowerSaving(Context context) {
         List<Intent> intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_POWERSAVING_COLOROS);
         if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return KillerManagerAction.generateKillerManagerActionList(
-                    intentList);
+            return new KillerManagerAction(KillerManagerActionType.ACTION_POWERSAVING, intentList);
         }
-        return null;
+        return new KillerManagerAction();
     }
 
     @Override
-    public List<KillerManagerAction> getActionAutoStart(Context context) {
+    public KillerManagerAction getActionAutoStart(Context context) {
         List<Intent> intentList;
         intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_3_0);
         if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return KillerManagerAction.generateKillerManagerActionList(
-                    intentList);
+            return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART, intentList);
         }
 
         intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_2_1);
         if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return KillerManagerAction.generateKillerManagerActionList(
-                    intentList);
+            return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART, intentList);
         }
 
         intentList = ActionUtils.createIntentList(OPPO_COMPONENTSNAMES_AUTOSTART_COLOROS_OLDER);
         if (ActionUtils.isAtLeastOneIntentAvailable(context, intentList)) {
-            return KillerManagerAction.generateKillerManagerActionList(
-                    intentList);
+            return new KillerManagerAction(KillerManagerActionType.ACTION_AUTOSTART, intentList);
         }
-        return null;
+        return new KillerManagerAction();
     }
 
     @Override
-    public List<KillerManagerAction> getActionNotification(Context context) {
-        return Collections.singletonList(new KillerManagerAction(
-                ActionUtils.createIntent(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS)));
+    public KillerManagerAction getActionNotification(Context context) {
+        return new KillerManagerAction(KillerManagerActionType.ACTION_NOTIFICATIONS,
+                                       ActionUtils.createIntent(OPPO_COMPONENTSNAMES_NOTIFICATION_COLOROS));
     }
 
     @Override
