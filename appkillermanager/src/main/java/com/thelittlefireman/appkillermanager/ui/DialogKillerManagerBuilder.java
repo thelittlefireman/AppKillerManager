@@ -4,9 +4,11 @@ import com.thelittlefireman.appkillermanager.R;
 import com.thelittlefireman.appkillermanager.deviceUi.SettingFragment;
 import com.thelittlefireman.appkillermanager.managers.KillerManager;
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
 import com.thelittlefireman.appkillermanager.utils.KillerManagerUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
@@ -19,18 +21,23 @@ public class DialogKillerManagerBuilder {
     private static final String DIALOG_TAG = "KILLER_MANAGER_DIALOG";
     private AppCompatActivity mActivity;
     private KillerManager mKillerManager;
-    private List<KillerManagerAction> mKillerManagerActionList;
+    private List<KillerManagerActionType> mKillerManagerActionTypeList;
     private String titleMessage;
-    private String contentMessage;
+    private String contentHeaderMessage;
+    private boolean mEnableDontShowAgain;
+
     @DrawableRes
-    private int iconRes;
+    private int mIconRes;
+
     @StringRes
-    private int titleResMessage, contentResMessage;
+    private int mTitleResMessage, mContentHeaderResMessage;
 
     public DialogKillerManagerBuilder() {
-        contentResMessage = -1;
-        titleResMessage = -1;
-        iconRes = -1;
+        mContentHeaderResMessage = -1;
+        mTitleResMessage = -1;
+        mIconRes = -1;
+        mKillerManagerActionTypeList = new ArrayList<>();
+        mKillerManagerActionTypeList.add(KillerManagerActionType.ACTION_EMPTY);
     }
 
     public DialogKillerManagerBuilder(AppCompatActivity activity) {
@@ -44,7 +51,7 @@ public class DialogKillerManagerBuilder {
     }
 
     public DialogKillerManagerBuilder setIconRes(@NonNull @DrawableRes int iconRes) {
-        this.iconRes = iconRes;
+        this.mIconRes = iconRes;
         return this;
     }
 
@@ -53,18 +60,29 @@ public class DialogKillerManagerBuilder {
         return this;
     }
 
-    public DialogKillerManagerBuilder setContentMessage(@NonNull String contentMessage) {
-        this.contentMessage = contentMessage;
+    public DialogKillerManagerBuilder setEnableDontShowAgain(@NonNull boolean isDontShowAgain) {
+        this.mEnableDontShowAgain = isDontShowAgain;
+        return this;
+    }
+
+    public DialogKillerManagerBuilder setContentHeaderMessage(@NonNull String contentHeaderMessage) {
+        this.contentHeaderMessage = contentHeaderMessage;
         return this;
     }
 
     public DialogKillerManagerBuilder setTitleMessage(@StringRes @NonNull int titleResMessage) {
-        this.titleResMessage = titleResMessage;
+        this.mTitleResMessage = titleResMessage;
         return this;
     }
 
-    public DialogKillerManagerBuilder setContentMessage(@StringRes @NonNull int contentResMessage) {
-        this.contentResMessage = contentResMessage;
+    public DialogKillerManagerBuilder setContentHeaderMessage(@StringRes @NonNull int contentResMessage) {
+        this.mContentHeaderResMessage = contentResMessage;
+        return this;
+    }
+
+    public DialogKillerManagerBuilder setKillerManagerActionTypeList(
+            @NonNull KillerManagerActionType killerManagerActionTypeList) {
+        this.mKillerManagerActionTypeList.add(killerManagerActionTypeList);
         return this;
     }
 
@@ -76,12 +94,6 @@ public class DialogKillerManagerBuilder {
         }
         mKillerManager = KillerManager.getInstance(mActivity);
 
-        /*if (!mKillerManager.isActionAvailable(mActivity, mAction)) {
-            LogUtils.i(this.getClass().getName(),
-                       "This action is not available for this device no need to show the dialog");
-            return;
-        }*/
-
         if (mKillerManager.getDevice() == null) {
             LogUtils.i(this.getClass().getName(), "Device not in the list no need to show the dialog");
             return;
@@ -89,18 +101,32 @@ public class DialogKillerManagerBuilder {
 
         WizardDialog.Builder dialogBuilder = new WizardDialog.Builder(mActivity,
                                                                       R.style.MaterialDialog_Light_Fullscreen);
-        final SettingFragment settingFragment = SettingFragment.newInstance(mKillerManagerActionList);
-        dialogBuilder.addFragment(settingFragment);
-        dialogBuilder.showHeader(false);
+        List<KillerManagerAction> killerManagerActionList = mKillerManager.getKillerManagerActionFromActionType
+                (mActivity, mKillerManagerActionTypeList);
 
-        if (iconRes != -1) {
-            dialogBuilder.setIcon(iconRes);
+        if (killerManagerActionList.isEmpty()) {
+            LogUtils.i(this.getClass().getName(),
+                       "No action available for this device no need to show the dialog");
+            return;
+        }
+
+        dialogBuilder.addFragment(SettingFragment.class,
+                                  SettingFragment.generateArguments(killerManagerActionList, mEnableDontShowAgain));
+        dialogBuilder.showHeader(false);
+        if (mContentHeaderResMessage != -1) {
+            dialogBuilder.setMessage(mContentHeaderResMessage);
+        } else {
+            dialogBuilder.setMessage(contentHeaderMessage);
+        }
+
+        if (mIconRes != -1) {
+            dialogBuilder.setIcon(mIconRes);
         } else {
             dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
         }
 
-        if (titleResMessage != -1) {
-            dialogBuilder.setTitle(titleResMessage);
+        if (mTitleResMessage != -1) {
+            dialogBuilder.setTitle(mTitleResMessage);
         } else if (titleMessage != null && !titleMessage.isEmpty()) {
             dialogBuilder.setTitle(titleMessage);
         } else {
@@ -108,7 +134,8 @@ public class DialogKillerManagerBuilder {
                                                        mKillerManager.getDevice().getDeviceManufacturer().toString()));
         }
 
-        if (!(mEnableDontShowAgain && KillerManagerUtils.isDontShowAgain(mActivity, mAction))) {
+        // TODO CHANGE
+        if (!(mEnableDontShowAgain && KillerManagerUtils.isDontShowAgain(mActivity))) {
             materialDialog = dialogBuilder.create();
             materialDialog.show(mActivity.getSupportFragmentManager(), DIALOG_TAG);
         }

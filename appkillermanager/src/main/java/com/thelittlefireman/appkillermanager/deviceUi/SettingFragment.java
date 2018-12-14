@@ -25,10 +25,13 @@ public class SettingFragment extends Fragment{
     protected View mRootView;
 
     private static final String KILLER_MANAGER_LIST = "KILLER_MANAGER_LIST";
+    private static final String KILLER_MANAGER_DONT_SHOW_AGAIN = "KILLER_MANAGER_DONT_SHOW_AGAIN";
 
     protected DialogKillerManagerBuilder mDialogKillerManagerBuilder;
 
     protected LayoutInflater mInfalter;
+
+    private boolean mDontShowAgain;
 
     private ViewPager mViewPager;
 
@@ -37,18 +40,18 @@ public class SettingFragment extends Fragment{
 
     private List<KillerManagerAction> mKillerManagerActionList;
 
-    public static SettingFragment newInstance(List<KillerManagerAction> killerManagerActionList) {
-        SettingFragment fragmentFirst = new SettingFragment();
+    public static Bundle generateArguments(List<KillerManagerAction> killerManagerActionList, boolean dontShowAgain) {
         Bundle args = new Bundle();
         args.putString(KILLER_MANAGER_LIST, KillerManagerAction.toJsonList(killerManagerActionList));
-        fragmentFirst.setArguments(args);
-        return fragmentFirst;
+        args.putBoolean(KILLER_MANAGER_DONT_SHOW_AGAIN, dontShowAgain);
+        return args;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mKillerManagerActionList = KillerManagerAction.fromJsonList(getArguments().getString(KILLER_MANAGER_LIST));
+        mDontShowAgain = getArguments().getBoolean(KILLER_MANAGER_DONT_SHOW_AGAIN);
     }
 
     @Nullable
@@ -70,7 +73,8 @@ public class SettingFragment extends Fragment{
 
     private void initKillerManagerAction(List<KillerManagerAction> killerManagerActionList) {
         for (KillerManagerAction killerManagerAction : killerManagerActionList) {
-            SettingPageFragment settingPageFragment = SettingPageFragment.newInstance(killerManagerAction);
+            SettingPageFragment settingPageFragment = SettingPageFragment.newInstance(killerManagerAction,
+                                                                                      mDontShowAgain);
             mSettingPageFragmentList.add(settingPageFragment);
         }
     }

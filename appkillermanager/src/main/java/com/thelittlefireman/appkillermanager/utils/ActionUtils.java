@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,15 @@ public class ActionUtils {
         return intentList;
     }
 
+    public static String getExtrasDebugInformationsWithKillerManagerAction(
+            List<KillerManagerAction> killerManagerActionList) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (KillerManagerAction action : killerManagerActionList) {
+            stringBuilder.append(getExtrasDebugInformations(action.getIntentActionList()));
+        }
+        return stringBuilder.toString();
+    }
+
     public static String getExtrasDebugInformations(List<Intent> intentList){
         StringBuilder stringBuilder = new StringBuilder();
         if(intentList !=null){
@@ -59,6 +70,11 @@ public class ActionUtils {
 
     public static boolean isIntentAvailable(@NonNull Context ctx, @NonNull ComponentName componentName) {
         return isIntentAvailable(ctx, ActionUtils.createIntent().setComponent(componentName));
+    }
+
+    public static boolean isAtLeastOneIntentAvailable(@NonNull Context ctx,
+                                                      @NonNull KillerManagerAction killerManagerAction) {
+        return isAtLeastOneIntentAvailable(ctx, killerManagerAction.getIntentActionList());
     }
 
     public static boolean isAtLeastOneIntentAvailable(@NonNull Context ctx, @NonNull List<Intent> intentList) {

@@ -16,12 +16,6 @@ public class KillerManagerAction {
 
     private String mHelpText;
 
-    private boolean mEnableDontShowAgain;
-
-    public boolean isEnableDontShowAgain() {
-        return mEnableDontShowAgain;
-    }
-
     @DrawableRes
     private List<Integer> mHelpImages;
 

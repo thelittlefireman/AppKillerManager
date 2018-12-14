@@ -3,8 +3,6 @@ package com.thelittlefireman.appkillermanager.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.thelittlefireman.appkillermanager.models.KillerManagerActionType;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class KillerManagerUtils {
@@ -17,16 +15,15 @@ public class KillerManagerUtils {
      * Set for a specifique actions that we dont need to show the popupAgain
      *
      * @param mContext
-     * @param action
      * @param enable
      */
-    public static void setDontShowAgain(Context mContext, KillerManagerActionType action, boolean enable){
+    public static void setDontShowAgain(Context mContext, boolean enable) {
         final SharedPreferences.Editor editor = getSharedPreferences(mContext).edit();
-        editor.putBoolean(DONT_SHOW_AGAIN+action.toString(),enable);
+        editor.putBoolean(DONT_SHOW_AGAIN, enable);
         editor.apply();
     }
 
-    public static boolean isDontShowAgain(Context mContext, KillerManagerActionType action){
-        return getSharedPreferences(mContext).getBoolean(DONT_SHOW_AGAIN+action.toString(),false);
+    public static boolean isDontShowAgain(Context mContext) {
+        return getSharedPreferences(mContext).getBoolean(DONT_SHOW_AGAIN, false);
     }
 }

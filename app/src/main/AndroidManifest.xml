@@ -14,7 +14,7 @@
         tools:replace="android:appComponentFactory">
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intentAction.killerManagerActionType.MAIN" />
+                <action android:name="android.intentAction.killerManagerActionTypeList.MAIN" />
                 <category android:name="android.intentAction.category.LAUNCHER" />
             </intent-filter>
         </activity>

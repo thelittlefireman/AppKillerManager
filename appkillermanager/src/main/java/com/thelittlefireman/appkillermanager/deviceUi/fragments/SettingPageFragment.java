@@ -36,6 +36,7 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
     private int mCurrentPage;
 
     private static final String KILLER_MANAGER_ACTION ="KILLER_MANAGER_ACTION";
+    private static final String KILLER_MANAGER_DONT_SHOW_AGAIN = "KILLER_MANAGER_DONT_SHOW_AGAIN";
 
     private String mContentMessage;
 
@@ -43,16 +44,19 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
 
     private KillerManagerAction mKillerManagerAction;
 
+    private boolean mDontShowAgain;
+
     protected LayoutInflater mInfalter;
     protected CheckBox mDoNotShowAgainCheckBox;
 
     protected Button mButtonOpenSettings;
     protected Button mButtonClose;
 
-    public static SettingPageFragment newInstance(KillerManagerAction killerManagerAction) {
+    public static SettingPageFragment newInstance(KillerManagerAction killerManagerAction, boolean dontShowAgain) {
         SettingPageFragment fragmentFirst = new SettingPageFragment();
         Bundle args = new Bundle();
         args.putString(KILLER_MANAGER_ACTION, KillerManagerAction.toJson(killerManagerAction));
+        args.putBoolean(KILLER_MANAGER_DONT_SHOW_AGAIN, dontShowAgain);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -63,6 +67,7 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
         super.onCreate(savedInstanceState);
         mKillerManager = KillerManager.getInstance(getContext());
         mKillerManagerAction = KillerManagerAction.fromJson(getArguments().getString(KILLER_MANAGER_ACTION));
+        mDontShowAgain = getArguments().getBoolean(KILLER_MANAGER_DONT_SHOW_AGAIN);
     }
 
     @Nullable
@@ -90,12 +95,12 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
             }
         });
         // ----  Common UI ----
-        if (mKillerManagerAction.isEnableDontShowAgain()) {
+        if (mDontShowAgain) {
             mDoNotShowAgainCheckBox.setVisibility(View.VISIBLE);
             mDoNotShowAgainCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    KillerManagerUtils.setDontShowAgain(getActivity(), mKillerManagerAction.getActionType(), isChecked);
+                    KillerManagerUtils.setDontShowAgain(getActivity(), isChecked);
                 }
             });
         } else {
