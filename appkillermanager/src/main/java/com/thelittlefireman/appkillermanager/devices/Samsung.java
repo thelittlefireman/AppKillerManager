@@ -14,6 +14,8 @@ import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.DrawableRes;
+
 public class Samsung extends DeviceAbstract {
     // crash "com.samsung.android.lool","com.samsung.android.sm.ui.battery.AppSleepListActivity"
     private static final String SAMSUNG_ACTION_POWERSAVING = "com.samsung.android.sm.ACTION_BATTERY";
@@ -121,6 +123,7 @@ public class Samsung extends DeviceAbstract {
                                        ActionUtils.createIntent(SAMSUNG_ACTION_NOTIFICATION));
     }
 
+    @DrawableRes
     private int getHelpImagePowerSaving() {
         return R.drawable.samsung;
     }

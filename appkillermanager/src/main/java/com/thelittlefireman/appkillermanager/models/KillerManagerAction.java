@@ -30,31 +30,34 @@ public class KillerManagerAction {
 
     @Deprecated
     public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, @NonNull Intent intentAction) {
-        this(killerManagerActionType, "", new ArrayList<Integer>(), Collections.singletonList(intentAction));
+        this(killerManagerActionType, "", Collections.<Integer>emptyList(), Collections.singletonList(intentAction));
     }
 
     @Deprecated
     public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, @NonNull List<Intent>
             intentActionList) {
-        this(killerManagerActionType, "", new ArrayList<Integer>(), intentActionList);
+        this(killerManagerActionType, "", Collections.<Integer>emptyList(), intentActionList);
     }
 
     @Deprecated
     public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, String helpText, @NonNull
             List<Intent> intentActionList) {
-        this(killerManagerActionType, helpText, new ArrayList<Integer>(), intentActionList);
+        this(killerManagerActionType, helpText, Collections.<Integer>emptyList(), intentActionList);
     }
 
     @Deprecated
-    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, int helpImages, @NonNull
+    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, @DrawableRes int helpImages,
+                               @NonNull
             Intent intentAction) {
-        this(killerManagerActionType, "", new ArrayList<Integer>(helpImages), Collections.singletonList(intentAction));
+        this(killerManagerActionType, "", Collections.singletonList(helpImages),
+             Collections.singletonList(intentAction));
     }
 
     @Deprecated
-    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, int helpImages, @NonNull
+    public KillerManagerAction(@NonNull KillerManagerActionType killerManagerActionType, @DrawableRes int helpImages,
+                               @NonNull
             List<Intent> intentActionList) {
-        this(killerManagerActionType, "", new ArrayList<Integer>(helpImages), intentActionList);
+        this(killerManagerActionType, "", Collections.singletonList(helpImages), intentActionList);
     }
 
     // TODO CHANGE TO MULTIPLE IMAGE POSSIBILITY

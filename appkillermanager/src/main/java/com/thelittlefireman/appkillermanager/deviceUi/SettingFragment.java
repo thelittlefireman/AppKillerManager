@@ -40,6 +40,8 @@ public class SettingFragment extends Fragment{
 
     private List<KillerManagerAction> mKillerManagerActionList;
 
+    private SettingPageAdapter mSettingPageAdapter;
+
     public static Bundle generateArguments(List<KillerManagerAction> killerManagerActionList, boolean dontShowAgain) {
         Bundle args = new Bundle();
         args.putString(KILLER_MANAGER_LIST, KillerManagerAction.toJsonList(killerManagerActionList));
@@ -63,9 +65,9 @@ public class SettingFragment extends Fragment{
         mSettingPageFragmentList = new ArrayList<>();
 
         mRootView = inflater.inflate(R.layout.md_dialog_ui, container, false);
-        mViewPager = mRootView.findViewById(R.id.md_help_image_viewpager);
-
-        mViewPager.setAdapter(new SettingPageAdapter(getFragmentManager()));
+        mViewPager = mRootView.findViewById(R.id.md_viewpager_main_content);
+        mSettingPageAdapter = new SettingPageAdapter(getFragmentManager());
+        mViewPager.setAdapter(mSettingPageAdapter);
 
         initKillerManagerAction(mKillerManagerActionList);
         return mRootView;
@@ -77,6 +79,7 @@ public class SettingFragment extends Fragment{
                                                                                       mDontShowAgain);
             mSettingPageFragmentList.add(settingPageFragment);
         }
+        mSettingPageAdapter.notifyDataSetChanged();
     }
 
 

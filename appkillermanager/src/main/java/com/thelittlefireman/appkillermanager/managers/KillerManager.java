@@ -71,14 +71,14 @@ public class KillerManager {
                     case ACTION_AUTOSTART:
                         if (mDevice.isActionAutoStartAvailable(context) && ActionUtils.isAtLeastOneIntentAvailable(
                                 context,
-                                mDevice.getActionNotification(context))) {
+                                mDevice.getActionAutoStart(context))) {
                             killerManagerActionList.add(mDevice.getActionAutoStart(context));
                         }
                         break;
                     case ACTION_POWERSAVING:
                         if (mDevice.isActionPowerSavingAvailable(context) && ActionUtils.isAtLeastOneIntentAvailable(
                                 context,
-                                mDevice.getActionNotification(context))) {
+                                mDevice.getActionPowerSaving(context))) {
                             killerManagerActionList.add(mDevice.getActionPowerSaving(context));
                         }
                         break;
@@ -90,7 +90,7 @@ public class KillerManager {
                         }
                         break;
                     case ACTION_EMPTY:
-                        killerManagerActionList = Collections.emptyList();
+                        // do nothing
                 }
                 if (killerManagerActionList.isEmpty()) {
                     LogUtils.e(KillerManager.class.getName(), "INTENT NOT FOUND :" +

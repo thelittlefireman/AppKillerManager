@@ -17,7 +17,6 @@ import com.thelittlefireman.appkillermanager.managers.KillerManager;
 import com.thelittlefireman.appkillermanager.models.KillerManagerAction;
 import com.thelittlefireman.appkillermanager.utils.KillerManagerUtils;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,7 +29,6 @@ import androidx.viewpager.widget.ViewPager;
 public class SettingPageFragment extends Fragment  implements SettingPageFragmentClicListener {
     //https://guides.codepath.com/android/viewpager-with-fragmentpageradapter
 
-    List<Integer> mHelpImageList;
     private ViewPager mHelpImageViewPager;
 
     private int mCurrentPage;
@@ -76,12 +74,12 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
         mInfalter = inflater;
         View mFragmentView = inflater.inflate(R.layout.md_dialog_main_content, container, false);
         TextView textView = mFragmentView.findViewById(R.id.md_content_message);
-
-        textView.setText(mContentMessage);
+        mDoNotShowAgainCheckBox = mFragmentView.findViewById(R.id.md_promptCheckbox);
         mButtonOpenSettings = mFragmentView.findViewById(R.id.md_button_open_settings);
         mButtonClose = mFragmentView.findViewById(R.id.md_button_close);
+        mHelpImageViewPager = mFragmentView.findViewById(R.id.md_help_image_viewpager);
 
-
+        textView.setText(mContentMessage);
         mButtonOpenSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,12 +109,10 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
                                               getString(R.string.app_name)));*/
 
         // Inflate the layout for this fragment
-
-        mHelpImageViewPager = mFragmentView.findViewById(R.id.md_help_image_viewpager);
         mHelpImageViewPager.setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
-                return mHelpImageList.size();
+                return mKillerManagerAction.getHelpImages().size();
             }
 
             @NonNull
@@ -124,7 +120,7 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
             public Object instantiateItem(@NonNull ViewGroup view, int position) {
                 View myImageLayout = mInfalter.inflate(R.layout.md_dialog_main_content_image_item, view, false);
                 ImageView myImage = myImageLayout.findViewById(R.id.md_help_image);
-                myImage.setImageResource(mHelpImageList.get(position));
+                myImage.setImageResource(mKillerManagerAction.getHelpImages().get(position));
                 view.addView(myImageLayout, 0);
                 return myImageLayout;
             }
@@ -139,7 +135,7 @@ public class SettingPageFragment extends Fragment  implements SettingPageFragmen
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
             public void run() {
-                if (mCurrentPage == mHelpImageList.size()) {
+                if (mCurrentPage == mKillerManagerAction.getHelpImages().size()) {
                     mCurrentPage = 0;
                 }
                 mHelpImageViewPager.setCurrentItem(mCurrentPage++, true);
