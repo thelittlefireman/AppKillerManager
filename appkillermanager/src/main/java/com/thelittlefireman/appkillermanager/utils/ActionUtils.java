@@ -39,6 +39,7 @@ public class ActionUtils {
         for (ComponentName componentName : componentNameList) {
             Intent intent = createIntent();
             intent.setComponent(componentName);
+            intentList.add(intent);
         }
         return intentList;
     }
