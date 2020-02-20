@@ -1,9 +1,9 @@
 package com.thelittlefireman.appkillermanager.ui;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -17,10 +17,41 @@ import com.thelittlefireman.appkillermanager.managers.KillerManager;
 import com.thelittlefireman.appkillermanager.utils.KillerManagerUtils;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 public class DialogKillerManagerBuilder {
     private Context mContext;
+    
+    /*private Activity mActivity;
+    private Integer returnCode;*/
+    
+    private MaterialDialog materialDialog;
+    private MaterialDialog.Builder builder;
+    private OnNoActionFoundException onNoActionFoundException;
+    private UnAvailableActionException unAvailableActionException;
+    private UnSupportedDeviceException onUnSupportedDevice;
 
-    public DialogKillerManagerBuilder() {
+    public interface OnNoActionFoundException {
+        void onNoActionFound(KillerManager.NoActionFoundException e);
+        void onNoActionFound();
+    }
+
+    public static class UnAvailableActionException extends Exception {
+        UnAvailableActionException() {
+        }
+
+        UnAvailableActionException(String message) {
+            super(message);
+        }
+    }
+
+
+    public static class  UnSupportedDeviceException extends Exception {
+
+    }
+
+
+    private DialogKillerManagerBuilder() {
         contentResMessage = -1;
         titleResMessage = -1;
         iconRes = -1;
@@ -30,6 +61,12 @@ public class DialogKillerManagerBuilder {
         this();
         mContext = context;
     }
+    
+    /*public DialogKillerManagerBuilder(Activity activity, Integer returnCode) {
+        this();
+        this.mActivity = activity;
+        this.returnCode = returnCode;
+    }*/
 
     private KillerManager.Actions mAction;
 
@@ -44,17 +81,22 @@ public class DialogKillerManagerBuilder {
     @StringRes
     private int titleResMessage, contentResMessage;
 
-    public DialogKillerManagerBuilder setContext(Context context) {
+    /*public DialogKillerManagerBuilder setContext(Context context) {
         mContext = context;
         return this;
     }
+
+    public void setActivity(Activity mActivity, @NonNull Integer returnCode) {
+        this.mActivity   = mActivity;
+        this.returnCode = returnCode;
+    }*/
 
     public DialogKillerManagerBuilder setAction(KillerManager.Actions action) {
         mAction = action;
         return this;
     }
 
-    public DialogKillerManagerBuilder setIconRes(@NonNull @DrawableRes int iconRes) {
+    public DialogKillerManagerBuilder setIconRes(@NonNull @DrawableRes Integer iconRes) {
         this.iconRes = iconRes;
         return this;
     }
@@ -74,44 +116,70 @@ public class DialogKillerManagerBuilder {
         return this;
     }
 
-    public DialogKillerManagerBuilder setTitleMessage(@StringRes @NonNull int titleResMessage) {
+    public DialogKillerManagerBuilder setTitleMessage(@StringRes @NonNull Integer titleResMessage) {
         this.titleResMessage = titleResMessage;
         return this;
     }
 
-    public DialogKillerManagerBuilder setContentMessage(@StringRes @NonNull int contentResMessage) {
+    public DialogKillerManagerBuilder setContentMessage(@StringRes @NonNull Integer contentResMessage) {
         this.contentResMessage = contentResMessage;
         return this;
     }
 
-    public void show() {
+    public DialogKillerManagerBuilder setOnNoActionFoundException(OnNoActionFoundException onNoActionFoundException) {
+        this.onNoActionFoundException = onNoActionFoundException;
+        return this;
+    }
 
-        MaterialDialog materialDialog;
-        if (mContext == null) {
-            throw new NullPointerException("Context can't be null");
+    public DialogKillerManagerBuilder setUnAvailableActionException(UnAvailableActionException unAvailableActionException) {
+        this.unAvailableActionException = unAvailableActionException;
+        return this;
+    }
+
+    public DialogKillerManagerBuilder setOnUnSupportedDevice(UnSupportedDeviceException onUnSupportedDevice) {
+        this.onUnSupportedDevice = onUnSupportedDevice;
+        return this;
+    }
+
+    public void build() throws NullPointerException{
+        //MaterialDialog materialDialog;
+        if (mContext == null ) {
+            throw new NullPointerException("Context && mActivity can't be null at the same time");
         }
         if (mAction == null) {
             throw new NullPointerException("Action can't be null");
         }
-        KillerManager.init(mContext);
+        
+        builder = new MaterialDialog.Builder(mContext);
 
-        if (!KillerManager.isActionAvailable(mContext, mAction)) {
-            LogUtils.i(this.getClass().getName(), "This action is not available for this device no need to show the dialog");
-            return;
-        }
-
-        if (KillerManager.getDevice() == null) {
-            LogUtils.i(this.getClass().getName(), "Device not in the list no need to show the dialog");
-            return;
-        }
-
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(mContext);
+        
         builder.positiveText(R.string.dialog_button)
                 .customView(R.layout.md_dialog_custom_view, false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        KillerManager.doAction(mContext, mAction);
+                    public void onClick(@NotNull MaterialDialog dialog, @NotNull DialogAction which) {
+                        try {
+                            if (mAction == KillerManager.Actions.ACTION_AUTOSTART){
+                                if (mContext != null) {
+                                    KillerManager.doActionAutoStart(mContext);
+                                }
+                            }else if (mAction == KillerManager.Actions.ACTION_NOTIFICATIONS){
+                                if (mContext != null) {
+                                    KillerManager.doActionNotification(mContext);
+                                }
+                            }else if (mAction == KillerManager.Actions.ACTION_POWERSAVING){
+                                if (mContext != null) {
+                                    KillerManager.doActionPowerSaving(mContext);
+                                }
+                            }
+                        } catch (KillerManager.NoActionFoundException e) {
+                            if (onNoActionFoundException != null){
+                                onNoActionFoundException.onNoActionFound(e);
+                            }else{
+                                dialog.dismiss();
+                            }
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .negativeText(android.R.string.cancel);
@@ -127,24 +195,55 @@ public class DialogKillerManagerBuilder {
         } else if (titleMessage != null && !titleMessage.isEmpty()) {
             builder.title(titleMessage);
         } else {
-            builder.title(mContext.getString(R.string.dialog_title_notification, KillerManager.getDevice().getDeviceManufacturer().toString()));
+            if (mContext != null) {
+                builder.title(mContext.getString(R.string.dialog_title_notification, KillerManager.getDevice().getDeviceManufacturer().toString()));
+            }
         }
 
         if (this.enableDontShowAgain) {
-            builder.checkBoxPromptRes(R.string.dialog_do_not_show_again, false,
-                    new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            KillerManagerUtils.setDontShowAgain(mContext, mAction, isChecked);
-                        }
-                    });
+            if (mContext != null) {
+                builder.checkBoxPromptRes(R.string.dialog_do_not_show_again, false,
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                KillerManagerUtils.setDontShowAgain(mContext, mAction, isChecked);
+                            }
+                        });
+            }
+        }
+    }
+
+    private boolean isActionAvailable(){
+        if (mContext != null) {
+            return  KillerManager.isActionAvailable(mContext, mAction);
+        }
+        return false;
+    }
+
+    private boolean isDontShowAgain(){
+        if(mContext != null){
+           return KillerManagerUtils.isDontShowAgain(mContext, mAction);
+        }
+        return false;
+    }
+
+    public void show() throws NullPointerException, UnAvailableActionException, UnSupportedDeviceException {
+        build();
+        if (! KillerManager.isDeviceSupported()) {
+            LogUtils.i(this.getClass().getName(), "Device not in the list no need to show the dialog");
+            throw new UnSupportedDeviceException();
+        }
+        if (!isActionAvailable()) {
+            LogUtils.i(this.getClass().getName(), "This action is not available for this device no need to show the dialog");
+            throw  new UnAvailableActionException("This action is not available for this device no need to show the dialog");
         }
 
-        if (!(enableDontShowAgain && KillerManagerUtils.isDontShowAgain(mContext, mAction))) {
+        if (!(enableDontShowAgain && isDontShowAgain())) {
             materialDialog = builder.show();
-
             // init custom view
-            initView(materialDialog.getCustomView());
+            if (materialDialog.getCustomView() != null) {
+                initView(materialDialog.getCustomView());
+            }
         }
     }
 
@@ -159,20 +258,24 @@ public class DialogKillerManagerBuilder {
             contentTextView.setText(contentMessage);
         } else {
             //TODO CUSTOM MESSAGE FOR SPECIFITQUE ACTIONS AND SPECIFIC DEVICE
-            contentTextView.setText(String.format(mContext.getString(R.string.dialog_huawei_notification),
-                    mContext.getString(
-                            R.string.app_name)));
+            if (mContext != null) {
+                contentTextView.setText(String.format(mContext.getString(R.string.dialog_huawei_notification),
+                        mContext.getString(
+                                R.string.app_name)));
+            }
         }
 
         if (this.enableDontShowAgain) {
             doNotShowAgainCheckBox.setVisibility(View.VISIBLE);
             doNotShowAgainCheckBox.setText(R.string.dialog_do_not_show_again);
-            doNotShowAgainCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    KillerManagerUtils.setDontShowAgain(mContext, mAction, isChecked);
-                }
-            });
+            if (mContext != null) {
+                doNotShowAgainCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        KillerManagerUtils.setDontShowAgain(mContext, mAction, isChecked);
+                    }
+                });
+            }
         }
 
         //TODO add other specific images
@@ -192,5 +295,13 @@ public class DialogKillerManagerBuilder {
         if (helpImageRes != 0) {
             helpImageView.setImageResource(helpImageRes);
         }
+    }
+
+    public MaterialDialog getMaterialDialog() {
+        return materialDialog;
+    }
+
+    public MaterialDialog.Builder getBuilder() {
+        return builder;
     }
 }
