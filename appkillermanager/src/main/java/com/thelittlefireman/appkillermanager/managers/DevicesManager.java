@@ -26,6 +26,7 @@ public class DevicesManager {
             new Letv(),
             new Meizu(),
             new OnePlus(),
+            new Oppo(),
             new HTC(),
             new Samsung(),
             new Xiaomi(),
