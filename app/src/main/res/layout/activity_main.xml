@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
     <Button
@@ -12,21 +13,24 @@
         android:layout_height="wrap_content"
         android:text="PowerSaving Button"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <Button
         android:id="@+id/autoStartManagerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="AutoStart Button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/powerSavingManagerButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/powerSavingManagerButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <Button
         android:id="@+id/notificationManagerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Notification Button"
-        app:layout_constraintTop_toBottomOf="@id/powerSavingManagerButton"
-        app:layout_constraintStart_toEndOf="@id/autoStartManagerButton"/>
+        app:layout_constraintTop_toBottomOf="@id/autoStartManagerButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/idByDialog"
@@ -35,6 +39,7 @@
         android:text="Enable dialog"
         android:checked="true"
         app:layout_constraintTop_toBottomOf="@id/notificationManagerButton"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
