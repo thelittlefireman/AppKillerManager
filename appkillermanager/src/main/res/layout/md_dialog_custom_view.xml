@@ -8,7 +8,7 @@
     <ScrollView
         android:id="@+id/md_contentScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clipToPadding="false"
         android:layout_marginBottom="8dp"
@@ -29,11 +29,11 @@
 
     <ImageView
         android:id="@+id/md_imageView"
-        tools:src="@drawable/huawei_powersaving"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        tools:src="@drawable/xiaomi"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_weight="1"/>
+        android:layout_weight="3"/>
 
     <CheckBox
         android:id="@+id/md_promptCheckbox"

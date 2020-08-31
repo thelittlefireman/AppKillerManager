@@ -231,12 +231,15 @@ public class DialogKillerManagerBuilder {
                 helpImageRes = KillerManager.getDevice().getHelpImagePowerSaving();
                 break;
             case ACTION_NOTIFICATIONS:
+
                 helpImageRes = KillerManager.getDevice().getHelpImageNotification();
                 break;
         }
 
         if (helpImageRes != 0) {
             helpImageView.setImageResource(helpImageRes);
+        }else{
+            helpImageView.setVisibility(View.GONE);
         }
     }
 }
