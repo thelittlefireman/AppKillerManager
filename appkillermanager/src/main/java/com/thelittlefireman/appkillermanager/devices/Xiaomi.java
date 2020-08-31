@@ -85,6 +85,11 @@ public class Xiaomi extends DeviceAbstract {
     public int getHelpImagePowerSaving() {
         return R.drawable.xiaomi;
     }
+
+    @Override
+    public int getHelpImageAutoStart() {
+        return R.drawable.xiaomi;
+    }
 /*
     // TODO CHECK IF GETPACKAGENAME IS NAME OF LIB OR APP
     @Override
