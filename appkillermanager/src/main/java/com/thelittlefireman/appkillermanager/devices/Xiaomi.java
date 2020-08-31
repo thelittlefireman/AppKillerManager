@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.thelittlefireman.appkillermanager.R;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
 import com.thelittlefireman.appkillermanager.utils.SystemUtils;
@@ -82,7 +83,7 @@ public class Xiaomi extends DeviceAbstract {
 
     @Override
     public int getHelpImagePowerSaving() {
-        return 0;
+        return R.drawable.xiaomi;
     }
 /*
     // TODO CHECK IF GETPACKAGENAME IS NAME OF LIB OR APP
