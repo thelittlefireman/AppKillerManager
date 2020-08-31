@@ -1,22 +1,27 @@
 package com.thelittlefireman.appkillermanager.utils;
 
 import android.annotation.TargetApi;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Process;
 import android.os.UserManager;
+
 import androidx.annotation.RequiresApi;
+
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class SystemUtils {
 
-    public static String getDefaultDebugInformation(){
+    public static String getDefaultDebugInformation() {
         return "Display_id:" + Build.DISPLAY +
                 "MODEL:" + Build.MODEL +
                 "MANUFACTURER:" + Build.MANUFACTURER +
@@ -30,6 +35,7 @@ public class SystemUtils {
             return "";
         }
     }
+
     public static String getApplicationName(Context context) {
         PackageManager packageManager = context.getPackageManager();
         ApplicationInfo applicationInfo = null;
@@ -72,37 +78,49 @@ public class SystemUtils {
     }
 
     // INFO http://imsardine.simplbug.com/note/android/adb/commands/am-start.html
+
     /**
      * Open an Activity by using Application Manager System (prevent from crash permission exception)
      *
-     * @param context current application Context
-     * @param packageName  pacakge name of the target application (exemple: com.huawei.systemmanager)
+     * @param context         current application Context
+     * @param packageName     pacakge name of the target application (exemple: com.huawei.systemmanager)
      * @param activityPackage activity name of the target application (exemple: .optimize.process.ProtectActivity)
      */
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static void startActivityByAMSystem(Context context, String packageName, String activityPackage)
             throws IOException {
-        String cmd = "am start -n "+packageName+"/"+activityPackage;
-        UserManager um = (UserManager)context.getSystemService(Context.USER_SERVICE);
+        String cmd = "am start -n " + packageName + "/" + activityPackage;
+        UserManager um = (UserManager) context.getSystemService(Context.USER_SERVICE);
         assert um != null;
-        cmd += " --user " +um.getSerialNumberForUser(Process.myUserHandle());
+        cmd += " --user " + um.getSerialNumberForUser(Process.myUserHandle());
         Runtime.getRuntime().exec(cmd);
     }
+
     /**
      * Open an Action by using Application Manager System (prevent from crash permission exception)
      *
-     * @param context current application Context
-     * @param intentAction  action of the target application (exemple: com.huawei.systemmanager)
+     * @param context      current application Context
+     * @param intentAction action of the target application (exemple: com.huawei.systemmanager)
      */
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static void startActionByAMSystem(Context context, String intentAction)
             throws IOException {
-        String cmd = "am start -a "+intentAction;
-        UserManager um = (UserManager)context.getSystemService(Context.USER_SERVICE);
+        String cmd = "am start -a " + intentAction;
+        UserManager um = (UserManager) context.getSystemService(Context.USER_SERVICE);
         assert um != null;
-        cmd += " --user " +um.getSerialNumberForUser(Process.myUserHandle());
+        cmd += " --user " + um.getSerialNumberForUser(Process.myUserHandle());
         Runtime.getRuntime().exec(cmd);
+    }
+
+    public static ComponentName getResolvableComponentName(final Context context, List<ComponentName> componentNameList) {
+        for (ComponentName componentName : componentNameList) {
+            final Intent intent = new Intent();
+            intent.setComponent(componentName);
+            if (context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null)
+                return componentName;
+        }
+        return null;
     }
 }
