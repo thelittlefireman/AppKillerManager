@@ -2,7 +2,7 @@ package com.thelittlefireman.appkillermanager.managers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.thelittlefireman.appkillermanager.devices.DeviceBase;
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;

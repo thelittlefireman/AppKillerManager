@@ -1,14 +1,15 @@
 package com.thelittlefireman.appkillermanager.ui;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -37,6 +38,12 @@ public class DialogKillerManagerBuilder {
 
     private String titleMessage;
     private String contentMessage;
+
+    private String positiveBtnStr;
+    private String negativeBtnStr;
+
+    private View.OnClickListener onPositive;
+    private View.OnClickListener onNegative;
 
     @DrawableRes
     private int iconRes;
@@ -84,6 +91,26 @@ public class DialogKillerManagerBuilder {
         return this;
     }
 
+    public DialogKillerManagerBuilder setPositiveMessage(@NonNull String positiveMessage) {
+        this.positiveBtnStr = positiveMessage;
+        return this;
+    }
+
+    public DialogKillerManagerBuilder setNegativeMessage(@NonNull String negativeMessage) {
+        this.negativeBtnStr = negativeMessage;
+        return this;
+    }
+
+    public DialogKillerManagerBuilder setOnPositiveCallback(@NonNull View.OnClickListener onPositive) {
+        this.onPositive = onPositive;
+        return this;
+    }
+
+    public DialogKillerManagerBuilder setOnNegativeCallback(@NonNull View.OnClickListener onNegative) {
+        this.onNegative = onNegative;
+        return this;
+    }
+
     public void show() {
 
         MaterialDialog materialDialog;
@@ -106,15 +133,33 @@ public class DialogKillerManagerBuilder {
         }
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(mContext);
-        builder.positiveText(R.string.dialog_button)
+        if(positiveBtnStr == null){
+            positiveBtnStr = mContext.getText(R.string.dialog_button).toString();
+        }
+        if(negativeBtnStr == null){
+            negativeBtnStr = mContext.getText(android.R.string.cancel).toString();
+        }
+
+        builder.positiveText(positiveBtnStr)
                 .customView(R.layout.md_dialog_custom_view, false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         KillerManager.doAction(mContext, mAction);
+                        if(onPositive != null){
+                            onPositive.onClick(dialog.getView());
+                        }
                     }
                 })
-                .negativeText(android.R.string.cancel);
+                .negativeText(negativeBtnStr)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if(onNegative != null){
+                            onNegative.onClick(dialog.getView());
+                        }
+                    }
+                });
 
         if (iconRes != -1) {
             builder.iconRes(iconRes);
@@ -144,6 +189,7 @@ public class DialogKillerManagerBuilder {
             materialDialog = builder.show();
 
             // init custom view
+            assert materialDialog.getCustomView() != null;
             initView(materialDialog.getCustomView());
         }
     }

@@ -115,7 +115,7 @@ public class Huawei extends DeviceAbstract {
         stringBuilder.append("HuaweiSystemManagerVersionMethod:").append(getHuaweiSystemManagerVersion(context));
 
         PackageManager manager = context.getPackageManager();
-        PackageInfo info = null;
+        PackageInfo info;
         String versionStr = "";
         try {
             info = manager.getPackageInfo(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, 0);
@@ -141,6 +141,7 @@ public class Huawei extends DeviceAbstract {
         return R.drawable.huawei_powersaving;
     }
 
+    @SuppressWarnings("unused")
     private ComponentName getComponentNameAutoStart(Context context) {
         int mVersion = getHuaweiSystemManagerVersion(context);
         if (mVersion == 4 || mVersion == 5) {
@@ -161,7 +162,7 @@ public class Huawei extends DeviceAbstract {
             PackageInfo info = manager.getPackageInfo(HUAWEI_SYSTEMMANAGER_PACKAGE_NAME, 0);
             Log.i(Huawei.class.getName(), "manager info = " + info.toString());
             String versionStr = info.versionName;
-            String versionTmp[] = versionStr.split("\\.");
+            String[] versionTmp = versionStr.split("\\.");
             if (versionTmp.length >= 2) {
                 if (Integer.parseInt(versionTmp[0]) == 5) {
                     versionNum = 500;
@@ -173,7 +174,7 @@ public class Huawei extends DeviceAbstract {
 
             }
             if (versionTmp.length >= 3) {
-                thirdPartFirtDigit = Integer.valueOf(versionTmp[2].substring(0, 1));
+                thirdPartFirtDigit = Integer.parseInt(versionTmp[2].substring(0, 1));
             }
         } catch (Exception e) {
             e.printStackTrace();

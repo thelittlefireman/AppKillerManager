@@ -39,9 +39,9 @@ public class DevicesManager {
             }
         }
         if(currentDeviceBase.size()>1){
-            String logDevices="";
+            StringBuilder logDevices= new StringBuilder();
             for (DeviceBase deviceBase : currentDeviceBase) {
-                logDevices+=deviceBase.getDeviceManufacturer();
+                logDevices.append(deviceBase.getDeviceManufacturer());
             }
             LogUtils.e(DevicesManager.class.getName(),"MORE THAN ONE CORRESPONDING:"+logDevices+"|"+
                     SystemUtils.getDefaultDebugInformation());

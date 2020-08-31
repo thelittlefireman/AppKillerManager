@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Process;
 import android.os.UserManager;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -35,7 +35,7 @@ public class SystemUtils {
         ApplicationInfo applicationInfo = null;
         try {
             applicationInfo = packageManager.getApplicationInfo(context.getApplicationInfo().packageName, 0);
-        } catch (final PackageManager.NameNotFoundException e) {
+        } catch (final PackageManager.NameNotFoundException ignored) {
         }
         return (String) (applicationInfo != null ? packageManager.getApplicationLabel(applicationInfo) : "Unknown");
     }
@@ -57,14 +57,14 @@ public class SystemUtils {
             line = input.readLine();
             input.close();
         } catch (IOException ex) {
-            Log.e(SystemUtils.class.getClass().getName(), "Unable to read system property " + propName, ex);
+            Log.e(SystemUtils.class.getName(), "Unable to read system property " + propName, ex);
             return null;
         } finally {
             if (input != null) {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    Log.e(SystemUtils.class.getClass().getName(), "Exception while closing InputStream", e);
+                    Log.e(SystemUtils.class.getName(), "Exception while closing InputStream", e);
                 }
             }
         }
@@ -85,6 +85,7 @@ public class SystemUtils {
             throws IOException {
         String cmd = "am start -n "+packageName+"/"+activityPackage;
         UserManager um = (UserManager)context.getSystemService(Context.USER_SERVICE);
+        assert um != null;
         cmd += " --user " +um.getSerialNumberForUser(Process.myUserHandle());
         Runtime.getRuntime().exec(cmd);
     }
@@ -100,6 +101,7 @@ public class SystemUtils {
             throws IOException {
         String cmd = "am start -a "+intentAction;
         UserManager um = (UserManager)context.getSystemService(Context.USER_SERVICE);
+        assert um != null;
         cmd += " --user " +um.getSerialNumberForUser(Process.myUserHandle());
         Runtime.getRuntime().exec(cmd);
     }
