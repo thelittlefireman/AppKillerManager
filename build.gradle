@@ -46,7 +46,7 @@ ext{
     // ValidateTor Library Info
     libVersionCode = 6
     libVersionName = '2.1.4'
-    libPomUrl = 'https://github.com/thelittlefireman/AppKillerManager'
+    libPomUrl = 'https://github.com/pvsvamsi/AppKillerManager'
     libGithubRepo = 'thelittlefireman/AppKillerManager'
     libModuleName = 'AppKillerManager'
     libModuleDesc = 'Android library to handle flaky App killer manager (Xiaomi, Huawei, letv, ...) and prevent from : not showing notification, services not start at boot, etc'
