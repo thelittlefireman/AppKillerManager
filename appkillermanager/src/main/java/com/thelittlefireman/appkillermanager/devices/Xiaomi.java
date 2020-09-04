@@ -18,12 +18,17 @@ public class Xiaomi extends DeviceAbstract {
     private static final String MIUI_ACTION_PERMS_EXTRA = "extra_pkgname";
 
     // ONE SPECIFIQUE APP
+    private static final String[] MIUI_ACTION_AUTOSTART = {"com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"};
     private static final String[] MIUI_ACTION_POWERSAVE = {"com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"};
     // OPEN DEFAULT LIST BATTERYSAVER
     private static final String MIUI_ACTION_POWER_SAVE_LIST = "miui.intent.action.POWER_HIDE_MODE_APP_LIST";
     private static final String MIUI_ACTION_POWER_SAVE_EXTRA_NAME = "package_name";
     private static final String MIUI_ACTION_POWER_SAVE_EXTRA_LABEL = "package_label";
-    private static final String MIUI_ACTION_AUTOSTART = "miui.intent.action.OP_AUTO_START";
+    //private static final String MIUI_ACTION_AUTOSTART = "miui.intent.action.OP_AUTO_START";
+
+    private static final ComponentName[] MIUI_AUTO_START = {new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")};
+
+    private static final ComponentName[] MIUI_POWER_SAVE = {new ComponentName("com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsConfigActivity")};
 
     @Override
     public boolean isThatRom() {
@@ -39,12 +44,12 @@ public class Xiaomi extends DeviceAbstract {
 
     @Override
     public boolean isActionPowerSavingAvailable(Context context) {
-        return true;
+        return getActionPowerSaving(context) != null;
     }
 
     @Override
     public boolean isActionAutoStartAvailable(Context context) {
-        return true;
+        return getActionAutoStart(context) != null;
     }
 
     @Override
@@ -54,20 +59,27 @@ public class Xiaomi extends DeviceAbstract {
 
     @Override
     public Intent getActionPowerSaving(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(new ComponentName(MIUI_ACTION_POWERSAVE[0], MIUI_ACTION_POWERSAVE[1]));
-        intent.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_NAME, context.getPackageName());
-        intent.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_LABEL, SystemUtils.getApplicationName(context));
+        Intent intent = null;
+        for (ComponentName component : MIUI_POWER_SAVE) {
+            if (ActionsUtils.isIntentAvailable(context, component)) {
+                intent = ActionsUtils.createIntent();
+                intent.setComponent(component);
+                break;
+            }
+        }
         return intent;
     }
 
     @Override
     public Intent getActionAutoStart(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setAction(MIUI_ACTION_AUTOSTART);
-        intent.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_NAME, context.getPackageName());
-        intent.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_LABEL, SystemUtils.getApplicationName(context));
-
+        Intent intent = null;
+        for (ComponentName component : MIUI_AUTO_START) {
+            if (ActionsUtils.isIntentAvailable(context, component)) {
+                intent = ActionsUtils.createIntent();
+                intent.setComponent(component);
+                break;
+            }
+        }
         return intent;
     }
 

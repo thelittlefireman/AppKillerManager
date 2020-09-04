@@ -8,7 +8,9 @@ import com.thelittlefireman.appkillermanager.devices.Huawei;
 import com.thelittlefireman.appkillermanager.devices.Letv;
 import com.thelittlefireman.appkillermanager.devices.Meizu;
 import com.thelittlefireman.appkillermanager.devices.OnePlus;
+import com.thelittlefireman.appkillermanager.devices.Oppo;
 import com.thelittlefireman.appkillermanager.devices.Samsung;
+import com.thelittlefireman.appkillermanager.devices.Vivo;
 import com.thelittlefireman.appkillermanager.devices.Xiaomi;
 import com.thelittlefireman.appkillermanager.devices.ZTE;
 import com.thelittlefireman.appkillermanager.utils.LogUtils;
@@ -26,6 +28,8 @@ public class DevicesManager {
             new Letv(),
             new Meizu(),
             new OnePlus(),
+            new Oppo(),
+            new Vivo(),
             new HTC(),
             new Samsung(),
             new Xiaomi(),

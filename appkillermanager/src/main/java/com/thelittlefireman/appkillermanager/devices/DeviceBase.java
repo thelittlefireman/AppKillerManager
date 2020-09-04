@@ -1,5 +1,6 @@
 package com.thelittlefireman.appkillermanager.devices;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.DrawableRes;

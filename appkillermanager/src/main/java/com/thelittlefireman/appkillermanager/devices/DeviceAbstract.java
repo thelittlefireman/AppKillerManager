@@ -1,5 +1,6 @@
 package com.thelittlefireman.appkillermanager.devices;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -40,6 +41,7 @@ public abstract class DeviceAbstract implements DeviceBase {
     public boolean isActionDozeModeNotNecessary(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            assert pm != null;
             return pm.isIgnoringBatteryOptimizations(context.getPackageName());
         }
         return false;
@@ -50,6 +52,7 @@ public abstract class DeviceAbstract implements DeviceBase {
         //Android 7.0+ Doze
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            assert pm != null;
             boolean ignoringBatteryOptimizations = pm.isIgnoringBatteryOptimizations(context.getPackageName());
             if (!ignoringBatteryOptimizations) {
                 Intent dozeIntent = ActionsUtils.createIntent();
