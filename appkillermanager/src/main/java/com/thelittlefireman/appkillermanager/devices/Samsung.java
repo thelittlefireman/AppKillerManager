@@ -43,10 +43,7 @@ public class Samsung extends DeviceAbstract {
     @Override
     public boolean isActionPowerSavingAvailable(Context context) {
         // SmartManager is not available before lollipop version
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return true;
-        }
-        return false;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
     @Override

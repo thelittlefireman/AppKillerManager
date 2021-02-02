@@ -7,8 +7,16 @@ import android.os.Build;
 
 import com.thelittlefireman.appkillermanager.utils.ActionsUtils;
 import com.thelittlefireman.appkillermanager.utils.Manufacturer;
+import com.thelittlefireman.appkillermanager.utils.SystemUtils;
 
 public class OnePlus extends DeviceAbstract {
+
+    private static final ComponentName[] ONEPLUS_AUTO_START = {new ComponentName("com.oneplus.security", "com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity"),
+            new ComponentName("com.oneplus.security", "com.oneplus.security.autorun.AutorunMainActivity")};
+
+    private static final ComponentName[] ONEPLUS_POWER_SAVE = {new ComponentName("com.oneplus.security", "com.oneplus.security.highpowerapp.view.HighPowerAppActivity"),
+            new ComponentName("com.oneplus.security", "com.oneplus.security.cleanbackground.view.ManageBackgroundAppListActivity")};
+
     @Override
     public boolean isThatRom() {
         return Build.BRAND.equalsIgnoreCase(getDeviceManufacturer().toString()) ||
@@ -29,12 +37,12 @@ public class OnePlus extends DeviceAbstract {
 
     @Override
     public boolean isActionPowerSavingAvailable(Context context) {
-        return false;
+        return getActionPowerSaving(context) != null;
     }
 
     @Override
     public boolean isActionAutoStartAvailable(Context context) {
-        return true;
+        return getActionAutoStart(context) != null;
     }
 
     @Override
@@ -44,14 +52,30 @@ public class OnePlus extends DeviceAbstract {
 
     @Override
     public Intent getActionPowerSaving(Context context) {
-        return null;
+        Intent intent = null;
+        for (ComponentName component : ONEPLUS_POWER_SAVE) {
+            if (ActionsUtils.isIntentAvailable(context, component)) {
+                intent = ActionsUtils.createIntent();
+                intent.setComponent(component);
+                break;
+            }
+        }
+        if (intent == null) {
+            intent = SystemUtils.getAppInfoIntent(context.getPackageName());
+        }
+        return intent;
     }
 
     @Override
     public Intent getActionAutoStart(Context context) {
-        Intent intent = ActionsUtils.createIntent();
-        intent.setComponent(new ComponentName("com.oneplus.security", "com.oneplus.security.chainlaunch.view" +
-                ".ChainLaunchAppListActivity"));
+        Intent intent = null;
+        for (ComponentName component : ONEPLUS_AUTO_START) {
+            if (ActionsUtils.isIntentAvailable(context, component)) {
+                intent = ActionsUtils.createIntent();
+                intent.setComponent(component);
+                break;
+            }
+        }
         return intent;
     }
 

@@ -15,7 +15,7 @@ public enum Manufacturer {
 
     private final String name;
 
-    private Manufacturer(String device){
+    Manufacturer(String device){
         name = device;
     }
     @Override
