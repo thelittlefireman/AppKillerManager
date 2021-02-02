@@ -67,6 +67,9 @@ public class Xiaomi extends DeviceAbstract {
                 break;
             }
         }
+        if (intent == null && isActionAutoStartAvailable(context)) {
+            intent = SystemUtils.getAppInfoIntent(context.getPackageName());
+        }
         return intent;
     }
 
