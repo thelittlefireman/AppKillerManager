@@ -29,7 +29,11 @@ public class OnePlus extends DeviceAbstract {
 
     @Override
     public boolean isActionPowerSavingAvailable(Context context) {
-        return false;
+        if(Build.VERSION.SDK_INT == 30){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
@@ -44,7 +48,18 @@ public class OnePlus extends DeviceAbstract {
 
     @Override
     public Intent getActionPowerSaving(Context context) {
-        return null;
+        /////NEED MODIFICATION////
+        //This is only confirmed working on Android 11 OxygenOS, other Android versions are still unconfirmed.
+        //The number 30 should be changed to VERSION_CODES.R After this project has updated compileSdkVersion and migrated to Androidx
+        if(Build.VERSION.SDK_INT == 30){
+            Intent intent = ActionsUtils.createIntent();
+            intent.setComponent(
+                    new ComponentName("com.android.settings",
+                            "com.android.settings.Settings$BgOptimizeAppListActivity"));
+            return intent;
+        }else{
+            return null;
+        }
     }
 
     @Override
